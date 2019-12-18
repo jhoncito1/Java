@@ -160,6 +160,7 @@ public class NewAuto extends javax.swing.JFrame {
             pst.setString(4, txtColorA.getText());
             
             pst.execute();
+            
             JOptionPane.showMessageDialog(null, "Registro exitoso");
             this.dispose();
         } catch (Exception e) {
@@ -178,8 +179,8 @@ public class NewAuto extends javax.swing.JFrame {
         
         try {
             String SQL = "update automovil set placa=?, marca=?, modelo=?, color=? where id_auto=?";
-            
             PreparedStatement pst = con.prepareStatement(SQL);
+            
             pst.setString(1, txtPlaca.getText());
             pst.setString(2, txtMarcaA.getText());
             pst.setString(3, txtModeloA.getText());
@@ -190,6 +191,7 @@ public class NewAuto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Registro actualizado");
             
             this.dispose();
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al modificar"+ e.getMessage());
         }

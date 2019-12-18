@@ -201,16 +201,16 @@ public class NewCliente extends javax.swing.JFrame {
     public void actualizarCliente(){
         
         try {
-            String SQL = "update cliente set documento=?, nombre=?, apellido=?, telefono=?, direccion=?, correo=? where documento=?";
+            String SQL = "update cliente set nombre=?, apellido=?, telefono=?, direccion=?, correo=? where documento=?";
             
             PreparedStatement pst = con.prepareStatement(SQL);
-            
-            pst.setString(1, txtIdCliente.getText());
-            pst.setString(2, txtNombreCliente.getText());
-            pst.setString(3, txtApellidoCliente.getText());
-            pst.setString(4, txtTelefonoCliente.getText());
-            pst.setString(5, txtDireccionCliente.getText());
-            pst.setString(6, txtCorreoCliente.getText());
+
+            pst.setString(1, txtNombreCliente.getText());
+            pst.setString(2, txtApellidoCliente.getText());
+            pst.setString(3, txtTelefonoCliente.getText());
+            pst.setString(4, txtDireccionCliente.getText());
+            pst.setString(5, txtCorreoCliente.getText());
+            pst.setString(6, txtIdCliente.getText());
             
             pst.execute();
             JOptionPane.showMessageDialog(null, "Registro actualizado");

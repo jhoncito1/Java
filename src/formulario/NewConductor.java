@@ -32,8 +32,6 @@ public class NewConductor extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         mostrarAuto();
         
-        
-        
     }
 
     /**
@@ -227,6 +225,24 @@ public class NewConductor extends javax.swing.JFrame {
         }
         
     }
+        
+    public int getidAuto(String placa){
+        String SQL = "SELECT * FROM automovil where placa = '"+placa+"'";
+        int id = 0;
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                
+                id=rs.getInt("id_auto");
+
+            }
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+        }
+        return id;
+    }
                                               
 
     
@@ -244,12 +260,9 @@ public class NewConductor extends javax.swing.JFrame {
             pst.setString(7, txtDireccion.getText());
             pst.setString(8, txtCorreo.getText());
             
-            
-            //ArrayList<String> lista = new ArrayList<>();
-            
-            
-            int seleccionado = numeroAuto.getSelectedIndex();
-            pst.setString(9, numeroAuto.getItemAt(seleccionado));
+            String placa = numeroAuto.getSelectedItem().toString();
+            int id=getidAuto(placa);
+            pst.setString(9, String.valueOf(id));
             
             pst.execute();
             
@@ -277,28 +290,28 @@ public class NewConductor extends javax.swing.JFrame {
     public void actualizarConductor(){
         
         try {
-            String SQL = "update conductor set documento=?, nombre=?, apellido=?, licencia=?, fecha_nacimiento=?, telefono=?, direccion=?, correo=?, fk_idauto=? where documento=?";
+            String SQL = "update conductor set nombre=?, apellido=?, licencia=?, fecha_nacimiento=?, telefono=?, direccion=?, correo=?, fk_idauto=? where documento=?";
             
             PreparedStatement pst = con.prepareStatement(SQL);
-            pst.setString(1, txtDocumento.getText());
-            pst.setString(2, txtNombre.getText());
-            pst.setString(3, txtApellido.getText());
-            pst.setString(4, txtLicencia.getText());
-            pst.setString(5, ((JTextField)FechaNacimientoCond.getDateEditor().getUiComponent()).getText());
-            pst.setString(6, txtTelefono.getText());
-            pst.setString(7, txtDireccion.getText());
-            pst.setString(8, txtCorreo.getText());
+            pst.setString(1, txtNombre.getText());
+            pst.setString(2, txtApellido.getText());
+            pst.setString(3, txtLicencia.getText());
+            pst.setString(4, ((JTextField)FechaNacimientoCond.getDateEditor().getUiComponent()).getText());
+            pst.setString(5, txtTelefono.getText());
+            pst.setString(6, txtDireccion.getText());
+            pst.setString(7, txtCorreo.getText());
             
-            int seleccionado = numeroAuto.getSelectedIndex();
-            pst.setString(9, numeroAuto.getItemAt(seleccionado));
+            String placa = numeroAuto.getSelectedItem().toString();
+            int id=getidAuto(placa);
+            pst.setString(8, String.valueOf(id));
             
-            
-            
+            pst.setString(9, txtDocumento.getText());
              pst.execute();
             JOptionPane.showMessageDialog(null, "Registro actualizado");
             this.dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al modificar => "+ e.getMessage());
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de actualizacion "+ e.getMessage());
         }
         
     }

@@ -68,15 +68,15 @@ public class transporte extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         btnNuevoCliente = new javax.swing.JButton();
         btnActualizarCliente = new javax.swing.JButton();
-        jButton24 = new javax.swing.JButton();
+        btnEliminarCliente = new javax.swing.JButton();
         jScrollPane9 = new javax.swing.JScrollPane();
         tablaCliente = new javax.swing.JTable();
         jPanel9 = new javax.swing.JPanel();
         btnNuevoRuta = new javax.swing.JButton();
-        jButton26 = new javax.swing.JButton();
-        jButton27 = new javax.swing.JButton();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        tablaAutomovil1 = new javax.swing.JTable();
+        btnActualizarRuta = new javax.swing.JButton();
+        btnEliminarRuta = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaRuta1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -263,8 +263,13 @@ public class transporte extends javax.swing.JFrame {
             }
         });
 
-        jButton24.setBackground(new java.awt.Color(255, 51, 51));
-        jButton24.setText("Eliminar");
+        btnEliminarCliente.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminarCliente.setText("Eliminar");
+        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarClienteActionPerformed(evt);
+            }
+        });
 
         tablaCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -290,7 +295,7 @@ public class transporte extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(btnActualizarCliente)
                 .addGap(30, 30, 30)
-                .addComponent(jButton24)
+                .addComponent(btnEliminarCliente)
                 .addGap(19, 19, 19))
         );
         jPanel8Layout.setVerticalGroup(
@@ -299,7 +304,7 @@ public class transporte extends javax.swing.JFrame {
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton24)
+                    .addComponent(btnEliminarCliente)
                     .addComponent(btnActualizarCliente)
                     .addComponent(btnNuevoCliente))
                 .addGap(33, 33, 33))
@@ -315,22 +320,32 @@ public class transporte extends javax.swing.JFrame {
             }
         });
 
-        jButton26.setBackground(new java.awt.Color(0, 153, 255));
-        jButton26.setText("Actualizar");
-        jButton26.addAncestorListener(new javax.swing.event.AncestorListener() {
+        btnActualizarRuta.setBackground(new java.awt.Color(0, 153, 255));
+        btnActualizarRuta.setText("Actualizar");
+        btnActualizarRuta.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                jButton26AncestorAdded(evt);
+                btnActualizarRutaAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
+        btnActualizarRuta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarRutaActionPerformed(evt);
+            }
+        });
 
-        jButton27.setBackground(new java.awt.Color(255, 51, 51));
-        jButton27.setText("Eliminar");
+        btnEliminarRuta.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminarRuta.setText("Eliminar");
+        btnEliminarRuta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarRutaActionPerformed(evt);
+            }
+        });
 
-        tablaAutomovil1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaRuta1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -338,33 +353,33 @@ public class transporte extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "No. Ruta", "Conductor", "Automovil", "Origen", "Destino"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
-        jScrollPane10.setViewportView(tablaAutomovil1);
+        jScrollPane2.setViewportView(tablaRuta1);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(374, Short.MAX_VALUE)
                 .addComponent(btnNuevoRuta)
                 .addGap(38, 38, 38)
-                .addComponent(jButton26)
+                .addComponent(btnActualizarRuta)
                 .addGap(30, 30, 30)
-                .addComponent(jButton27)
+                .addComponent(btnEliminarRuta)
                 .addGap(19, 19, 19))
+            .addComponent(jScrollPane2)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton27)
-                    .addComponent(jButton26)
+                    .addComponent(btnEliminarRuta)
+                    .addComponent(btnActualizarRuta)
                     .addComponent(btnNuevoRuta))
                 .addGap(33, 33, 33))
         );
@@ -405,13 +420,14 @@ public class transporte extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnActualizarClienteAncestorAdded
 
-    private void jButton26AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jButton26AncestorAdded
+    private void btnActualizarRutaAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarRutaAncestorAdded
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton26AncestorAdded
+    }//GEN-LAST:event_btnActualizarRutaAncestorAdded
 
     private void btnNuevoRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoRutaActionPerformed
-        //NewAuto nuevoAuto = new  NewAuto();
-        //nuevoAuto.setVisible(true);
+        NewRuta nuevoRuta = new  NewRuta();
+        nuevoRuta.setVisible(true);
+        nuevoRuta.btnActualizarRuta.setVisible(false);
     }//GEN-LAST:event_btnNuevoRutaActionPerformed
 
     private void btnNuevoAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAutoActionPerformed
@@ -438,6 +454,7 @@ public class transporte extends javax.swing.JFrame {
         NewAuto.btnInsertar.setVisible(false);
        
         na.setVisible(true);
+        
     }//GEN-LAST:event_btnActualizarAutoActionPerformed
 
   
@@ -461,6 +478,7 @@ public class transporte extends javax.swing.JFrame {
         NewConductor nuevoConductor = new  NewConductor();
         int fila = tablaConductor.getSelectedRow();
         
+        NewConductor.txtDocumento.setVisible(false);
         NewConductor.txtDocumento.setText(tablaConductor.getValueAt(fila, 0).toString());
         NewConductor.txtNombre.setText(tablaConductor.getValueAt(fila, 1).toString());
         NewConductor.txtApellido.setText(tablaConductor.getValueAt(fila, 2).toString());
@@ -470,12 +488,14 @@ public class transporte extends javax.swing.JFrame {
         NewConductor.txtDireccion.setText(tablaConductor.getValueAt(fila, 6).toString());
         NewConductor.txtCorreo.setText(tablaConductor.getValueAt(fila, 7).toString());
         NewConductor.numeroAuto.setSelectedItem(tablaConductor.getValueAt(fila, 8).toString());
-       
+        //NewConductor.txtDocumento.setText(tablaConductor.getValueAt(fila, 0).toString());
         NewConductor.btnCrearUsuario.setVisible(false);
         
         nuevoConductor.setVisible(true);
     }//GEN-LAST:event_btnActualizarConductorActionPerformed
 
+    
+    
     private void btnEliminarAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAutoActionPerformed
         eliminarAuto();
         mostrarAuto();
@@ -490,6 +510,7 @@ public class transporte extends javax.swing.JFrame {
         NewCliente nuevoCliente = new  NewCliente();
         int fila = tablaCliente.getSelectedRow();
         
+        nuevoCliente.txtIdCliente.setVisible(false);
         nuevoCliente.txtIdCliente.setText(tablaCliente.getValueAt(fila, 0).toString());
         nuevoCliente.txtNombreCliente.setText(tablaCliente.getValueAt(fila, 1).toString());
         nuevoCliente.txtApellidoCliente.setText(tablaCliente.getValueAt(fila, 2).toString());
@@ -501,6 +522,29 @@ public class transporte extends javax.swing.JFrame {
        
         nuevoCliente.setVisible(true);
     }//GEN-LAST:event_btnActualizarClienteActionPerformed
+
+    private void btnActualizarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarRutaActionPerformed
+        NewRuta nuevaRuta = new NewRuta();
+        int fila = tablaRuta1.getSelectedRow();
+        nuevaRuta.id_ruta = Integer.parseInt(tablaRuta1.getValueAt(fila, 0).toString());
+        nuevaRuta.cbConductor.setSelectedItem(tablaRuta1.getValueAt(fila, 1).toString());
+        nuevaRuta.cbCliente.setSelectedItem(tablaRuta1.getValueAt(fila, 2).toString());
+        nuevaRuta.txtOrigen.setText(tablaRuta1.getValueAt(fila, 3).toString());
+        nuevaRuta.txtDestino.setText(tablaRuta1.getValueAt(fila, 4).toString());
+        nuevaRuta.btnCrearRuta.setVisible(false);
+        nuevaRuta.setVisible(true);
+
+    }//GEN-LAST:event_btnActualizarRutaActionPerformed
+
+    private void btnEliminarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarRutaActionPerformed
+        eliminarRuta();
+        mostrarRuta();
+    }//GEN-LAST:event_btnEliminarRutaActionPerformed
+
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        eliminarCliente();
+        mostrarCliente();
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
     public void mostrarAuto(){
         String[] titulos = {"ID", "Placa","Marca", "Modelo","Color"};
@@ -530,7 +574,7 @@ public class transporte extends javax.swing.JFrame {
     
     
     public void mostrarConductores(){
-        String[] titulos = {"Documento", "Nombre","Apellido", "Licencia","Nacimiento","Telefono","Direccion","Correo","No. Auto"};
+        String[] titulos = {"Documento", "Nombre","Apellido", "Licencia","Nacimiento","Telefono","Direccion","Correo","Auto"};
         String [] registros = new String[9];
         DefaultTableModel modelo = new DefaultTableModel(null, titulos);
         String SQL = "SELECT * FROM conductor";
@@ -547,6 +591,7 @@ public class transporte extends javax.swing.JFrame {
                 registros[5]=rs.getString("telefono");
                 registros[6]=rs.getString("direccion");
                 registros[7]=rs.getString("correo");
+                
                 registros[8]=rs.getString("fk_idauto");
                 
                 modelo.addRow(registros);
@@ -587,7 +632,7 @@ public class transporte extends javax.swing.JFrame {
     
     
     public void mostrarRuta(){
-        String[] titulos = {"ID", "Nombre","Apellido", "Telefono","Direcciom","Email"};
+        String[] titulos = {"ID", "Conductor","Cliente", "Origen","Destino"};
         String [] registros = new String[7];
         DefaultTableModel modelo = new DefaultTableModel(null, titulos);
         String SQL = "SELECT * FROM ruta";
@@ -596,16 +641,15 @@ public class transporte extends javax.swing.JFrame {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while (rs.next()) {
-                registros[0]=rs.getString("documento");
-                registros[1]=rs.getString("nombre");
-                registros[2]=rs.getString("apellido");
-                registros[3]=rs.getString("telefono");
-                registros[4]=rs.getString("direccion");
-                registros[5]=rs.getString("correo");
+                registros[0]=rs.getString("id_ruta");
+                registros[1]=rs.getString("fk_conductor_doc");
+                registros[2]=rs.getString("fk_cliente_doc");
+                registros[3]=rs.getString("origen");
+                registros[4]=rs.getString("destino");
                 
                 modelo.addRow(registros);
             }
-            //tablaRuta.setModel(modelo);
+            tablaRuta1.setModel(modelo);
         } 
         catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
@@ -631,7 +675,7 @@ public class transporte extends javax.swing.JFrame {
     public void eliminarConductor (){
         int fila = tablaConductor.getSelectedRow();
         try {
-            String SQL  = "DELETE FROM conductor WHERE documento= "+tablaConductor.getValueAt(fila, 0);
+            String SQL  = "DELETE FROM conductor WHERE documento= '"+tablaConductor.getValueAt(fila, 0)+"'";
             Statement st = con.createStatement();
             int n = st.executeUpdate(SQL);
             if (n>0) {
@@ -644,31 +688,31 @@ public class transporte extends javax.swing.JFrame {
     }
     
     public void eliminarCliente (){
-        int fila = tablaAutomovil.getSelectedRow();
+        int fila = tablaCliente.getSelectedRow();
         try {
-            String SQL  = "DELETE FROM automovil where id_auto= "+tablaAutomovil.getValueAt(fila, 0);
+            String SQL  = "DELETE  FROM cliente where documento = "+tablaCliente.getValueAt(fila, 0);
             Statement st = con.createStatement();
             int n = st.executeUpdate(SQL);
             if (n>0) {
                 JOptionPane.showMessageDialog(null, "Registro eliminado");
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar registro" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al eliminar registro " + e.getMessage());
         }
     
     }
     
     public void eliminarRuta (){
-        int fila = tablaAutomovil.getSelectedRow();
+        int fila = tablaRuta1.getSelectedRow();
         try {
-            String SQL  = "DELETE FROM automovil where id_auto= "+tablaAutomovil.getValueAt(fila, 0);
+            String SQL  = "DELETE  FROM ruta where id_ruta= "+tablaRuta1.getValueAt(fila, 0);
             Statement st = con.createStatement();
             int n = st.executeUpdate(SQL);
             if (n>0) {
                 JOptionPane.showMessageDialog(null, "Registro eliminado");
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar registro" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al eliminar registro " + e.getMessage());
         }
     
     }
@@ -713,28 +757,28 @@ public class transporte extends javax.swing.JFrame {
     private javax.swing.JButton btnActualizarAuto;
     private javax.swing.JButton btnActualizarCliente;
     private javax.swing.JButton btnActualizarConductor;
+    private javax.swing.JButton btnActualizarRuta;
     private javax.swing.JButton btnEliminarAuto;
+    private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnEliminarConductor;
+    private javax.swing.JButton btnEliminarRuta;
     private javax.swing.JButton btnNuevoAuto;
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnNuevoConductor;
     private javax.swing.JButton btnNuevoRuta;
-    private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton26;
-    private javax.swing.JButton jButton27;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable tablaAutomovil;
-    private javax.swing.JTable tablaAutomovil1;
     private javax.swing.JTable tablaCliente;
     private javax.swing.JTable tablaConductor;
     private javax.swing.JTabbedPane tablaRuta;
+    private javax.swing.JTable tablaRuta1;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,17 +5,33 @@
  */
 package formulario;
 
+import com.mysql.jdbc.Connection;
+import conexionSQL.ConexionSQL;
+import static formulario.NewConductor.numeroAuto;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author JHON.CHAVEZ
  */
 public class NewRuta extends javax.swing.JFrame {
+    ConexionSQL cc = new ConexionSQL();
+    Connection con =cc.Conexion();
+    public  static int id_ruta;
 
     /**
      * Creates new form NewRuta
      */
     public NewRuta() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        conductor();
+        cliente();
+        
     }
 
     /**
@@ -27,41 +43,44 @@ public class NewRuta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        btnCrearRuta = new javax.swing.JButton();
+        btnActualizarRuta = new javax.swing.JButton();
+        cbConductor = new javax.swing.JComboBox<>();
+        cbCliente = new javax.swing.JComboBox<>();
+        txtDestino = new javax.swing.JTextField();
+        txtOrigen = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        jLabel2.setText("Conductor");
 
-        jLabel2.setText("jLabel2");
+        jLabel3.setText("Cliente");
 
-        jLabel3.setText("jLabel3");
+        jLabel4.setText("Origen");
 
-        jLabel4.setText("jLabel4");
+        jLabel5.setText("Destino");
 
-        jLabel5.setText("jLabel5");
+        btnCrearRuta.setText("Crear");
+        btnCrearRuta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearRutaActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("jButton1");
+        btnActualizarRuta.setText("Actualizar");
+        btnActualizarRuta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarRutaActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("jButton2");
+        cbConductor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTextField1.setText("jTextField1");
-
-        jLabel6.setText("jLabel6");
+        cbCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,58 +89,195 @@ public class NewRuta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(70, 70, 70)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(70, 70, 70)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnCrearRuta)
+                            .addGap(48, 48, 48)
+                            .addComponent(btnActualizarRuta))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(172, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(50, 50, 50)
-                .addComponent(jButton2)
-                .addGap(24, 24, 24))
+                            .addComponent(cbConductor, 0, 197, Short.MAX_VALUE)
+                            .addComponent(cbCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtDestino)))
+                    .addComponent(txtOrigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addGap(29, 29, 29)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbConductor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(txtOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                    .addComponent(txtDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(15, 15, 15))
+                    .addComponent(btnCrearRuta)
+                    .addComponent(btnActualizarRuta))
+                .addGap(33, 33, 33))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCrearRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearRutaActionPerformed
+        insertarRuta();
+        
+    }
+    
+    public void conductor(){
+        String registros = "";
+            DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        String SQL = "SELECT * FROM conductor";
+        
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                registros=rs.getString("documento");
+                
+                modelo.addElement(registros);
+            }
+            cbConductor.setModel(modelo);
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+        }
+    }//GEN-LAST:event_btnCrearRutaActionPerformed
+
+    private void btnActualizarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarRutaActionPerformed
+        actualizarRuta();
+    }//GEN-LAST:event_btnActualizarRutaActionPerformed
+
+    
+    public void cliente(){
+        String registros = "";
+            DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        String SQL = "SELECT * FROM cliente";
+        
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                registros=rs.getString("documento");
+                
+                modelo.addElement(registros);
+            }
+            cbCliente.setModel(modelo);
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+        }
+    }
+
+public String getidConductor (String documento){
+        String SQL = "SELECT * FROM conductor where documento = '"+documento+"'";
+        String id = "";
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                
+                id=rs.getString("documento");
+
+            }
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+        }
+        return id;
+    }
+    
+
+    public String getidCliente (String documentoC){
+        String SQL = "SELECT * FROM cliente where documento = '"+documentoC+"'";
+        String idC = "";
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                
+                idC=rs.getString("documento");
+
+            }
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+        }
+        return idC;
+    }
+
+
+    public void insertarRuta(){
+        try {
+            String SQL = "insert into ruta (fk_conductor_doc, fk_cliente_doc, origen, destino) values (?,?,?,?)";
+            PreparedStatement pst = con.prepareStatement(SQL);
+            
+            String documento = cbConductor.getSelectedItem().toString();
+            String id=getidConductor(documento);
+            pst.setString(1, String.valueOf(id));
+            
+            String documentoC = cbCliente.getSelectedItem().toString();
+            String idC= getidCliente(documentoC);
+            pst.setString(2, String.valueOf(idC));
+            
+            pst.setString(3, txtOrigen.getText());
+            pst.setString(4, txtDestino.getText());
+            
+            
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Registro exitoso");
+            this.dispose();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de Registro"+ e.getMessage());
+        }
+    }
+    
+    
+    
+     public void actualizarRuta(){
+        try {
+            String SQL = "update ruta set fk_conductor_doc=?, fk_cliente_doc=?, origen=?, destino=? where id_ruta=?";
+            PreparedStatement pst = con.prepareStatement(SQL);
+            
+            String documento = cbConductor.getSelectedItem().toString();
+            String id=getidConductor(documento);
+            pst.setString(1, String.valueOf(id));
+            
+            String documentoC = cbCliente.getSelectedItem().toString();
+            String idC= getidCliente(documentoC);
+            pst.setString(2, String.valueOf(idC));
+            
+            pst.setString(3, txtOrigen.getText());
+            pst.setString(4, txtDestino.getText());
+            pst.setString(5, String.valueOf(id_ruta));
+            
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Registro actualizado");
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de actualizacion "+ e.getMessage());
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -158,16 +314,15 @@ public class NewRuta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JLabel jLabel1;
+    public static javax.swing.JButton btnActualizarRuta;
+    public static javax.swing.JButton btnCrearRuta;
+    public static javax.swing.JComboBox<String> cbCliente;
+    public static javax.swing.JComboBox<String> cbConductor;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField1;
+    public static javax.swing.JTextField txtDestino;
+    public static javax.swing.JTextField txtOrigen;
     // End of variables declaration//GEN-END:variables
 }
