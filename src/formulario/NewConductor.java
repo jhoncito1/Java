@@ -5,17 +5,35 @@
  */
 package formulario;
 
+import com.mysql.jdbc.Connection;
+import conexionSQL.ConexionSQL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /**
  *
  * @author JHON.CHAVEZ
  */
 public class NewConductor extends javax.swing.JFrame {
+    ConexionSQL cc = new ConexionSQL();
+    Connection con =cc.Conexion();
 
     /**
      * Creates new form NewConductor
      */
     public NewConductor() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        mostrarAuto();
+        
+        
+        
     }
 
     /**
@@ -27,22 +45,269 @@ public class NewConductor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        btnCrearUsuario = new javax.swing.JButton();
+        btnActualizarUsuario = new javax.swing.JButton();
+        txtDocumento = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtApellido = new javax.swing.JTextField();
+        txtLicencia = new javax.swing.JTextField();
+        FechaNacimientoCond = new com.toedter.calendar.JDateChooser();
+        txtTelefono = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
+        numeroAuto = new javax.swing.JComboBox<>();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Documento");
+
+        jLabel2.setText("Nombre");
+
+        jLabel3.setText("Apellido");
+
+        jLabel4.setText("Licencia");
+
+        jLabel5.setText("Fecha Nacimiento");
+
+        jLabel6.setText("Telefono");
+
+        jLabel7.setText("Dirección");
+
+        jLabel8.setText("Correo");
+
+        jLabel9.setText("Auto");
+
+        btnCrearUsuario.setText("Crear");
+        btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearUsuarioActionPerformed(evt);
+            }
+        });
+
+        btnActualizarUsuario.setText("Actualizar");
+        btnActualizarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarUsuarioActionPerformed(evt);
+            }
+        });
+
+        FechaNacimientoCond.setDateFormatString("yyyy-MM-dd");
+
+        numeroAuto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtDocumento)
+                    .addComponent(txtNombre)
+                    .addComponent(txtApellido)
+                    .addComponent(txtLicencia)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnCrearUsuario)
+                        .addGap(49, 49, 49)
+                        .addComponent(btnActualizarUsuario))
+                    .addComponent(FechaNacimientoCond, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                    .addComponent(txtTelefono)
+                    .addComponent(txtDireccion)
+                    .addComponent(txtCorreo)
+                    .addComponent(numeroAuto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(jLabel1)
+                                                    .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(jLabel2)
+                                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel3))
+                                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel4))
+                                    .addComponent(txtLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addGap(19, 19, 19))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(FechaNacimientoCond, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7))
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(numeroAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearUsuario)
+                    .addComponent(btnActualizarUsuario))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnActualizarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarUsuarioActionPerformed
+        actualizarConductor();
+    }//GEN-LAST:event_btnActualizarUsuarioActionPerformed
+
+    private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
+        insertarConductor();
+        //limpiarCajas();
+    }//GEN-LAST:event_btnCrearUsuarioActionPerformed
+
+    
+        public void mostrarAuto(){
+        String registros = "";
+            DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        String SQL = "SELECT * FROM automovil";
+        
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                //registros[0]=rs.getString("id_auto");
+                registros=rs.getString("placa");
+                //registros[2]=rs.getString("marca");
+                //registros[3]=rs.getString("modelo");
+                //registros[4]=rs.getString("color");
+                
+                modelo.addElement(registros);
+            }
+            numeroAuto.setModel(modelo);
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+        }
+        
+    }
+                                              
+
+    
+    public void insertarConductor(){
+        try {
+            String SQL = "insert into conductor (documento, nombre, apellido, licencia, fecha_nacimiento, telefono, direccion, correo, fk_idauto)"
+                    + " values (?,?,?,?,?,?,?,?,?)";
+            PreparedStatement pst = con.prepareStatement(SQL);
+            pst.setString(1, txtDocumento.getText());
+            pst.setString(2, txtNombre.getText());
+            pst.setString(3, txtApellido.getText());
+            pst.setString(4, txtLicencia.getText());
+            pst.setString(5, ((JTextField)FechaNacimientoCond.getDateEditor().getUiComponent()).getText());
+            pst.setString(6, txtTelefono.getText());
+            pst.setString(7, txtDireccion.getText());
+            pst.setString(8, txtCorreo.getText());
+            
+            
+            //ArrayList<String> lista = new ArrayList<>();
+            
+            
+            int seleccionado = numeroAuto.getSelectedIndex();
+            pst.setString(9, numeroAuto.getItemAt(seleccionado));
+            
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null, "Registro exitoso");
+            this.dispose();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de Registro"+ e.getMessage());
+        }
+    }
+    
+    public  void limpiarCajas(){
+        txtDocumento.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtLicencia.setText("");
+        //FechaNacimientoCond.actionPerformed();
+        txtTelefono.setText("");
+        txtDireccion.setText("");
+        txtCorreo.setText("");
+        numeroAuto.setAction((Action) numeroAuto);
+        
+    }
+    
+    public void actualizarConductor(){
+        
+        try {
+            String SQL = "update conductor set documento=?, nombre=?, apellido=?, licencia=?, fecha_nacimiento=?, telefono=?, direccion=?, correo=?, fk_idauto=? where documento=?";
+            
+            PreparedStatement pst = con.prepareStatement(SQL);
+            pst.setString(1, txtDocumento.getText());
+            pst.setString(2, txtNombre.getText());
+            pst.setString(3, txtApellido.getText());
+            pst.setString(4, txtLicencia.getText());
+            pst.setString(5, ((JTextField)FechaNacimientoCond.getDateEditor().getUiComponent()).getText());
+            pst.setString(6, txtTelefono.getText());
+            pst.setString(7, txtDireccion.getText());
+            pst.setString(8, txtCorreo.getText());
+            
+            int seleccionado = numeroAuto.getSelectedIndex();
+            pst.setString(9, numeroAuto.getItemAt(seleccionado));
+            
+            
+            
+             pst.execute();
+            JOptionPane.showMessageDialog(null, "Registro actualizado");
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al modificar => "+ e.getMessage());
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -79,5 +344,25 @@ public class NewConductor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static com.toedter.calendar.JDateChooser FechaNacimientoCond;
+    public static javax.swing.JButton btnActualizarUsuario;
+    public static javax.swing.JButton btnCrearUsuario;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    public static javax.swing.JComboBox<String> numeroAuto;
+    public static javax.swing.JTextField txtApellido;
+    public static javax.swing.JTextField txtCorreo;
+    public static javax.swing.JTextField txtDireccion;
+    public static javax.swing.JTextField txtDocumento;
+    public static javax.swing.JTextField txtLicencia;
+    public static javax.swing.JTextField txtNombre;
+    public static javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

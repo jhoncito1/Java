@@ -7,6 +7,11 @@ package formulario;
 
 import com.mysql.jdbc.Connection;
 import conexionSQL.ConexionSQL;
+import static formulario.NewAuto.id_auto;
+import static formulario.NewAuto.txtColorA;
+import static formulario.NewAuto.txtMarcaA;
+import static formulario.NewAuto.txtModeloA;
+import static formulario.NewAuto.txtPlaca;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 
@@ -74,6 +79,11 @@ public class NewCliente extends javax.swing.JFrame {
 
         btnActualizarCliente.setBackground(new java.awt.Color(0, 153, 255));
         btnActualizarCliente.setText("Actualizar");
+        btnActualizarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarClienteActionPerformed(evt);
+            }
+        });
 
         txtIdCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,6 +166,10 @@ public class NewCliente extends javax.swing.JFrame {
         limpiarCajas();
     }//GEN-LAST:event_btnInsertarClienteActionPerformed
 
+    private void btnActualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarClienteActionPerformed
+        actualizarCliente();
+    }//GEN-LAST:event_btnActualizarClienteActionPerformed
+
     public void insertarCliente(){
         try {
             String SQLa = "insert into cliente (documento, nombre, apellido, telefono, direccion, correo) values (?,?,?,?,?,?)";
@@ -169,7 +183,7 @@ public class NewCliente extends javax.swing.JFrame {
             
             pst.execute();
             JOptionPane.showMessageDialog(null, "Registro exitoso");
-            
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error de Registro"+ e.getMessage());
         }
@@ -183,6 +197,31 @@ public class NewCliente extends javax.swing.JFrame {
         txtDireccionCliente.setText("");
         txtCorreoCliente.setText("");
     }
+    
+    public void actualizarCliente(){
+        
+        try {
+            String SQL = "update cliente set documento=?, nombre=?, apellido=?, telefono=?, direccion=?, correo=? where documento=?";
+            
+            PreparedStatement pst = con.prepareStatement(SQL);
+            
+            pst.setString(1, txtIdCliente.getText());
+            pst.setString(2, txtNombreCliente.getText());
+            pst.setString(3, txtApellidoCliente.getText());
+            pst.setString(4, txtTelefonoCliente.getText());
+            pst.setString(5, txtDireccionCliente.getText());
+            pst.setString(6, txtCorreoCliente.getText());
+            
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Registro actualizado");
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al modificar "+ e.getMessage());
+        }
+        
+    }
+    
+    
     
     /**
      * @param args the command line arguments
@@ -220,19 +259,19 @@ public class NewCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizarCliente;
-    private javax.swing.JButton btnInsertarCliente;
+    public static javax.swing.JButton btnActualizarCliente;
+    public static javax.swing.JButton btnInsertarCliente;
     private javax.swing.JLabel lbApellidoCliente;
     private javax.swing.JLabel lbCorreoCliente;
     private javax.swing.JLabel lbDireccionCliente;
     private javax.swing.JLabel lbIdCliente;
     private javax.swing.JLabel lbNombreCliente;
     private javax.swing.JLabel lbTelefonoCliente;
-    private javax.swing.JTextField txtApellidoCliente;
-    private javax.swing.JTextField txtCorreoCliente;
-    private javax.swing.JTextField txtDireccionCliente;
-    private javax.swing.JTextField txtIdCliente;
-    private javax.swing.JTextField txtNombreCliente;
-    private javax.swing.JTextField txtTelefonoCliente;
+    public static javax.swing.JTextField txtApellidoCliente;
+    public static javax.swing.JTextField txtCorreoCliente;
+    public static javax.swing.JTextField txtDireccionCliente;
+    public static javax.swing.JTextField txtIdCliente;
+    public static javax.swing.JTextField txtNombreCliente;
+    public static javax.swing.JTextField txtTelefonoCliente;
     // End of variables declaration//GEN-END:variables
 }

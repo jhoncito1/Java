@@ -9,6 +9,8 @@ import com.mysql.jdbc.Connection;
 import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
 import conexionSQL.ConexionSQL;
+import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -37,6 +39,7 @@ public class transporte extends javax.swing.JFrame {
         mostrarRuta();
         
         
+        
     }
 
     /**
@@ -53,18 +56,18 @@ public class transporte extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         btnNuevoAuto = new javax.swing.JButton();
         btnActualizarAuto = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
+        btnEliminarAuto = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         tablaAutomovil = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
-        jButton19 = new javax.swing.JButton();
-        jButton20 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
+        btnNuevoConductor = new javax.swing.JButton();
+        btnActualizarConductor = new javax.swing.JButton();
+        btnEliminarConductor = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
         tablaConductor = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         btnNuevoCliente = new javax.swing.JButton();
-        jButton23 = new javax.swing.JButton();
+        btnActualizarCliente = new javax.swing.JButton();
         jButton24 = new javax.swing.JButton();
         jScrollPane9 = new javax.swing.JScrollPane();
         tablaCliente = new javax.swing.JTable();
@@ -107,8 +110,13 @@ public class transporte extends javax.swing.JFrame {
             }
         });
 
-        jButton18.setBackground(new java.awt.Color(255, 51, 51));
-        jButton18.setText("Eliminar");
+        btnEliminarAuto.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminarAuto.setText("Eliminar");
+        btnEliminarAuto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarAutoActionPerformed(evt);
+            }
+        });
 
         tablaAutomovil.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -139,7 +147,7 @@ public class transporte extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(btnActualizarAuto)
                 .addGap(30, 30, 30)
-                .addComponent(jButton18)
+                .addComponent(btnEliminarAuto)
                 .addGap(19, 19, 19))
         );
         jPanel6Layout.setVerticalGroup(
@@ -148,7 +156,7 @@ public class transporte extends javax.swing.JFrame {
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton18)
+                    .addComponent(btnEliminarAuto)
                     .addComponent(btnActualizarAuto)
                     .addComponent(btnNuevoAuto))
                 .addGap(33, 33, 33))
@@ -156,23 +164,38 @@ public class transporte extends javax.swing.JFrame {
 
         tablaRuta.addTab("Automovil", jPanel6);
 
-        jButton19.setBackground(new java.awt.Color(0, 204, 51));
-        jButton19.setText("Nuevo");
+        btnNuevoConductor.setBackground(new java.awt.Color(0, 204, 51));
+        btnNuevoConductor.setText("Nuevo");
+        btnNuevoConductor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoConductorActionPerformed(evt);
+            }
+        });
 
-        jButton20.setBackground(new java.awt.Color(0, 153, 255));
-        jButton20.setText("Actualizar");
-        jButton20.addAncestorListener(new javax.swing.event.AncestorListener() {
+        btnActualizarConductor.setBackground(new java.awt.Color(0, 153, 255));
+        btnActualizarConductor.setText("Actualizar");
+        btnActualizarConductor.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                jButton20AncestorAdded(evt);
+                btnActualizarConductorAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
+        btnActualizarConductor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarConductorActionPerformed(evt);
+            }
+        });
 
-        jButton21.setBackground(new java.awt.Color(255, 51, 51));
-        jButton21.setText("Eliminar");
+        btnEliminarConductor.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminarConductor.setText("Eliminar");
+        btnEliminarConductor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarConductorActionPerformed(evt);
+            }
+        });
 
         tablaConductor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -194,11 +217,11 @@ public class transporte extends javax.swing.JFrame {
             .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton19)
+                .addComponent(btnNuevoConductor)
                 .addGap(38, 38, 38)
-                .addComponent(jButton20)
+                .addComponent(btnActualizarConductor)
                 .addGap(30, 30, 30)
-                .addComponent(jButton21)
+                .addComponent(btnEliminarConductor)
                 .addGap(19, 19, 19))
         );
         jPanel7Layout.setVerticalGroup(
@@ -207,9 +230,9 @@ public class transporte extends javax.swing.JFrame {
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton21)
-                    .addComponent(jButton20)
-                    .addComponent(jButton19))
+                    .addComponent(btnEliminarConductor)
+                    .addComponent(btnActualizarConductor)
+                    .addComponent(btnNuevoConductor))
                 .addGap(33, 33, 33))
         );
 
@@ -223,15 +246,20 @@ public class transporte extends javax.swing.JFrame {
             }
         });
 
-        jButton23.setBackground(new java.awt.Color(0, 153, 255));
-        jButton23.setText("Actualizar");
-        jButton23.addAncestorListener(new javax.swing.event.AncestorListener() {
+        btnActualizarCliente.setBackground(new java.awt.Color(0, 153, 255));
+        btnActualizarCliente.setText("Actualizar");
+        btnActualizarCliente.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                jButton23AncestorAdded(evt);
+                btnActualizarClienteAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        btnActualizarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarClienteActionPerformed(evt);
             }
         });
 
@@ -260,7 +288,7 @@ public class transporte extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnNuevoCliente)
                 .addGap(38, 38, 38)
-                .addComponent(jButton23)
+                .addComponent(btnActualizarCliente)
                 .addGap(30, 30, 30)
                 .addComponent(jButton24)
                 .addGap(19, 19, 19))
@@ -272,7 +300,7 @@ public class transporte extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton24)
-                    .addComponent(jButton23)
+                    .addComponent(btnActualizarCliente)
                     .addComponent(btnNuevoCliente))
                 .addGap(33, 33, 33))
         );
@@ -369,13 +397,13 @@ public class transporte extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnActualizarAutoAncestorAdded
 
-    private void jButton20AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jButton20AncestorAdded
+    private void btnActualizarConductorAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarConductorAncestorAdded
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton20AncestorAdded
+    }//GEN-LAST:event_btnActualizarConductorAncestorAdded
 
-    private void jButton23AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jButton23AncestorAdded
+    private void btnActualizarClienteAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarClienteAncestorAdded
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton23AncestorAdded
+    }//GEN-LAST:event_btnActualizarClienteAncestorAdded
 
     private void jButton26AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jButton26AncestorAdded
         // TODO add your handling code here:
@@ -396,6 +424,7 @@ public class transporte extends javax.swing.JFrame {
         filaSeleccionada = tablaAutomovil.rowAtPoint(evt.getPoint());
     }//GEN-LAST:event_tablaAutomovilMouseClicked
 
+    
     private void btnActualizarAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAutoActionPerformed
 
         NewAuto na = new  NewAuto();
@@ -408,13 +437,10 @@ public class transporte extends javax.swing.JFrame {
         NewAuto.id_auto=Integer.parseInt(tablaAutomovil.getValueAt(fila, 0).toString());
         NewAuto.btnInsertar.setVisible(false);
        
-        
         na.setVisible(true);
     }//GEN-LAST:event_btnActualizarAutoActionPerformed
 
   
-    
-    
     
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
         NewCliente nuevoCliente = new  NewCliente();
@@ -424,6 +450,57 @@ public class transporte extends javax.swing.JFrame {
     private void btnActualizarAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarAutoMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_btnActualizarAutoMouseClicked
+
+    private void btnNuevoConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoConductorActionPerformed
+        NewConductor nuevoConductor = new  NewConductor();
+        nuevoConductor.setVisible(true);
+        nuevoConductor.btnActualizarUsuario.setVisible(false);
+    }//GEN-LAST:event_btnNuevoConductorActionPerformed
+
+    private void btnActualizarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarConductorActionPerformed
+        NewConductor nuevoConductor = new  NewConductor();
+        int fila = tablaConductor.getSelectedRow();
+        
+        NewConductor.txtDocumento.setText(tablaConductor.getValueAt(fila, 0).toString());
+        NewConductor.txtNombre.setText(tablaConductor.getValueAt(fila, 1).toString());
+        NewConductor.txtApellido.setText(tablaConductor.getValueAt(fila, 2).toString());
+        NewConductor.txtLicencia.setText(tablaConductor.getValueAt(fila, 3).toString());
+        NewConductor.FechaNacimientoCond.setDate(Date.valueOf(tablaConductor.getValueAt(fila, 4).toString()));
+        NewConductor.txtTelefono.setText(tablaConductor.getValueAt(fila, 5).toString());
+        NewConductor.txtDireccion.setText(tablaConductor.getValueAt(fila, 6).toString());
+        NewConductor.txtCorreo.setText(tablaConductor.getValueAt(fila, 7).toString());
+        NewConductor.numeroAuto.setSelectedItem(tablaConductor.getValueAt(fila, 8).toString());
+       
+        NewConductor.btnCrearUsuario.setVisible(false);
+        
+        nuevoConductor.setVisible(true);
+    }//GEN-LAST:event_btnActualizarConductorActionPerformed
+
+    private void btnEliminarAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAutoActionPerformed
+        eliminarAuto();
+        mostrarAuto();
+    }//GEN-LAST:event_btnEliminarAutoActionPerformed
+
+    private void btnEliminarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarConductorActionPerformed
+        eliminarConductor();
+        mostrarConductores();
+    }//GEN-LAST:event_btnEliminarConductorActionPerformed
+
+    private void btnActualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarClienteActionPerformed
+        NewCliente nuevoCliente = new  NewCliente();
+        int fila = tablaCliente.getSelectedRow();
+        
+        nuevoCliente.txtIdCliente.setText(tablaCliente.getValueAt(fila, 0).toString());
+        nuevoCliente.txtNombreCliente.setText(tablaCliente.getValueAt(fila, 1).toString());
+        nuevoCliente.txtApellidoCliente.setText(tablaCliente.getValueAt(fila, 2).toString());
+        nuevoCliente.txtTelefonoCliente.setText(tablaCliente.getValueAt(fila, 3).toString());
+        nuevoCliente.txtDireccionCliente.setText(tablaCliente.getValueAt(fila, 4).toString());
+        nuevoCliente.txtCorreoCliente.setText(tablaCliente.getValueAt(fila, 5).toString());
+        
+        nuevoCliente.btnInsertarCliente.setVisible(false);
+       
+        nuevoCliente.setVisible(true);
+    }//GEN-LAST:event_btnActualizarClienteActionPerformed
 
     public void mostrarAuto(){
         String[] titulos = {"ID", "Placa","Marca", "Modelo","Color"};
@@ -528,7 +605,7 @@ public class transporte extends javax.swing.JFrame {
                 
                 modelo.addRow(registros);
             }
-            tablaCliente.setModel(modelo);
+            //tablaRuta.setModel(modelo);
         } 
         catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
@@ -536,7 +613,65 @@ public class transporte extends javax.swing.JFrame {
     }
     
     
+    public void eliminarAuto (){
+        int fila = tablaAutomovil.getSelectedRow();
+        try {
+            String SQL  = "DELETE FROM automovil where id_auto= "+tablaAutomovil.getValueAt(fila, 0);
+            Statement st = con.createStatement();
+            int n = st.executeUpdate(SQL);
+            if (n>0) {
+                JOptionPane.showMessageDialog(null, "Registro eliminado");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar registro" + e.getMessage());
+        }
     
+    }
+    
+    public void eliminarConductor (){
+        int fila = tablaConductor.getSelectedRow();
+        try {
+            String SQL  = "DELETE FROM conductor WHERE documento= "+tablaConductor.getValueAt(fila, 0);
+            Statement st = con.createStatement();
+            int n = st.executeUpdate(SQL);
+            if (n>0) {
+                JOptionPane.showMessageDialog(null, "Registro eliminado");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar registro " + e.getMessage());
+        }
+    
+    }
+    
+    public void eliminarCliente (){
+        int fila = tablaAutomovil.getSelectedRow();
+        try {
+            String SQL  = "DELETE FROM automovil where id_auto= "+tablaAutomovil.getValueAt(fila, 0);
+            Statement st = con.createStatement();
+            int n = st.executeUpdate(SQL);
+            if (n>0) {
+                JOptionPane.showMessageDialog(null, "Registro eliminado");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar registro" + e.getMessage());
+        }
+    
+    }
+    
+    public void eliminarRuta (){
+        int fila = tablaAutomovil.getSelectedRow();
+        try {
+            String SQL  = "DELETE FROM automovil where id_auto= "+tablaAutomovil.getValueAt(fila, 0);
+            Statement st = con.createStatement();
+            int n = st.executeUpdate(SQL);
+            if (n>0) {
+                JOptionPane.showMessageDialog(null, "Registro eliminado");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar registro" + e.getMessage());
+        }
+    
+    }
     
     
     /**
@@ -576,14 +711,14 @@ public class transporte extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarAuto;
+    private javax.swing.JButton btnActualizarCliente;
+    private javax.swing.JButton btnActualizarConductor;
+    private javax.swing.JButton btnEliminarAuto;
+    private javax.swing.JButton btnEliminarConductor;
     private javax.swing.JButton btnNuevoAuto;
     private javax.swing.JButton btnNuevoCliente;
+    private javax.swing.JButton btnNuevoConductor;
     private javax.swing.JButton btnNuevoRuta;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton23;
     private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton27;

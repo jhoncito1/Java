@@ -146,6 +146,7 @@ public class NewAuto extends javax.swing.JFrame {
     private void btnModificarAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarAutoActionPerformed
         actualizarAuto();
         limpiarCajas();
+        
     }//GEN-LAST:event_btnModificarAutoActionPerformed
 
     
@@ -160,7 +161,7 @@ public class NewAuto extends javax.swing.JFrame {
             
             pst.execute();
             JOptionPane.showMessageDialog(null, "Registro exitoso");
-            
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error de Registro"+ e.getMessage());
         }
@@ -176,10 +177,9 @@ public class NewAuto extends javax.swing.JFrame {
     public void actualizarAuto(){
         
         try {
-            String SQLa = "update automovil set placa=?, marca=?, modelo=?, color=? where id_auto=?";
+            String SQL = "update automovil set placa=?, marca=?, modelo=?, color=? where id_auto=?";
             
-            
-            PreparedStatement pst = con.prepareStatement(SQLa);
+            PreparedStatement pst = con.prepareStatement(SQL);
             pst.setString(1, txtPlaca.getText());
             pst.setString(2, txtMarcaA.getText());
             pst.setString(3, txtModeloA.getText());
@@ -189,6 +189,7 @@ public class NewAuto extends javax.swing.JFrame {
             pst.execute();
             JOptionPane.showMessageDialog(null, "Registro actualizado");
             
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al modificar"+ e.getMessage());
         }
