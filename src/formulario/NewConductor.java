@@ -7,6 +7,10 @@ package formulario;
 
 import com.mysql.jdbc.Connection;
 import conexionSQL.ConexionSQL;
+import static formulario.transporte.btnActualizarConductor;
+import static formulario.transporte.btnEliminarConductor;
+import static formulario.transporte.btnNuevoConductor;
+import static formulario.transporte.tablaConductor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -15,6 +19,7 @@ import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -23,6 +28,7 @@ import javax.swing.JTextField;
 public class NewConductor extends javax.swing.JFrame {
     ConexionSQL cc = new ConexionSQL();
     Connection con =cc.Conexion();
+    int posx,posy;
 
     /**
      * Creates new form NewConductor
@@ -32,6 +38,7 @@ public class NewConductor extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         mostrarAuto();
         
+        elemtns_trasnparent();
     }
 
     /**
@@ -63,130 +70,144 @@ public class NewConductor extends javax.swing.JFrame {
         txtDireccion = new javax.swing.JTextField();
         txtCorreo = new javax.swing.JTextField();
         numeroAuto = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(440, 480));
+        setUndecorated(true);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
+        getContentPane().setLayout(null);
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Documento");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(30, 100, 65, 16);
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nombre");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(30, 130, 45, 16);
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Apellido");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(30, 160, 45, 16);
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Licencia");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(30, 190, 48, 16);
 
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Fecha Nacimiento");
+        getContentPane().add(jLabel5);
+        jLabel5.setBounds(30, 220, 101, 16);
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Telefono");
+        getContentPane().add(jLabel6);
+        jLabel6.setBounds(30, 250, 49, 16);
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Dirección");
+        getContentPane().add(jLabel7);
+        jLabel7.setBounds(30, 280, 54, 16);
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Correo");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(30, 310, 39, 16);
 
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Auto");
+        getContentPane().add(jLabel9);
+        jLabel9.setBounds(30, 340, 26, 16);
 
-        btnCrearUsuario.setText("Crear");
+        btnCrearUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
         btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearUsuarioActionPerformed(evt);
             }
         });
+        getContentPane().add(btnCrearUsuario);
+        btnCrearUsuario.setBounds(260, 390, 50, 50);
 
-        btnActualizarUsuario.setText("Actualizar");
+        btnActualizarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
         btnActualizarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActualizarUsuarioActionPerformed(evt);
             }
         });
+        getContentPane().add(btnActualizarUsuario);
+        btnActualizarUsuario.setBounds(340, 390, 50, 50);
 
+        txtDocumento.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtDocumento);
+        txtDocumento.setBounds(160, 100, 236, 24);
+
+        txtNombre.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtNombre);
+        txtNombre.setBounds(160, 130, 236, 24);
+
+        txtApellido.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtApellido);
+        txtApellido.setBounds(160, 160, 236, 24);
+
+        txtLicencia.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtLicencia);
+        txtLicencia.setBounds(160, 190, 236, 24);
+
+        FechaNacimientoCond.setBackground(new java.awt.Color(255, 255, 255));
         FechaNacimientoCond.setDateFormatString("yyyy-MM-dd");
+        getContentPane().add(FechaNacimientoCond);
+        FechaNacimientoCond.setBounds(160, 220, 236, 20);
 
+        txtTelefono.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtTelefono);
+        txtTelefono.setBounds(160, 250, 236, 24);
+
+        txtDireccion.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtDireccion);
+        txtDireccion.setBounds(160, 280, 236, 24);
+
+        txtCorreo.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtCorreo);
+        txtCorreo.setBounds(160, 310, 236, 24);
+
+        numeroAuto.setBackground(new java.awt.Color(255, 255, 255));
         numeroAuto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
+        getContentPane().add(numeroAuto);
+        numeroAuto.setBounds(160, 340, 236, 26);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDocumento)
-                    .addComponent(txtNombre)
-                    .addComponent(txtApellido)
-                    .addComponent(txtLicencia)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCrearUsuario)
-                        .addGap(49, 49, 49)
-                        .addComponent(btnActualizarUsuario))
-                    .addComponent(FechaNacimientoCond, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-                    .addComponent(txtTelefono)
-                    .addComponent(txtDireccion)
-                    .addComponent(txtCorreo)
-                    .addComponent(numeroAuto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(8, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                    .addComponent(jLabel1)
-                                                    .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                    .addComponent(jLabel2)
-                                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel3))
-                                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel4))
-                                    .addComponent(txtLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel5)
-                                .addGap(19, 19, 19))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(FechaNacimientoCond, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel7))
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(numeroAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrearUsuario)
-                    .addComponent(btnActualizarUsuario))
-                .addContainerGap())
-        );
+        jLabel10.setFont(new java.awt.Font("Felix Titling", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Editar Usuario");
+        getContentPane().add(jLabel10);
+        jLabel10.setBounds(30, 30, 180, 40);
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/4308065-32.png"))); // NOI18N
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel12MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel12);
+        jLabel12.setBounds(400, 0, 30, 30);
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo8.png"))); // NOI18N
+        getContentPane().add(jLabel11);
+        jLabel11.setBounds(0, 0, 480, 490);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -200,6 +221,30 @@ public class NewConductor extends javax.swing.JFrame {
         //limpiarCajas();
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
 
+    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+        //System.exit(0);
+        dispose();
+        mostrarConductores();
+    }//GEN-LAST:event_jLabel12MouseClicked
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        int xp=evt.getXOnScreen() -posx;
+        int yp=evt.getYOnScreen() -posy;
+        this.setLocation(xp, yp);
+    }//GEN-LAST:event_formMouseDragged
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        posx=evt.getX();      
+        posy=evt.getY();
+    }//GEN-LAST:event_formMousePressed
+
+    public void elemtns_trasnparent(){
+        btnCrearUsuario.setContentAreaFilled(false);
+        btnCrearUsuario.setBorderPainted(false);
+        
+        btnActualizarUsuario.setContentAreaFilled(false);
+        btnActualizarUsuario.setBorderPainted(false);
+    }
     
         public void mostrarAuto(){
         String registros = "";
@@ -267,10 +312,41 @@ public class NewConductor extends javax.swing.JFrame {
             pst.execute();
             
             JOptionPane.showMessageDialog(null, "Registro exitoso");
+            mostrarConductores();
             this.dispose();
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error de Registro"+ e.getMessage());
+        }
+    }
+    
+    public void mostrarConductores(){
+        String[] titulos = {"Documento", "Nombre","Apellido", "Licencia","Nacimiento","Telefono","Direccion","Correo","Auto"};
+        String [] registros = new String[9];
+        DefaultTableModel modelo = new DefaultTableModel(null, titulos);
+        String SQL = "SELECT *,placa FROM conductor join automovil on fk_idauto = id_auto";
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                registros[0]=rs.getString("documento");
+                registros[1]=rs.getString("nombre");
+                registros[2]=rs.getString("apellido");
+                registros[3]=rs.getString("licencia");
+                registros[4]=rs.getString("fecha_nacimiento");
+                registros[5]=rs.getString("telefono");
+                registros[6]=rs.getString("direccion");
+                registros[7]=rs.getString("correo");
+                registros[8]=rs.getString("placa");
+                modelo.addRow(registros);
+            }
+            tablaConductor.setModel(modelo);
+            btnNuevoConductor.setEnabled(true);
+            btnActualizarConductor.setEnabled(false);
+            btnEliminarConductor.setEnabled(false);
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
         }
     }
     
@@ -309,6 +385,7 @@ public class NewConductor extends javax.swing.JFrame {
              pst.execute();
             JOptionPane.showMessageDialog(null, "Registro actualizado");
             this.dispose();
+            mostrarConductores();
         } 
         catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error de actualizacion "+ e.getMessage());
@@ -361,6 +438,9 @@ public class NewConductor extends javax.swing.JFrame {
     public static javax.swing.JButton btnActualizarUsuario;
     public static javax.swing.JButton btnCrearUsuario;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

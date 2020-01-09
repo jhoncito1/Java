@@ -9,6 +9,7 @@ import com.mysql.jdbc.Connection;
 import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
 import conexionSQL.ConexionSQL;
+import java.awt.Color;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -24,6 +25,7 @@ public class transporte extends javax.swing.JFrame {
     
     ConexionSQL cc = new ConexionSQL();
     Connection con =cc.Conexion();
+     int posx,posy;
     
     
     int filaSeleccionada;
@@ -32,13 +34,15 @@ public class transporte extends javax.swing.JFrame {
     public transporte() {
         initComponents();
         this.setLocationRelativeTo(null);
+        setTitle("CarNow");
         
         mostrarAuto();
         mostrarConductores();
         mostrarCliente();
         mostrarRuta();
         
-        
+        transparenciaButton();
+        color_transparent();
         
     }
 
@@ -51,7 +55,6 @@ public class transporte extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane2 = new javax.swing.JTabbedPane();
         tablaRuta = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         btnNuevoAuto = new javax.swing.JButton();
@@ -65,23 +68,36 @@ public class transporte extends javax.swing.JFrame {
         btnEliminarConductor = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
         tablaConductor = new javax.swing.JTable();
-        jPanel8 = new javax.swing.JPanel();
-        btnNuevoCliente = new javax.swing.JButton();
-        btnActualizarCliente = new javax.swing.JButton();
-        btnEliminarCliente = new javax.swing.JButton();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        tablaCliente = new javax.swing.JTable();
         jPanel9 = new javax.swing.JPanel();
         btnNuevoRuta = new javax.swing.JButton();
         btnActualizarRuta = new javax.swing.JButton();
         btnEliminarRuta = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaRuta1 = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        btnNuevoCliente = new javax.swing.JButton();
+        btnActualizarCliente = new javax.swing.JButton();
+        btnEliminarCliente = new javax.swing.JButton();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tablaCliente = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(750, 500));
+        setUndecorated(true);
+        getContentPane().setLayout(null);
+
+        jPanel6.setOpaque(false);
 
         btnNuevoAuto.setBackground(new java.awt.Color(0, 204, 51));
-        btnNuevoAuto.setText("Nuevo");
+        btnNuevoAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ad-car.png"))); // NOI18N
+        btnNuevoAuto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNuevoAutoMouseClicked(evt);
+            }
+        });
         btnNuevoAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoAutoActionPerformed(evt);
@@ -89,7 +105,7 @@ public class transporte extends javax.swing.JFrame {
         });
 
         btnActualizarAuto.setBackground(new java.awt.Color(0, 153, 255));
-        btnActualizarAuto.setText("Actualizar");
+        btnActualizarAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit1.png"))); // NOI18N
         btnActualizarAuto.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -111,7 +127,7 @@ public class transporte extends javax.swing.JFrame {
         });
 
         btnEliminarAuto.setBackground(new java.awt.Color(255, 51, 51));
-        btnEliminarAuto.setText("Eliminar");
+        btnEliminarAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/4733351-48.png"))); // NOI18N
         btnEliminarAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarAutoActionPerformed(evt);
@@ -129,6 +145,7 @@ public class transporte extends javax.swing.JFrame {
                 "No. Auto", "Placa", "Marca", "Modelo", "Color"
             }
         ));
+        tablaAutomovil.setOpaque(false);
         tablaAutomovil.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaAutomovilMouseClicked(evt);
@@ -140,32 +157,34 @@ public class transporte extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNuevoAuto)
-                .addGap(38, 38, 38)
-                .addComponent(btnActualizarAuto)
-                .addGap(30, 30, 30)
-                .addComponent(btnEliminarAuto)
-                .addGap(19, 19, 19))
+                .addComponent(btnNuevoAuto, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnActualizarAuto, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminarAuto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminarAuto)
-                    .addComponent(btnActualizarAuto)
-                    .addComponent(btnNuevoAuto))
-                .addGap(33, 33, 33))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnActualizarAuto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarAuto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevoAuto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
 
         tablaRuta.addTab("Automovil", jPanel6);
 
+        jPanel7.setOpaque(false);
+
         btnNuevoConductor.setBackground(new java.awt.Color(0, 204, 51));
-        btnNuevoConductor.setText("Nuevo");
+        btnNuevoConductor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/new-user.png"))); // NOI18N
         btnNuevoConductor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoConductorActionPerformed(evt);
@@ -173,7 +192,7 @@ public class transporte extends javax.swing.JFrame {
         });
 
         btnActualizarConductor.setBackground(new java.awt.Color(0, 153, 255));
-        btnActualizarConductor.setText("Actualizar");
+        btnActualizarConductor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit1.png"))); // NOI18N
         btnActualizarConductor.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -190,7 +209,7 @@ public class transporte extends javax.swing.JFrame {
         });
 
         btnEliminarConductor.setBackground(new java.awt.Color(255, 51, 51));
-        btnEliminarConductor.setText("Eliminar");
+        btnEliminarConductor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/4733351-48.png"))); // NOI18N
         btnEliminarConductor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarConductorActionPerformed(evt);
@@ -208,112 +227,48 @@ public class transporte extends javax.swing.JFrame {
                 "Documento", "Nombre", "Apellido", "Licencia", "Fecha Nacimienrto", "Direccion", "Telefono", "Correo", "Auto"
             }
         ));
+        tablaConductor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaConductorMouseClicked(evt);
+            }
+        });
         jScrollPane8.setViewportView(tablaConductor);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNuevoConductor)
-                .addGap(38, 38, 38)
-                .addComponent(btnActualizarConductor)
-                .addGap(30, 30, 30)
-                .addComponent(btnEliminarConductor)
-                .addGap(19, 19, 19))
+                .addComponent(btnNuevoConductor, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnActualizarConductor, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminarConductor, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminarConductor)
-                    .addComponent(btnActualizarConductor)
-                    .addComponent(btnNuevoConductor))
-                .addGap(33, 33, 33))
+                .addGap(63, 63, 63)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnActualizarConductor, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarConductor, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevoConductor, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
 
         tablaRuta.addTab("Conductor", jPanel7);
 
-        btnNuevoCliente.setBackground(new java.awt.Color(0, 204, 51));
-        btnNuevoCliente.setText("Nuevo");
-        btnNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoClienteActionPerformed(evt);
-            }
-        });
-
-        btnActualizarCliente.setBackground(new java.awt.Color(0, 153, 255));
-        btnActualizarCliente.setText("Actualizar");
-        btnActualizarCliente.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                btnActualizarClienteAncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
-        btnActualizarCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarClienteActionPerformed(evt);
-            }
-        });
-
-        btnEliminarCliente.setBackground(new java.awt.Color(255, 51, 51));
-        btnEliminarCliente.setText("Eliminar");
-        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarClienteActionPerformed(evt);
-            }
-        });
-
-        tablaCliente.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Documento", "Nombre", "Apellido", "Telefono", "direccion", "Correo"
-            }
-        ));
-        jScrollPane9.setViewportView(tablaCliente);
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNuevoCliente)
-                .addGap(38, 38, 38)
-                .addComponent(btnActualizarCliente)
-                .addGap(30, 30, 30)
-                .addComponent(btnEliminarCliente)
-                .addGap(19, 19, 19))
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminarCliente)
-                    .addComponent(btnActualizarCliente)
-                    .addComponent(btnNuevoCliente))
-                .addGap(33, 33, 33))
-        );
-
-        tablaRuta.addTab("Cliente", jPanel8);
+        jPanel9.setForeground(new java.awt.Color(60, 63, 65));
+        jPanel9.setMaximumSize(new java.awt.Dimension(68, 54));
+        jPanel9.setMinimumSize(new java.awt.Dimension(68, 54));
+        jPanel9.setOpaque(false);
 
         btnNuevoRuta.setBackground(new java.awt.Color(0, 204, 51));
-        btnNuevoRuta.setText("Nuevo");
+        btnNuevoRuta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ad-car.png"))); // NOI18N
         btnNuevoRuta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoRutaActionPerformed(evt);
@@ -321,7 +276,7 @@ public class transporte extends javax.swing.JFrame {
         });
 
         btnActualizarRuta.setBackground(new java.awt.Color(0, 153, 255));
-        btnActualizarRuta.setText("Actualizar");
+        btnActualizarRuta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit1.png"))); // NOI18N
         btnActualizarRuta.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -338,7 +293,9 @@ public class transporte extends javax.swing.JFrame {
         });
 
         btnEliminarRuta.setBackground(new java.awt.Color(255, 51, 51));
-        btnEliminarRuta.setText("Eliminar");
+        btnEliminarRuta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/4733351-48.png"))); // NOI18N
+        btnEliminarRuta.setMaximumSize(new java.awt.Dimension(68, 54));
+        btnEliminarRuta.setMinimumSize(new java.awt.Dimension(68, 54));
         btnEliminarRuta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarRutaActionPerformed(evt);
@@ -356,69 +313,194 @@ public class transporte extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
+        tablaRuta1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaRuta1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tablaRuta1);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(374, Short.MAX_VALUE)
-                .addComponent(btnNuevoRuta)
-                .addGap(38, 38, 38)
-                .addComponent(btnActualizarRuta)
-                .addGap(30, 30, 30)
-                .addComponent(btnEliminarRuta)
-                .addGap(19, 19, 19))
-            .addComponent(jScrollPane2)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnNuevoRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnActualizarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminarRuta)
-                    .addComponent(btnActualizarRuta)
-                    .addComponent(btnNuevoRuta))
-                .addGap(33, 33, 33))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnActualizarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 51, Short.MAX_VALUE)
+                        .addComponent(btnEliminarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(btnNuevoRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
         );
 
         tablaRuta.addTab("Ruta", jPanel9);
 
-        jTabbedPane2.addTab("taxi", tablaRuta);
+        jPanel8.setOpaque(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 693, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(251, Short.MAX_VALUE))
+        btnNuevoCliente.setBackground(new java.awt.Color(0, 204, 51));
+        btnNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/new-user.png"))); // NOI18N
+        btnNuevoCliente.setMaximumSize(new java.awt.Dimension(68, 54));
+        btnNuevoCliente.setMinimumSize(new java.awt.Dimension(68, 54));
+        btnNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoClienteActionPerformed(evt);
+            }
+        });
+
+        btnActualizarCliente.setBackground(new java.awt.Color(0, 153, 255));
+        btnActualizarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit1.png"))); // NOI18N
+        btnActualizarCliente.setMaximumSize(new java.awt.Dimension(68, 54));
+        btnActualizarCliente.setMinimumSize(new java.awt.Dimension(68, 54));
+        btnActualizarCliente.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                btnActualizarClienteAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        btnActualizarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarClienteActionPerformed(evt);
+            }
+        });
+
+        btnEliminarCliente.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/4733351-48.png"))); // NOI18N
+        btnEliminarCliente.setMaximumSize(new java.awt.Dimension(68, 54));
+        btnEliminarCliente.setMinimumSize(new java.awt.Dimension(68, 54));
+        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarClienteActionPerformed(evt);
+            }
+        });
+
+        tablaCliente.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Documento", "Nombre", "Apellido", "Telefono", "direccion", "Correo"
+            }
+        ));
+        tablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaClienteMouseClicked(evt);
+            }
+        });
+        jScrollPane9.setViewportView(tablaCliente);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnActualizarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(btnEliminarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnActualizarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
+
+        tablaRuta.addTab("Cliente", jPanel8);
+
+        getContentPane().add(tablaRuta);
+        tablaRuta.setBounds(10, 70, 720, 400);
+
+        jLabel2.setFont(new java.awt.Font("Broadway", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Car Now");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(240, 0, 220, 60);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/4308065-32.png"))); // NOI18N
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(700, 10, 30, 30);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo8.png"))); // NOI18N
+        jLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jLabel1MouseDragged(evt);
+            }
+        });
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(0, 0, 760, 560);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnActualizarAutoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarAutoAncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnActualizarAutoAncestorAdded
+    private void tablaRuta1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaRuta1MouseClicked
+        int fila = tablaRuta1.getSelectedRow();
+        if (fila>0) {
+            btnNuevoRuta.setEnabled(false);
+            btnActualizarRuta.setEnabled(true);
+            btnEliminarRuta.setEnabled(true);
+        }
+    }//GEN-LAST:event_tablaRuta1MouseClicked
 
-    private void btnActualizarConductorAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarConductorAncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnActualizarConductorAncestorAdded
+    private void btnEliminarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarRutaActionPerformed
+        eliminarRuta();
+        mostrarRuta();
+    }//GEN-LAST:event_btnEliminarRutaActionPerformed
 
-    private void btnActualizarClienteAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarClienteAncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnActualizarClienteAncestorAdded
+    private void btnActualizarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarRutaActionPerformed
+        NewRuta nuevaRuta = new NewRuta();
+        int fila = tablaRuta1.getSelectedRow();
+
+        nuevaRuta.id_ruta = Integer.parseInt(tablaRuta1.getValueAt(fila, 0).toString());
+        nuevaRuta.cbConductor.setSelectedItem(tablaRuta1.getValueAt(fila, 1).toString());
+        nuevaRuta.cbCliente.setSelectedItem(tablaRuta1.getValueAt(fila, 2).toString());
+        nuevaRuta.txtOrigen.setText(tablaRuta1.getValueAt(fila, 3).toString());
+        nuevaRuta.txtDestino.setText(tablaRuta1.getValueAt(fila, 4).toString());
+
+        nuevaRuta.btnCrearRuta.setEnabled(false);
+        nuevaRuta.setVisible(true);
+    }//GEN-LAST:event_btnActualizarRutaActionPerformed
 
     private void btnActualizarRutaAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarRutaAncestorAdded
         // TODO add your handling code here:
@@ -427,58 +509,68 @@ public class transporte extends javax.swing.JFrame {
     private void btnNuevoRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoRutaActionPerformed
         NewRuta nuevoRuta = new  NewRuta();
         nuevoRuta.setVisible(true);
-        nuevoRuta.btnActualizarRuta.setVisible(false);
+        nuevoRuta.btnActualizarRuta.setEnabled(false);
     }//GEN-LAST:event_btnNuevoRutaActionPerformed
 
-    private void btnNuevoAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAutoActionPerformed
-        NewAuto nuevoAuto = new  NewAuto();
-        nuevoAuto.setVisible(true);
-        nuevoAuto.btnModificarAuto.setVisible(false);
-    }//GEN-LAST:event_btnNuevoAutoActionPerformed
+    private void tablaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClienteMouseClicked
+        int fila = tablaCliente.getSelectedRow();
+        if (fila>0) {
+            btnNuevoCliente.setEnabled(false);
+            btnActualizarCliente.setEnabled(true);
+            btnEliminarCliente.setEnabled(true);
+        }
+    }//GEN-LAST:event_tablaClienteMouseClicked
 
-    private void tablaAutomovilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAutomovilMouseClicked
-        filaSeleccionada = tablaAutomovil.rowAtPoint(evt.getPoint());
-    }//GEN-LAST:event_tablaAutomovilMouseClicked
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        eliminarCliente();
+        mostrarCliente();
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
-    
-    private void btnActualizarAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAutoActionPerformed
+    private void btnActualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarClienteActionPerformed
+        NewCliente nuevoCliente = new  NewCliente();
+        int fila = tablaCliente.getSelectedRow();
 
-        NewAuto na = new  NewAuto();
-        int fila = tablaAutomovil.getSelectedRow();
-        
-        NewAuto.txtPlaca.setText(tablaAutomovil.getValueAt(fila, 1).toString());
-        NewAuto.txtMarcaA.setText(tablaAutomovil.getValueAt(fila, 2).toString());
-        NewAuto.txtModeloA.setText(tablaAutomovil.getValueAt(fila, 3).toString());
-        NewAuto.txtColorA.setText(tablaAutomovil.getValueAt(fila, 4).toString());
-        NewAuto.id_auto=Integer.parseInt(tablaAutomovil.getValueAt(fila, 0).toString());
-        NewAuto.btnInsertar.setVisible(false);
-       
-        na.setVisible(true);
-        
-    }//GEN-LAST:event_btnActualizarAutoActionPerformed
+        nuevoCliente.txtIdCliente.setEnabled(false);
+        nuevoCliente.txtIdCliente.setText(tablaCliente.getValueAt(fila, 0).toString());
+        nuevoCliente.txtNombreCliente.setText(tablaCliente.getValueAt(fila, 1).toString());
+        nuevoCliente.txtApellidoCliente.setText(tablaCliente.getValueAt(fila, 2).toString());
+        nuevoCliente.txtTelefonoCliente.setText(tablaCliente.getValueAt(fila, 3).toString());
+        nuevoCliente.txtDireccionCliente.setText(tablaCliente.getValueAt(fila, 4).toString());
+        nuevoCliente.txtCorreoCliente.setText(tablaCliente.getValueAt(fila, 5).toString());
 
-  
-    
+        nuevoCliente.btnInsertarCliente.setEnabled(false);
+        nuevoCliente.setVisible(true);
+    }//GEN-LAST:event_btnActualizarClienteActionPerformed
+
+    private void btnActualizarClienteAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarClienteAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarClienteAncestorAdded
+
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
         NewCliente nuevoCliente = new  NewCliente();
         nuevoCliente.setVisible(true);
+        nuevoCliente.btnActualizarCliente.setEnabled(false);
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
 
-    private void btnActualizarAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarAutoMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnActualizarAutoMouseClicked
+    private void tablaConductorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaConductorMouseClicked
+        int fila = tablaConductor.getSelectedRow();
+        if (fila>0) {
+            btnNuevoConductor.setEnabled(false);
+            btnActualizarConductor.setEnabled(true);
+            btnEliminarConductor.setEnabled(true);
+        }
+    }//GEN-LAST:event_tablaConductorMouseClicked
 
-    private void btnNuevoConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoConductorActionPerformed
-        NewConductor nuevoConductor = new  NewConductor();
-        nuevoConductor.setVisible(true);
-        nuevoConductor.btnActualizarUsuario.setVisible(false);
-    }//GEN-LAST:event_btnNuevoConductorActionPerformed
+    private void btnEliminarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarConductorActionPerformed
+        eliminarConductor();
+        mostrarConductores();
+    }//GEN-LAST:event_btnEliminarConductorActionPerformed
 
     private void btnActualizarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarConductorActionPerformed
         NewConductor nuevoConductor = new  NewConductor();
         int fila = tablaConductor.getSelectedRow();
-        
-        NewConductor.txtDocumento.setVisible(false);
+
+        NewConductor.txtDocumento.setEnabled(false);
         NewConductor.txtDocumento.setText(tablaConductor.getValueAt(fila, 0).toString());
         NewConductor.txtNombre.setText(tablaConductor.getValueAt(fila, 1).toString());
         NewConductor.txtApellido.setText(tablaConductor.getValueAt(fila, 2).toString());
@@ -489,69 +581,145 @@ public class transporte extends javax.swing.JFrame {
         NewConductor.txtCorreo.setText(tablaConductor.getValueAt(fila, 7).toString());
         NewConductor.numeroAuto.setSelectedItem(tablaConductor.getValueAt(fila, 8).toString());
         //NewConductor.txtDocumento.setText(tablaConductor.getValueAt(fila, 0).toString());
-        NewConductor.btnCrearUsuario.setVisible(false);
-        
+        NewConductor.btnCrearUsuario.setEnabled(false);
+
         nuevoConductor.setVisible(true);
     }//GEN-LAST:event_btnActualizarConductorActionPerformed
 
-    
-    
+    private void btnActualizarConductorAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarConductorAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarConductorAncestorAdded
+
+    private void btnNuevoConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoConductorActionPerformed
+        NewConductor nuevoConductor = new  NewConductor();
+        nuevoConductor.setVisible(true);
+        nuevoConductor.btnActualizarUsuario.setEnabled(false);
+    }//GEN-LAST:event_btnNuevoConductorActionPerformed
+
+    private void tablaAutomovilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAutomovilMouseClicked
+        int fila = tablaAutomovil.getSelectedRow();
+        if (fila>0) {
+            btnNuevoAuto.setEnabled(false);
+            btnActualizarAuto.setEnabled(true);
+            btnEliminarAuto.setEnabled(true);
+        }
+    }//GEN-LAST:event_tablaAutomovilMouseClicked
+
     private void btnEliminarAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAutoActionPerformed
         eliminarAuto();
         mostrarAuto();
     }//GEN-LAST:event_btnEliminarAutoActionPerformed
 
-    private void btnEliminarConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarConductorActionPerformed
-        eliminarConductor();
-        mostrarConductores();
-    }//GEN-LAST:event_btnEliminarConductorActionPerformed
+    private void btnActualizarAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAutoActionPerformed
 
-    private void btnActualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarClienteActionPerformed
-        NewCliente nuevoCliente = new  NewCliente();
-        int fila = tablaCliente.getSelectedRow();
+        NewAuto nuevoAuto = new  NewAuto();
+        int fila = tablaAutomovil.getSelectedRow();
+
+        nuevoAuto.txtPlaca.setText(tablaAutomovil.getValueAt(fila, 1).toString());
+        nuevoAuto.txtMarcaA.setText(tablaAutomovil.getValueAt(fila, 2).toString());
+        nuevoAuto.txtModeloA.setText(tablaAutomovil.getValueAt(fila, 3).toString());
+        nuevoAuto.txtColorA.setText(tablaAutomovil.getValueAt(fila, 4).toString());
+        nuevoAuto.id_auto=Integer.parseInt(tablaAutomovil.getValueAt(fila, 0).toString());
+        nuevoAuto.btnInsertar.setEnabled(false);
+        nuevoAuto.setVisible(true);
+    }//GEN-LAST:event_btnActualizarAutoActionPerformed
+
+    private void btnActualizarAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarAutoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarAutoMouseClicked
+
+    private void btnActualizarAutoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnActualizarAutoAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarAutoAncestorAdded
+
+    private void btnNuevoAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAutoActionPerformed
+        NewAuto nuevoAuto = new  NewAuto();
+        nuevoAuto.setVisible(true);
+        //nuevoAuto.btnModificarAuto.setVisible(false);
+        nuevoAuto.btnModificarAuto.setEnabled(false);
+    }//GEN-LAST:event_btnNuevoAutoActionPerformed
+
+    private void btnNuevoAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNuevoAutoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNuevoAutoMouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         
-        nuevoCliente.txtIdCliente.setVisible(false);
-        nuevoCliente.txtIdCliente.setText(tablaCliente.getValueAt(fila, 0).toString());
-        nuevoCliente.txtNombreCliente.setText(tablaCliente.getValueAt(fila, 1).toString());
-        nuevoCliente.txtApellidoCliente.setText(tablaCliente.getValueAt(fila, 2).toString());
-        nuevoCliente.txtTelefonoCliente.setText(tablaCliente.getValueAt(fila, 3).toString());
-        nuevoCliente.txtDireccionCliente.setText(tablaCliente.getValueAt(fila, 4).toString());
-        nuevoCliente.txtCorreoCliente.setText(tablaCliente.getValueAt(fila, 5).toString());
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+        posx=evt.getX();      
+        posy=evt.getY();
+    }//GEN-LAST:event_jLabel1MousePressed
+
+    private void jLabel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseDragged
+        int xp=evt.getXOnScreen() -posx;
+        int yp=evt.getYOnScreen() -posy;
+        this.setLocation(xp, yp);
+    }//GEN-LAST:event_jLabel1MouseDragged
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    
+    public void transparenciaButton(){
+        btnNuevoAuto.setOpaque(false);
+        btnNuevoAuto.setContentAreaFilled(false);
+        btnNuevoAuto.setBorderPainted(false);
         
-        nuevoCliente.btnInsertarCliente.setVisible(false);
-       
-        nuevoCliente.setVisible(true);
-    }//GEN-LAST:event_btnActualizarClienteActionPerformed
-
-    private void btnActualizarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarRutaActionPerformed
-        NewRuta nuevaRuta = new NewRuta();
-        int fila = tablaRuta1.getSelectedRow();
-        nuevaRuta.id_ruta = Integer.parseInt(tablaRuta1.getValueAt(fila, 0).toString());
-        nuevaRuta.cbConductor.setSelectedItem(tablaRuta1.getValueAt(fila, 1).toString());
-        nuevaRuta.cbCliente.setSelectedItem(tablaRuta1.getValueAt(fila, 2).toString());
-        nuevaRuta.txtOrigen.setText(tablaRuta1.getValueAt(fila, 3).toString());
-        nuevaRuta.txtDestino.setText(tablaRuta1.getValueAt(fila, 4).toString());
-        nuevaRuta.btnCrearRuta.setVisible(false);
-        nuevaRuta.setVisible(true);
-
-    }//GEN-LAST:event_btnActualizarRutaActionPerformed
-
-    private void btnEliminarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarRutaActionPerformed
-        eliminarRuta();
-        mostrarRuta();
-    }//GEN-LAST:event_btnEliminarRutaActionPerformed
-
-    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
-        eliminarCliente();
-        mostrarCliente();
-    }//GEN-LAST:event_btnEliminarClienteActionPerformed
-
+        btnNuevoCliente.setOpaque(false);
+        btnNuevoCliente.setContentAreaFilled(false);
+        btnNuevoCliente.setBorderPainted(false);
+        
+        btnNuevoConductor.setOpaque(false);
+        btnNuevoConductor.setContentAreaFilled(false);
+        btnNuevoConductor.setBorderPainted(false);
+        
+        btnNuevoRuta.setOpaque(false);
+        btnNuevoRuta.setContentAreaFilled(false);
+        btnNuevoRuta.setBorderPainted(false);
+        
+        btnActualizarAuto.setOpaque(false);
+        btnActualizarAuto.setContentAreaFilled(false);
+        btnActualizarAuto.setBorderPainted(false);
+        
+        btnActualizarCliente.setOpaque(false);
+        btnActualizarCliente.setContentAreaFilled(false);
+        btnActualizarCliente.setBorderPainted(false);
+        
+        btnActualizarConductor.setOpaque(false);
+        btnActualizarConductor.setContentAreaFilled(false);
+        btnActualizarConductor.setBorderPainted(false);
+        
+        btnActualizarRuta.setOpaque(false);
+        btnActualizarRuta.setContentAreaFilled(false);
+        btnActualizarRuta.setBorderPainted(false);
+        
+        btnEliminarAuto.setContentAreaFilled(false);
+        btnEliminarAuto.setBorderPainted(false);
+        
+        btnEliminarCliente.setContentAreaFilled(false);
+        btnEliminarCliente.setBorderPainted(false);
+        
+        btnEliminarConductor.setContentAreaFilled(false);
+        btnEliminarConductor.setBorderPainted(false);
+        
+        btnEliminarRuta.setContentAreaFilled(false);
+        btnEliminarRuta.setBorderPainted(false);
+  
+    }
+    
+    public void color_transparent(){
+        tablaAutomovil.setBackground(new Color(0,0,0,0));
+        jPanel6.setBackground(new Color(0,0,0,0));
+    }
+    
     public void mostrarAuto(){
         String[] titulos = {"ID", "Placa","Marca", "Modelo","Color"};
         String [] registros = new String[6];
         DefaultTableModel modelo = new DefaultTableModel(null, titulos);
         String SQL = "SELECT * FROM automovil";
-        
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(SQL);
@@ -561,15 +729,16 @@ public class transporte extends javax.swing.JFrame {
                 registros[2]=rs.getString("marca");
                 registros[3]=rs.getString("modelo");
                 registros[4]=rs.getString("color");
-                
                 modelo.addRow(registros);
             }
             tablaAutomovil.setModel(modelo);
+            btnNuevoAuto.setEnabled(true);
+            btnActualizarAuto.setEnabled(false);
+            btnEliminarAuto.setEnabled(false);
         } 
         catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
         }
-        
     }
     
     
@@ -577,8 +746,7 @@ public class transporte extends javax.swing.JFrame {
         String[] titulos = {"Documento", "Nombre","Apellido", "Licencia","Nacimiento","Telefono","Direccion","Correo","Auto"};
         String [] registros = new String[9];
         DefaultTableModel modelo = new DefaultTableModel(null, titulos);
-        String SQL = "SELECT * FROM conductor";
-    
+        String SQL = "SELECT *,placa FROM conductor join automovil on fk_idauto = id_auto";
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(SQL);
@@ -591,12 +759,13 @@ public class transporte extends javax.swing.JFrame {
                 registros[5]=rs.getString("telefono");
                 registros[6]=rs.getString("direccion");
                 registros[7]=rs.getString("correo");
-                
-                registros[8]=rs.getString("fk_idauto");
-                
+                registros[8]=rs.getString("placa");
                 modelo.addRow(registros);
             }
             tablaConductor.setModel(modelo);
+            btnNuevoConductor.setEnabled(true);
+            btnActualizarConductor.setEnabled(false);
+            btnEliminarConductor.setEnabled(false);
         } 
         catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
@@ -620,10 +789,12 @@ public class transporte extends javax.swing.JFrame {
                 registros[3]=rs.getString("telefono");
                 registros[4]=rs.getString("direccion");
                 registros[5]=rs.getString("correo");
-                
                 modelo.addRow(registros);
             }
             tablaCliente.setModel(modelo);
+            btnNuevoCliente.setEnabled(true);
+            btnActualizarCliente.setEnabled(false);
+            btnEliminarCliente.setEnabled(false);
         } 
         catch (SQLException e) {
             JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
@@ -633,23 +804,26 @@ public class transporte extends javax.swing.JFrame {
     
     public void mostrarRuta(){
         String[] titulos = {"ID", "Conductor","Cliente", "Origen","Destino"};
-        String [] registros = new String[7];
+        String [] registros = new String[6];
         DefaultTableModel modelo = new DefaultTableModel(null, titulos);
-        String SQL = "SELECT * FROM ruta";
-        
+        String SQL = "SELECT *, CO.nombre, CL.nombre FROM ruta R "
+                + "join conductor CO on R.fk_conductor_doc = CO.documento "
+                + "join cliente CL on R.fk_cliente_doc = CL.documento order by id_ruta asc" ;
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while (rs.next()) {
                 registros[0]=rs.getString("id_ruta");
-                registros[1]=rs.getString("fk_conductor_doc");
-                registros[2]=rs.getString("fk_cliente_doc");
+                registros[1]=rs.getString("CO.nombre");
+                registros[2]=rs.getString("CL.nombre");
                 registros[3]=rs.getString("origen");
                 registros[4]=rs.getString("destino");
-                
                 modelo.addRow(registros);
             }
             tablaRuta1.setModel(modelo);
+            btnNuevoRuta.setEnabled(true);
+            btnActualizarRuta.setEnabled(false);
+            btnEliminarRuta.setEnabled(false);
         } 
         catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
@@ -659,6 +833,7 @@ public class transporte extends javax.swing.JFrame {
     
     public void eliminarAuto (){
         int fila = tablaAutomovil.getSelectedRow();
+        
         try {
             String SQL  = "DELETE FROM automovil where id_auto= "+tablaAutomovil.getValueAt(fila, 0);
             Statement st = con.createStatement();
@@ -690,7 +865,7 @@ public class transporte extends javax.swing.JFrame {
     public void eliminarCliente (){
         int fila = tablaCliente.getSelectedRow();
         try {
-            String SQL  = "DELETE  FROM cliente where documento = "+tablaCliente.getValueAt(fila, 0);
+            String SQL  = "DELETE  FROM cliente where documento = '"+tablaCliente.getValueAt(fila, 0)+"'";
             Statement st = con.createStatement();
             int n = st.executeUpdate(SQL);
             if (n>0) {
@@ -754,18 +929,21 @@ public class transporte extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizarAuto;
-    private javax.swing.JButton btnActualizarCliente;
-    private javax.swing.JButton btnActualizarConductor;
-    private javax.swing.JButton btnActualizarRuta;
-    private javax.swing.JButton btnEliminarAuto;
-    private javax.swing.JButton btnEliminarCliente;
-    private javax.swing.JButton btnEliminarConductor;
-    private javax.swing.JButton btnEliminarRuta;
-    private javax.swing.JButton btnNuevoAuto;
-    private javax.swing.JButton btnNuevoCliente;
-    private javax.swing.JButton btnNuevoConductor;
-    private javax.swing.JButton btnNuevoRuta;
+    public static javax.swing.JButton btnActualizarAuto;
+    public static javax.swing.JButton btnActualizarCliente;
+    public static javax.swing.JButton btnActualizarConductor;
+    public static javax.swing.JButton btnActualizarRuta;
+    public static javax.swing.JButton btnEliminarAuto;
+    public static javax.swing.JButton btnEliminarCliente;
+    public static javax.swing.JButton btnEliminarConductor;
+    public static javax.swing.JButton btnEliminarRuta;
+    public static javax.swing.JButton btnNuevoAuto;
+    public static javax.swing.JButton btnNuevoCliente;
+    public static javax.swing.JButton btnNuevoConductor;
+    public static javax.swing.JButton btnNuevoRuta;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
@@ -774,11 +952,10 @@ public class transporte extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable tablaAutomovil;
-    private javax.swing.JTable tablaCliente;
-    private javax.swing.JTable tablaConductor;
+    public static javax.swing.JTable tablaAutomovil;
+    public static javax.swing.JTable tablaCliente;
+    public static javax.swing.JTable tablaConductor;
     private javax.swing.JTabbedPane tablaRuta;
-    private javax.swing.JTable tablaRuta1;
+    public static javax.swing.JTable tablaRuta1;
     // End of variables declaration//GEN-END:variables
 }
