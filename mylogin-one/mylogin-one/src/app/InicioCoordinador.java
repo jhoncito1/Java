@@ -218,13 +218,13 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         this.setLocation(xp, yp);
     }//GEN-LAST:event_jLabel1MouseDragged
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        this.dispose();
-    }//GEN-LAST:event_jLabel2MouseClicked
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println("Conectado al socket");
+        
         try{
-            Socket misocket = new Socket("192.168.250.229",9000);
+            Socket misocket = new Socket("localhost", 8080);
+             System.out.println("Conectado al socketddddd");
+            System.out.println("Conectado al socket");
             paqueteEnvio datos = new paqueteEnvio();
             if(lista_camp.getSelectedValue().equals("TODOS")){
                 datos.setCamp("0");
@@ -259,6 +259,10 @@ public final class InicioCoordinador extends javax.swing.JFrame{
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         setExtendedState(JFrame.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
      * @param args the command line arguments

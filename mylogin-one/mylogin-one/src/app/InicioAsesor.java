@@ -12,6 +12,10 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import net.sf.jcarrierpigeon.Notification;
@@ -32,6 +36,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     int posx, posy;
     public InicioAsesor() {
         initComponents();
+        txtEnviaMensaje.requestFocus();
+        //TextPrompt p new TexPrompt();
          try{
              this.setBackground( new Color(255, 0, 0, 0) );
         }catch(Exception e){
@@ -68,6 +74,20 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         val.add(obj);
     }
 
+      
+      int getIDCamp(String name){
+        try{
+            Connection con = Db.connect();
+            Statement s =  con.createStatement();
+            ResultSet r = s.executeQuery("select * from mastercampana WHERE snombreCampana='"+name+"'");
+            while(r.next()){ 
+                return r.getInt("iidcampana");
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,9 +100,18 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        btnSalir = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        btnBorrar = new javax.swing.JButton();
+        btnEnviar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtmessageC = new javax.swing.JTextArea();
+        txtEnviaMensaje = new javax.swing.JTextField();
+        jLbCerrar = new javax.swing.JLabel();
+        jLbMinimizar = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jLiAsesor = new javax.swing.JList<>();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -97,11 +126,12 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
                 jLabel5MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 4, 30, 30));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 30, 30));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Cliente");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 60, 40));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 60, 40));
 
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -110,35 +140,102 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         });
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 30, 30));
 
-        jButton1.setBackground(new java.awt.Color(5, 78, 142));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Salir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSalir.setBackground(new java.awt.Color(5, 78, 142));
+        btnSalir.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 90, 40));
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 90, 40));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("<html>Esperando <br> mensajes </html>");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 90, 50));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Mensaje");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 10, 200, 20));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img_desk2.png"))); // NOI18N
-        jLabel2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        btnBorrar.setBackground(new java.awt.Color(5, 78, 142));
+        btnBorrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnBorrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnBorrar.setText("Borrar");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, 80, 30));
+
+        btnEnviar.setBackground(new java.awt.Color(5, 78, 142));
+        btnEnviar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEnviar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEnviar.setText("Enviar");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 80, 30));
+
+        txtmessageC.setColumns(10);
+        txtmessageC.setRows(5);
+        txtmessageC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtmessageCKeyTyped(evt);
+            }
+        });
+        jScrollPane1.setViewportView(txtmessageC);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 230, 130));
+
+        txtEnviaMensaje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEnviaMensajeActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtEnviaMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 230, -1));
+
+        jLbCerrar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLbCerrar.setText("X");
+        jLbCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLbCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLbCerrarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLbCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 10, 20, 20));
+
+        jLbMinimizar.setFont(new java.awt.Font("Showcard Gothic", 0, 18)); // NOI18N
+        jLbMinimizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLbMinimizar.setText("_");
+        jLbMinimizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLbMinimizarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLbMinimizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 20, -1));
+
+        jLiAsesor.setBackground(new java.awt.Color(5, 78, 142));
+        jScrollPane2.setViewportView(jLiAsesor);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 110, 130));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/imgb2_1.png"))); // NOI18N
+        jLabel7.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
-                jLabel2MouseDragged(evt);
+                jLabel7MouseDragged(evt);
             }
         });
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel2MousePressed(evt);
+                jLabel7MousePressed(evt);
             }
         });
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 250));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -147,26 +244,80 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         this.dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         LoginForm ini = new LoginForm();
         this.dispose();
         ini.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        posx=evt.getX();       
-        posy=evt.getY();      
-    }//GEN-LAST:event_jLabel2MousePressed
-
-    private void jLabel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseDragged
-        int xp=evt.getXOnScreen() -posx;
-        int yp=evt.getYOnScreen() -posy;
-        this.setLocation(xp, yp);
-    }//GEN-LAST:event_jLabel2MouseDragged
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         setExtendedState(JFrame.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        txtmessageC.setText("");
+    }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        System.out.println("Conectado al socket");
+
+        try{
+            Socket misocket = new Socket("localhost", 8080);
+            System.out.println("Conectado al socketddddd");
+            System.out.println("Conectado al socket");
+            paqueteEnvio datos = new paqueteEnvio();
+            if(jLiAsesor.getSelectedValue().equals("TODOS")){
+                datos.setCamp("0");
+            }else{
+                datos.setCamp(String.valueOf(getIDCamp(jLiAsesor.getSelectedValue())));
+            }
+            datos.setMensaje(txtmessageC.getText());
+            datos.setNombre(nombre);
+            datos.setIp("0");
+            ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+            paqueteDatos.writeObject(datos);
+            misocket.close();
+            txtmessageC.setText("");
+            /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
+            flujoSalida.writeUTF(txtmessage.getText());
+            flujoSalida.close();*/
+        }catch(Exception e){}
+        //sendNotifi();
+    }//GEN-LAST:event_btnEnviarActionPerformed
+
+    private void txtmessageCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmessageCKeyTyped
+        if (txtmessageC.getText().length()== 200){
+            evt.consume();
+        }
+
+    }//GEN-LAST:event_txtmessageCKeyTyped
+
+    private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MousePressed
+        posx=evt.getX();
+        posy=evt.getY();
+    }//GEN-LAST:event_jLabel7MousePressed
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jLabel7MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseDragged
+        int xp=evt.getXOnScreen() -posx;
+        int yp=evt.getYOnScreen() -posy;
+        this.setLocation(xp, yp);
+    }//GEN-LAST:event_jLabel7MouseDragged
+
+    private void txtEnviaMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEnviaMensajeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEnviaMensajeActionPerformed
+
+    private void jLbCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLbCerrarMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jLbCerrarMouseClicked
+
+    private void jLbMinimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLbMinimizarMouseClicked
+        setExtendedState(JFrame.CROSSHAIR_CURSOR);
+    }//GEN-LAST:event_jLbMinimizarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -234,11 +385,20 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnBorrar;
+    private javax.swing.JButton btnEnviar;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLbCerrar;
+    private javax.swing.JLabel jLbMinimizar;
+    private javax.swing.JList<String> jLiAsesor;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField txtEnviaMensaje;
+    private javax.swing.JTextArea txtmessageC;
     // End of variables declaration//GEN-END:variables
 }
