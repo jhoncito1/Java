@@ -70,7 +70,8 @@ public class addCampana extends javax.swing.JFrame {
             }
         });
 
-        cbxEstadoC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        cbxEstadoC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
+        cbxEstadoC.setSelectedIndex(0);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,20 +132,10 @@ public class addCampana extends javax.swing.JFrame {
             
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
-            
             pst.setString(3, (dateFormat.format(date)));
             
-            String nnn = "";
             int seleccionado = cbxEstadoC.getSelectedIndex();
-            nnn = Integer.toString(seleccionado);
-            
-            if (nnn == "Inactivo") {
-                seleccionado = 0;
-            }else if (nnn == "Activo") {
-                seleccionado = 1;
-            }
-    
-            pst.setString(4, cbxEstadoC.getItemAt(seleccionado));
+            pst.setString(4, Integer.toString(seleccionado));
             
             pst.execute();
             

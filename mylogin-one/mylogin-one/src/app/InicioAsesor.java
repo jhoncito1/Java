@@ -34,9 +34,12 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     String nombre;
     int camp;
     int posx, posy;
+    
+    
     public InicioAsesor() {
         initComponents();
         txtEnviaMensaje.requestFocus();
+        txamessageC.setLineWrap(true);
         //TextPrompt p new TexPrompt();
          try{
              this.setBackground( new Color(255, 0, 0, 0) );
@@ -105,13 +108,13 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         btnBorrar = new javax.swing.JButton();
         btnEnviar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtmessageC = new javax.swing.JTextArea();
+        txamessageC = new javax.swing.JTextArea();
         txtEnviaMensaje = new javax.swing.JTextField();
         jLbCerrar = new javax.swing.JLabel();
         jLbMinimizar = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jLiAsesor = new javax.swing.JList<>();
-        jLabel7 = new javax.swing.JLabel();
+        lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -128,10 +131,10 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         });
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 30, 30));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Cliente");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 60, 40));
+        jLabel3.setText("Asesor");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 70, 30));
 
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -149,7 +152,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 90, 40));
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 90, 40));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -165,7 +168,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
                 btnBorrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, 80, 30));
+        getContentPane().add(btnBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 270, 80, 30));
 
         btnEnviar.setBackground(new java.awt.Color(5, 78, 142));
         btnEnviar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -176,25 +179,25 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
                 btnEnviarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 80, 30));
+        getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, 80, 30));
 
-        txtmessageC.setColumns(10);
-        txtmessageC.setRows(5);
-        txtmessageC.addKeyListener(new java.awt.event.KeyAdapter() {
+        txamessageC.setColumns(10);
+        txamessageC.setRows(5);
+        txamessageC.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtmessageCKeyTyped(evt);
+                txamessageCKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(txtmessageC);
+        jScrollPane1.setViewportView(txamessageC);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 230, 130));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 230, 170));
 
         txtEnviaMensaje.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEnviaMensajeActionPerformed(evt);
             }
         });
-        getContentPane().add(txtEnviaMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 230, -1));
+        getContentPane().add(txtEnviaMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 230, -1));
 
         jLbCerrar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLbCerrar.setText("X");
@@ -219,23 +222,23 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         jLiAsesor.setBackground(new java.awt.Color(5, 78, 142));
         jScrollPane2.setViewportView(jLiAsesor);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 110, 130));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 160));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/imgb2_1.png"))); // NOI18N
-        jLabel7.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/fondo15.png"))); // NOI18N
+        lblFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
-                jLabel7MouseDragged(evt);
+                lblFondoMouseDragged(evt);
             }
         });
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblFondo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
+                lblFondoMouseClicked(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel7MousePressed(evt);
+                lblFondoMousePressed(evt);
             }
         });
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 250));
+        getContentPane().add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 430, 340));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -255,7 +258,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        txtmessageC.setText("");
+        txamessageC.setText("");
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
@@ -271,13 +274,13 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
             }else{
                 datos.setCamp(String.valueOf(getIDCamp(jLiAsesor.getSelectedValue())));
             }
-            datos.setMensaje(txtmessageC.getText());
+            datos.setMensaje(txamessageC.getText());
             datos.setNombre(nombre);
             datos.setIp("0");
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
             misocket.close();
-            txtmessageC.setText("");
+            txamessageC.setText("");
             /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
             flujoSalida.writeUTF(txtmessage.getText());
             flujoSalida.close();*/
@@ -285,27 +288,27 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         //sendNotifi();
     }//GEN-LAST:event_btnEnviarActionPerformed
 
-    private void txtmessageCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmessageCKeyTyped
-        if (txtmessageC.getText().length()== 200){
+    private void txamessageCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txamessageCKeyTyped
+        if (txamessageC.getText().length()== 200){
             evt.consume();
         }
 
-    }//GEN-LAST:event_txtmessageCKeyTyped
+    }//GEN-LAST:event_txamessageCKeyTyped
 
-    private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MousePressed
+    private void lblFondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMousePressed
         posx=evt.getX();
         posy=evt.getY();
-    }//GEN-LAST:event_jLabel7MousePressed
+    }//GEN-LAST:event_lblFondoMousePressed
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+    private void lblFondoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel7MouseClicked
+    }//GEN-LAST:event_lblFondoMouseClicked
 
-    private void jLabel7MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseDragged
+    private void lblFondoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMouseDragged
         int xp=evt.getXOnScreen() -posx;
         int yp=evt.getYOnScreen() -posy;
         this.setLocation(xp, yp);
-    }//GEN-LAST:event_jLabel7MouseDragged
+    }//GEN-LAST:event_lblFondoMouseDragged
 
     private void txtEnviaMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEnviaMensajeActionPerformed
         // TODO add your handling code here:
@@ -392,13 +395,13 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLbCerrar;
     private javax.swing.JLabel jLbMinimizar;
     private javax.swing.JList<String> jLiAsesor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblFondo;
+    private javax.swing.JTextArea txamessageC;
     private javax.swing.JTextField txtEnviaMensaje;
-    private javax.swing.JTextArea txtmessageC;
     // End of variables declaration//GEN-END:variables
 }

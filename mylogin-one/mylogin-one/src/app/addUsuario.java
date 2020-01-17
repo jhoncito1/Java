@@ -5,12 +5,21 @@
  */
 package app;
 
+import com.mysql.jdbc.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author JHON.CHAVEZ
  */
 public class addUsuario extends javax.swing.JFrame {
 
+    
+    Db cc = new Db();
+    Connection con = (Connection) cc.connect();
     /**
      * Creates new form addUsuario
      */
@@ -30,9 +39,9 @@ public class addUsuario extends javax.swing.JFrame {
 
         txtNombreU = new javax.swing.JTextField();
         txtApellidoU = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        txtUserName = new javax.swing.JTextField();
+        jPassword = new javax.swing.JPasswordField();
+        jPasswordConfirm = new javax.swing.JPasswordField();
         cbxNivelU = new javax.swing.JComboBox<>();
         cbxEstadoU = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -41,7 +50,7 @@ public class addUsuario extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        cbxCampañaU = new javax.swing.JComboBox<>();
+        cbxCampanaU = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnInsertarU = new javax.swing.JButton();
@@ -54,9 +63,9 @@ public class addUsuario extends javax.swing.JFrame {
             }
         });
 
-        cbxNivelU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        cbxNivelU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nivel 1", "Nivel 2", "Nivel 3" }));
 
-        cbxEstadoU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1" }));
+        cbxEstadoU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
 
         jLabel1.setText("Nombre");
 
@@ -70,10 +79,10 @@ public class addUsuario extends javax.swing.JFrame {
 
         jLabel5.setText("Campaña");
 
-        cbxCampañaU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbxCampañaU.addActionListener(new java.awt.event.ActionListener() {
+        cbxCampanaU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        cbxCampanaU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxCampañaUActionPerformed(evt);
+                cbxCampanaUActionPerformed(evt);
             }
         });
 
@@ -82,6 +91,11 @@ public class addUsuario extends javax.swing.JFrame {
         jLabel7.setText("Nivel");
 
         btnInsertarU.setText("Insertar");
+        btnInsertarU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarUActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,14 +115,14 @@ public class addUsuario extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNombreU)
                             .addComponent(txtApellidoU)
-                            .addComponent(jTextField3)
-                            .addComponent(jPasswordField1)
-                            .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtUserName)
+                            .addComponent(jPassword)
+                            .addComponent(jPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(89, 89, 89)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxCampañaU, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbxCampanaU, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
@@ -134,19 +148,19 @@ public class addUsuario extends javax.swing.JFrame {
                     .addComponent(lbApellido))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxCampañaU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxCampanaU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -162,14 +176,72 @@ public class addUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbxCampañaUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCampañaUActionPerformed
+    private void cbxCampanaUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCampanaUActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbxCampañaUActionPerformed
+    }//GEN-LAST:event_cbxCampanaUActionPerformed
 
     private void txtApellidoUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoUActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtApellidoUActionPerformed
 
+    private void btnInsertarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarUActionPerformed
+        nuevoUsuario();
+    }//GEN-LAST:event_btnInsertarUActionPerformed
+
+    public int getidCampana (String nombreCampana){
+        String SQL = "SELECT * FROM campana WHERE idcampana = '"+nombreCampana+"'";
+        //String id = "";
+        int id = 0;
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                id=rs.getInt("idcampana");
+            }
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos ---- "+ e.getMessage());
+        }
+        return id;
+    }
+    
+    
+    
+    public void nuevoUsuario(){
+        try {
+            String SQL = "INSERT INTO usuarios(nombreUsuario, apellidosUsuario, loginUsuario, password, campana, nivel, estado) VALUES(?,?,?,?,?,?,?)";
+            PreparedStatement pst = con.prepareStatement(SQL);
+            pst.setString(1, txtNombreU.getText());
+            pst.setString(2, txtApellidoU.getText());
+            pst.setString(3, txtUserName.getText());
+            pst.setString(4, jPassword.getText());
+            pst.setString(4, jPasswordConfirm.getText());
+            
+            String nombreCampana = cbxCampanaU.getSelectedItem().toString();
+            int id = getidCampana(nombreCampana);
+            pst.setString(5, String.valueOf(id));
+            
+            int estado = cbxNivelU.getSelectedIndex();
+            pst.setString(6, Integer.toString(estado));
+            
+            int nivel = cbxNivelU.getSelectedIndex();
+            pst.setString(7, String.valueOf(nivel));
+            
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null, "Registro exitoso");
+            
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de Registro >>  "+ e.getMessage());
+        }
+    }
+    
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -207,7 +279,7 @@ public class addUsuario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInsertarU;
-    private javax.swing.JComboBox<String> cbxCampañaU;
+    private javax.swing.JComboBox<String> cbxCampanaU;
     private javax.swing.JComboBox<String> cbxEstadoU;
     private javax.swing.JComboBox<String> cbxNivelU;
     private javax.swing.JLabel jLabel1;
@@ -217,11 +289,11 @@ public class addUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JPasswordField jPassword;
+    private javax.swing.JPasswordField jPasswordConfirm;
     private javax.swing.JLabel lbApellido;
     private javax.swing.JTextField txtApellidoU;
     private javax.swing.JTextField txtNombreU;
+    private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }
