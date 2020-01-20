@@ -9,7 +9,10 @@ import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -26,6 +29,7 @@ public class addUsuario extends javax.swing.JFrame {
     public addUsuario() {
         initComponents();
         this.setLocationRelativeTo(null); 
+        getidCampana();
     }
 
     /**
@@ -54,41 +58,76 @@ public class addUsuario extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnInsertarU = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(500, 500));
+        getContentPane().setLayout(null);
+        getContentPane().add(txtNombreU);
+        txtNombreU.setBounds(161, 66, 298, 24);
 
         txtApellidoU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtApellidoUActionPerformed(evt);
             }
         });
+        getContentPane().add(txtApellidoU);
+        txtApellidoU.setBounds(161, 108, 298, 24);
+        getContentPane().add(txtUserName);
+        txtUserName.setBounds(161, 150, 298, 24);
+        getContentPane().add(jPassword);
+        jPassword.setBounds(161, 192, 298, 22);
+        getContentPane().add(jPasswordConfirm);
+        jPasswordConfirm.setBounds(161, 232, 298, 22);
 
-        cbxNivelU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nivel 1", "Nivel 2", "Nivel 3" }));
+        cbxNivelU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asesor", "Coordinador", "Administrador" }));
+        getContentPane().add(cbxNivelU);
+        cbxNivelU.setBounds(206, 314, 110, 26);
 
         cbxEstadoU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
+        getContentPane().add(cbxEstadoU);
+        cbxEstadoU.setBounds(381, 314, 78, 26);
 
         jLabel1.setText("Nombre");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(18, 70, 45, 16);
 
         lbApellido.setText("Apellido");
+        getContentPane().add(lbApellido);
+        lbApellido.setBounds(18, 112, 45, 16);
 
         jLabel3.setText("Usuario");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(18, 154, 44, 16);
 
         jLabel4.setText("Contraseña");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(18, 195, 66, 16);
 
         jLabel2.setText("Confirmar contraseña");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(18, 235, 125, 16);
 
         jLabel5.setText("Campaña");
+        getContentPane().add(jLabel5);
+        jLabel5.setBounds(18, 281, 54, 16);
 
-        cbxCampanaU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        cbxCampanaU.setMinimumSize(new java.awt.Dimension(450, 500));
         cbxCampanaU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxCampanaUActionPerformed(evt);
             }
         });
+        getContentPane().add(cbxCampanaU);
+        cbxCampanaU.setBounds(161, 276, 298, 26);
 
         jLabel6.setText("Estado");
+        getContentPane().add(jLabel6);
+        jLabel6.setBounds(333, 319, 39, 16);
 
         jLabel7.setText("Nivel");
+        getContentPane().add(jLabel7);
+        jLabel7.setBounds(161, 319, 27, 16);
 
         btnInsertarU.setText("Insertar");
         btnInsertarU.addActionListener(new java.awt.event.ActionListener() {
@@ -96,82 +135,10 @@ public class addUsuario extends javax.swing.JFrame {
                 btnInsertarUActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(lbApellido)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNombreU)
-                            .addComponent(txtApellidoU)
-                            .addComponent(txtUserName)
-                            .addComponent(jPassword)
-                            .addComponent(jPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(89, 89, 89)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxCampanaU, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbxNivelU, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(49, 49, 49)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnInsertarU)
-                                    .addComponent(cbxEstadoU, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombreU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtApellidoU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbApellido))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxCampanaU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxEstadoU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(cbxNivelU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnInsertarU)
-                .addContainerGap(34, Short.MAX_VALUE))
-        );
+        getContentPane().add(btnInsertarU);
+        btnInsertarU.setBounds(381, 358, 75, 32);
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(0, 10, 480, 420);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -185,19 +152,23 @@ public class addUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_txtApellidoUActionPerformed
 
     private void btnInsertarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarUActionPerformed
+    
         nuevoUsuario();
     }//GEN-LAST:event_btnInsertarUActionPerformed
 
-    public int getidCampana (String nombreCampana){
-        String SQL = "SELECT * FROM campana WHERE idcampana = '"+nombreCampana+"'";
+    public int getidCampana (/*String nombreCampana*/){
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        String SQL = "SELECT * FROM campana";// WHERE idcampana = '"+nombreCampana+"'";
         //String id = "";
         int id = 0;
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while (rs.next()) {
-                id=rs.getInt("idcampana");
+                modelo.addElement(rs.getString("nombreCampana"));
+                //id=rs.getInt("idcampana");
             }
+            cbxCampanaU.setModel(modelo);
         } 
         catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de datos ---- "+ e.getMessage());
@@ -214,11 +185,16 @@ public class addUsuario extends javax.swing.JFrame {
             pst.setString(1, txtNombreU.getText());
             pst.setString(2, txtApellidoU.getText());
             pst.setString(3, txtUserName.getText());
-            pst.setString(4, jPassword.getText());
-            pst.setString(4, jPasswordConfirm.getText());
             
+            if (jPassword.getText() == null ? jPasswordConfirm.getText() == null : jPassword.getText().equals(jPasswordConfirm.getText())) {
+               String textoEncriptadoConSHA = DigestUtils.sha1Hex(jPassword.getText());
+               pst.setString(4, textoEncriptadoConSHA); 
+            }else{
+                JOptionPane.showMessageDialog(null, "Contraseñas no coinciden");
+            }
+
             String nombreCampana = cbxCampanaU.getSelectedItem().toString();
-            int id = getidCampana(nombreCampana);
+            int id = getidCampana(/*nombreCampana*/);
             pst.setString(5, String.valueOf(id));
             
             int estado = cbxNivelU.getSelectedIndex();
@@ -289,6 +265,7 @@ public class addUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPasswordField jPassword;
     private javax.swing.JPasswordField jPasswordConfirm;
     private javax.swing.JLabel lbApellido;

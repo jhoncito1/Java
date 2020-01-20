@@ -108,21 +108,29 @@ public class LoginForm extends javax.swing.JFrame {
                 String textoEncriptadoConSHA = DigestUtils.sha1Hex(contraseña);
 
                 System.out.println("Esta es la contraseña: " + textoEncriptadoConSHA);
-                ResultSet r = s.executeQuery("select * from usuarios where sloginUser=\"" + username.getText() + "\" and spassUser=\"" + textoEncriptadoConSHA + "\" ");
+                //ResultSet r = s.executeQuery("select * from usuarios where sloginUser=\"" + username.getText() + "\" and spassUser=\"" + textoEncriptadoConSHA + "\" ");
+                ResultSet r = s.executeQuery("select * from usuarios where loginUsuario=\"" + username.getText() + "\" and password=\"" + textoEncriptadoConSHA + "\" ");
+
+                System.out.println(r);
 
                 boolean found = false;
                 int user_id = 0, user_rol = 0, user_camp = 0;
                 String nombreUser = "";
                 while (r.next()) {
                     found = true;
-                    user_id = r.getInt("iidUser");
-                    nombreUser = r.getString("snombresUser");
-                    user_camp = r.getInt("icampanaUser");
-                    user_rol = r.getInt("irolUser");
+//                    user_id = r.getInt("iidUser");
+//                    nombreUser = r.getString("snombresUser");
+//                    user_camp = r.getInt("icampanaUser");
+//                    user_rol = r.getInt("irolUser");
+
+                    user_id = r.getInt("idusuarios");
+                    nombreUser = r.getString("nombreUsuario");
+                    user_camp = r.getInt("campana");
+                    user_rol = r.getInt("nivel");
                 }
                 if (found) {
                     JOptionPane.showMessageDialog(rootPane, "Bienvenido");
-                    if (user_rol == 3) {
+                    if (user_rol == 2) {
                         InicioCoordinador ini = new InicioCoordinador(nombreUser);
                         this.dispose();
                         ini.setVisible(true);

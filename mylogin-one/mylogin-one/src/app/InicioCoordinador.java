@@ -62,10 +62,10 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         try{
             Connection con = Db.connect();
             Statement s =  con.createStatement();
-            ResultSet r = s.executeQuery("select * from mastercampana WHERE iidcampana IN (1,2,3,4,5);");
+            ResultSet r = s.executeQuery("select * from campana WHERE idcampana IN (1,2,3,4,5);");
             model.addElement("TODOS");
             while(r.next()){ 
-                model.addElement(r.getString("snombreCampana"));
+                model.addElement(r.getString("nombreCampana"));
             }
             lista_camp.setModel(model);
             lista_camp.setSelectedIndex(0);
@@ -79,9 +79,9 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         try{
             Connection con = Db.connect();
             Statement s =  con.createStatement();
-            ResultSet r = s.executeQuery("select * from mastercampana WHERE snombreCampana='"+name+"'");
+            ResultSet r = s.executeQuery("select * from campana WHERE nombreCampana='"+name+"'");
             while(r.next()){ 
-                return r.getInt("iidcampana");
+                return r.getInt("idcampana");
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -108,6 +108,9 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         jScrollPane1 = new javax.swing.JScrollPane();
         txtmessage = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane26 = new javax.swing.JScrollPane();
+        jList16 = new javax.swing.JList<>();
+        jLabel16 = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -123,25 +126,24 @@ public final class InicioCoordinador extends javax.swing.JFrame{
                 jLabel5MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, 20, 30));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, 20, 30));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Campañas");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 110, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 110, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Mensaje");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 170, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 50, 170, -1));
 
         lista_camp.setBackground(new java.awt.Color(5, 78, 142));
         lista_camp.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         lista_camp.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane3.setViewportView(lista_camp);
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 160));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 110, 180));
 
         jButton2.setBackground(new java.awt.Color(5, 78, 142));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -152,7 +154,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, 80, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 80, -1));
 
         jButton1.setBackground(new java.awt.Color(5, 78, 142));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -163,7 +165,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, 70, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 290, -1, -1));
 
         txtmessage.setColumns(10);
         txtmessage.setRows(5);
@@ -174,7 +176,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         });
         jScrollPane1.setViewportView(txtmessage);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 50, 230, 160));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 240, 180));
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel2.setText("X");
@@ -184,9 +186,18 @@ public final class InicioCoordinador extends javax.swing.JFrame{
                 jLabel2MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 30, 30));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, 30, 30));
 
-        lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/fondo15.png"))); // NOI18N
+        jList16.setBackground(new java.awt.Color(5, 78, 142));
+        jScrollPane26.setViewportView(jList16);
+
+        getContentPane().add(jScrollPane26, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 80, 120, 180));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel16.setText("Usuarios");
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, -1, -1));
+
+        lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Imagen1.png"))); // NOI18N
         lblFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 lblFondoMouseDragged(evt);
@@ -200,7 +211,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
                 lblFondoMousePressed(evt);
             }
         });
-        getContentPane().add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 360));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -247,13 +258,6 @@ public final class InicioCoordinador extends javax.swing.JFrame{
 //sendNotifi();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void txtmessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmessageKeyTyped
-        if (txtmessage.getText().length()== 200){
-                 evt.consume();
-        }
- 
-    }//GEN-LAST:event_txtmessageKeyTyped
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         txtmessage.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -265,6 +269,13 @@ public final class InicioCoordinador extends javax.swing.JFrame{
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void txtmessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmessageKeyTyped
+        if (txtmessage.getText().length()== 200){
+            evt.consume();
+        }
+
+    }//GEN-LAST:event_txtmessageKeyTyped
 
     /**
      * @param args the command line arguments
@@ -305,11 +316,14 @@ public final class InicioCoordinador extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JList<String> jList16;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane26;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JList<String> lista_camp;

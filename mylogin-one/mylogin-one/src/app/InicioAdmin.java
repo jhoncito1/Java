@@ -57,7 +57,6 @@ public class InicioAdmin extends javax.swing.JFrame {
         jList16 = new javax.swing.JList<>();
         jScrollPane24 = new javax.swing.JScrollPane();
         jList15 = new javax.swing.JList<>();
-        jTextField8 = new javax.swing.JTextField();
         jButton20 = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         jButton19 = new javax.swing.JButton();
@@ -65,6 +64,7 @@ public class InicioAdmin extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLbCerrar = new javax.swing.JLabel();
         jLbMinimizar = new javax.swing.JLabel();
+        btneditarCampana = new javax.swing.JButton();
         lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -77,25 +77,23 @@ public class InicioAdmin extends javax.swing.JFrame {
         jScrollPane25.setViewportView(txamensajeAd);
 
         getContentPane().add(jScrollPane25);
-        jScrollPane25.setBounds(180, 80, 249, 155);
+        jScrollPane25.setBounds(180, 80, 240, 180);
 
+        jList16.setBackground(new java.awt.Color(5, 78, 142));
         jScrollPane26.setViewportView(jList16);
 
         getContentPane().add(jScrollPane26);
         jScrollPane26.setBounds(460, 80, 126, 180);
 
+        jList15.setBackground(new java.awt.Color(5, 78, 142));
         jScrollPane24.setViewportView(jList15);
 
         getContentPane().add(jScrollPane24);
         jScrollPane24.setBounds(10, 80, 129, 189);
 
-        jTextField8.setToolTipText("");
-        getContentPane().add(jTextField8);
-        jTextField8.setBounds(180, 250, 249, 24);
-
         jButton20.setText("Enviar");
         getContentPane().add(jButton20);
-        jButton20.setBounds(300, 300, 65, 32);
+        jButton20.setBounds(295, 300, 70, 32);
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel16.setText("Usuarios");
@@ -104,7 +102,7 @@ public class InicioAdmin extends javax.swing.JFrame {
 
         jButton19.setText("Borrar");
         getContentPane().add(jButton19);
-        jButton19.setBounds(180, 300, 67, 32);
+        jButton19.setBounds(190, 300, 70, 32);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel15.setText("Campañas");
@@ -138,6 +136,15 @@ public class InicioAdmin extends javax.swing.JFrame {
         });
         getContentPane().add(jLbMinimizar);
         jLbMinimizar.setBounds(550, 0, 9, 23);
+
+        btneditarCampana.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/edit1.png"))); // NOI18N
+        btneditarCampana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btneditarCampanaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btneditarCampana);
+        btneditarCampana.setBounds(80, 280, 50, 50);
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Imagen1.png"))); // NOI18N
         lblFondo.setText("jLabel1");
@@ -176,10 +183,17 @@ public class InicioAdmin extends javax.swing.JFrame {
         setExtendedState(JFrame.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_jLbMinimizarMouseClicked
 
+    private void btneditarCampanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarCampanaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btneditarCampanaActionPerformed
+
    public void color_transparent(){
         //tablaAutomovil.setBackground(new Color(0,0,0,0));
         jTabbedPane1.setBackground(new Color(255, 0, 0, 0));
        // jLabel17.setBackground(new Color(255, 0, 1, 9));
+       
+       btneditarCampana.setContentAreaFilled(false);
+       btneditarCampana.setBorderPainted(false);
     }
 
   
@@ -222,6 +236,7 @@ public class InicioAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btneditarCampana;
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton20;
     private javax.swing.JLabel jLabel15;
@@ -235,7 +250,6 @@ public class InicioAdmin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane25;
     private javax.swing.JScrollPane jScrollPane26;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JTextArea txamensajeAd;
     // End of variables declaration//GEN-END:variables

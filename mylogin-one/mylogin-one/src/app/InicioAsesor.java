@@ -38,7 +38,6 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     
     public InicioAsesor() {
         initComponents();
-        txtEnviaMensaje.requestFocus();
         txamessageC.setLineWrap(true);
         //TextPrompt p new TexPrompt();
          try{
@@ -109,11 +108,11 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         btnEnviar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txamessageC = new javax.swing.JTextArea();
-        txtEnviaMensaje = new javax.swing.JTextField();
         jLbCerrar = new javax.swing.JLabel();
         jLbMinimizar = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jLiAsesor = new javax.swing.JList<>();
+        jTextField1 = new javax.swing.JTextField();
         lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -157,7 +156,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Mensaje");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 10, 200, 20));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 200, 20));
 
         btnBorrar.setBackground(new java.awt.Color(5, 78, 142));
         btnBorrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -168,7 +167,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
                 btnBorrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 270, 80, 30));
+        getContentPane().add(btnBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 270, 80, 30));
 
         btnEnviar.setBackground(new java.awt.Color(5, 78, 142));
         btnEnviar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -190,14 +189,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         });
         jScrollPane1.setViewportView(txamessageC);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 230, 170));
-
-        txtEnviaMensaje.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEnviaMensajeActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txtEnviaMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 230, -1));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 230, 160));
 
         jLbCerrar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLbCerrar.setText("X");
@@ -223,6 +215,9 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         jScrollPane2.setViewportView(jLiAsesor);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 160));
+
+        jTextField1.setText("jTextField1");
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 230, -1));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/fondo15.png"))); // NOI18N
         lblFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -310,10 +305,6 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         this.setLocation(xp, yp);
     }//GEN-LAST:event_lblFondoMouseDragged
 
-    private void txtEnviaMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEnviaMensajeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEnviaMensajeActionPerformed
-
     private void jLbCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLbCerrarMouseClicked
         this.dispose();
     }//GEN-LAST:event_jLbCerrarMouseClicked
@@ -400,8 +391,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     private javax.swing.JList<String> jLiAsesor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JTextArea txamessageC;
-    private javax.swing.JTextField txtEnviaMensaje;
     // End of variables declaration//GEN-END:variables
 }

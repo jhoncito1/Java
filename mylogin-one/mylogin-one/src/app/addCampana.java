@@ -22,20 +22,16 @@ public class addCampana extends javax.swing.JFrame {
 
     Db cc = new Db();
     Connection con = (Connection) cc.connect();
-    
-    
-    
-    
-    
+
     Calendar calendario = Calendar.getInstance();
+
     /**
      * Creates new form addCampana
      */
     public addCampana() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
-        
+
     }
 
     /**
@@ -110,9 +106,9 @@ public class addCampana extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(cbxEstadoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(21, 21, 21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(btnInsertar)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addGap(69, 69, 69))
         );
 
         pack();
@@ -122,33 +118,31 @@ public class addCampana extends javax.swing.JFrame {
         nuevaCampana();
     }//GEN-LAST:event_btnInsertarActionPerformed
 
-    
-    public void nuevaCampana(){
+    public void nuevaCampana() {
         try {
             String SQL = "insert into campana (nombreCampana, creadorCampana, fechaCreacionCam, estadoCamp) values (?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(SQL);
             pst.setString(1, txtNombreCampana.getText());
             pst.setString(2, txtCreaCampana.getText());
-            
+
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
             pst.setString(3, (dateFormat.format(date)));
-            
+
             int seleccionado = cbxEstadoC.getSelectedIndex();
             pst.setString(4, Integer.toString(seleccionado));
-            
+
             pst.execute();
-            
+
             JOptionPane.showMessageDialog(null, "Registro exitoso");
 //            mostrarAuto();
             this.dispose();
-            
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error de Registro"+ e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error de Registro" + e.getMessage());
         }
     }
-    
-    
+
     /**
      * @param args the command line arguments
      */
