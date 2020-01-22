@@ -60,12 +60,12 @@ public class chatInterno extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaUsuarios = new javax.swing.JTable();
         btnNuevoUsuario = new javax.swing.JButton();
-        btnActualizarCampana = new javax.swing.JButton();
+        btnActualizarUsuario = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaCampana = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnNuevaCampana = new javax.swing.JButton();
+        btnActualizarCampana = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
@@ -89,35 +89,51 @@ public class chatInterno extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
+        tablaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaUsuariosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaUsuarios);
 
         btnNuevoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/add.png"))); // NOI18N
+        btnNuevoUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoUsuarioActionPerformed(evt);
+            }
+        });
 
-        btnActualizarCampana.setText("Actualizar");
+        btnActualizarUsuario.setText("Editar");
+        btnActualizarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarUsuarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNuevoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64)
-                .addComponent(btnActualizarCampana)
-                .addGap(61, 61, 61))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnNuevoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnActualizarUsuario))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                 .addGap(52, 52, 52)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNuevoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizarCampana))
+                    .addComponent(btnActualizarUsuario))
                 .addGap(33, 33, 33))
         );
 
@@ -135,40 +151,52 @@ public class chatInterno extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
+        tablaCampana.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaCampanaMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tablaCampana);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/add.png"))); // NOI18N
+        btnNuevaCampana.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/add.png"))); // NOI18N
+        btnNuevaCampana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevaCampanaActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Editar");
+        btnActualizarCampana.setText("Editar");
+        btnActualizarCampana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarCampanaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(303, 303, 303)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(jButton4)
-                .addContainerGap(93, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnNuevaCampana, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnActualizarCampana))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                        .addComponent(jButton4)
-                        .addGap(48, 48, 48))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(btnNuevaCampana, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizarCampana))
+                .addGap(16, 16, 16))
         );
 
         jTabbedPane1.addTab("Campañas", jPanel3);
@@ -235,6 +263,68 @@ public class chatInterno extends javax.swing.JFrame {
         setExtendedState(JFrame.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_jLabel5MouseClicked
 
+    private void btnNuevaCampanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaCampanaActionPerformed
+        addCampana addCamp = new addCampana();
+        addCamp.setVisible(true);
+        addCamp.btnActualizarC.setEnabled(false);
+    }//GEN-LAST:event_btnNuevaCampanaActionPerformed
+
+    private void btnNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoUsuarioActionPerformed
+        addUsuario addUs = new addUsuario();
+        addUs.setVisible(true);
+        addUs.btnActualizarU.setEnabled(false);
+    }//GEN-LAST:event_btnNuevoUsuarioActionPerformed
+
+    private void btnActualizarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarUsuarioActionPerformed
+        addUsuario nUsuario = new  addUsuario();
+        int fila = tablaUsuarios.getSelectedRow();
+        addUsuario.idUsuario= Integer.parseInt(tablaUsuarios.getValueAt(fila, 0).toString());
+        addUsuario.txtNombreU.setText(tablaUsuarios.getValueAt(fila, 1).toString());
+        addUsuario.txtApellidoU.setText(tablaUsuarios.getValueAt(fila, 2).toString());
+        addUsuario.txtUserName.setText(tablaUsuarios.getValueAt(fila, 3).toString());
+        
+        addUsuario.lblPasswor.setVisible(false);
+        addUsuario.jPassword.setVisible(false);
+        addUsuario.jPassword.setText(tablaUsuarios.getValueAt(fila, 4).toString());
+        addUsuario.lblPassworC.setVisible(false);
+        addUsuario.jPasswordConfirm.setVisible(false);
+        addUsuario.jPasswordConfirm.setText(tablaUsuarios.getValueAt(fila, 4).toString());
+        
+        addUsuario.cbxCampanaU.setSelectedItem(tablaUsuarios.getValueAt(fila, 5).toString());
+        addUsuario.cbxNivelU.setSelectedItem(tablaUsuarios.getValueAt(fila, 6).toString());
+        addUsuario.cbxEstadoU.setSelectedItem(tablaUsuarios.getValueAt(fila, 7).toString());
+        
+        addUsuario.btnInsertarU.setEnabled(false);
+        nUsuario.setVisible(true);
+    }//GEN-LAST:event_btnActualizarUsuarioActionPerformed
+
+    private void btnActualizarCampanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCampanaActionPerformed
+        addCampana nCampana = new addCampana();
+        int fila = tablaCampana.getSelectedRow();
+
+        nCampana.txtNombreCampana.setText(tablaCampana.getValueAt(fila, 1).toString());
+        nCampana.cbxEstadoC.setSelectedItem(tablaCampana.getValueAt(fila, 4).toString());
+
+        nCampana.btnInsertarC.setEnabled(false);
+        nCampana.setVisible(true);
+    }//GEN-LAST:event_btnActualizarCampanaActionPerformed
+
+    private void tablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseClicked
+        int fila = tablaUsuarios.getSelectedRow();
+        if (fila>0) {
+            btnNuevoUsuario.setEnabled(false);
+            btnActualizarUsuario.setEnabled(true);
+        }
+    }//GEN-LAST:event_tablaUsuariosMouseClicked
+
+    private void tablaCampanaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCampanaMouseClicked
+        int fila = tablaCampana.getSelectedRow();
+        if (fila>0) {
+            btnNuevaCampana.setEnabled(false);
+            btnActualizarCampana.setEnabled(true);
+        }
+    }//GEN-LAST:event_tablaCampanaMouseClicked
+
     public void color_transparent(){
         //tablaAutomovil.setBackground(new Color(0,0,0,0));
         jTabbedPane1.setBackground(new Color(255, 0, 0, 0));
@@ -243,9 +333,13 @@ public class chatInterno extends javax.swing.JFrame {
         
        btnNuevoUsuario.setContentAreaFilled(false);
        btnNuevoUsuario.setBorderPainted(false);
-    
-       btnActualizarCampana.setContentAreaFilled(false);
-       btnActualizarCampana.setBorderPainted(false);
+       
+       btnNuevaCampana.setContentAreaFilled(false);
+       btnNuevaCampana.setBorderPainted(false);
+       
+       btnActualizarUsuario.setContentAreaFilled(false);
+       btnActualizarUsuario.setBorderPainted(false);
+       
        
     }
     
@@ -274,6 +368,7 @@ public class chatInterno extends javax.swing.JFrame {
                 modelo.addRow(registros);
             }
             tablaCampana.setModel(modelo);
+            btnActualizarCampana.setEnabled(false);
         } 
         catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
@@ -297,8 +392,8 @@ public class chatInterno extends javax.swing.JFrame {
                 registros[3]=rs.getString("loginUsuario");
                 registros[4]=rs.getString("password");
                 registros[5]=rs.getString("campana");
-                int dato = rs.getInt("nivel");
                 
+                int dato = rs.getInt("nivel");
                 if(dato == 0) {
                     registros[6] = "Asesor";
                     System.out.println(dato);
@@ -322,6 +417,7 @@ public class chatInterno extends javax.swing.JFrame {
                 modelo.addRow(registros);
             }
             tablaUsuarios.setModel(modelo);
+            btnActualizarUsuario.setEnabled(false);
         } 
         catch (SQLException e) {
             JOptionPane.showMessageDialog(null,"Error de datos  fg "+ e.getMessage());
@@ -366,9 +462,9 @@ public class chatInterno extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarCampana;
+    private javax.swing.JButton btnActualizarUsuario;
+    private javax.swing.JButton btnNuevaCampana;
     private javax.swing.JButton btnNuevoUsuario;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
@@ -377,7 +473,7 @@ public class chatInterno extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblFondo;
-    private javax.swing.JTable tablaCampana;
-    private javax.swing.JTable tablaUsuarios;
+    public static javax.swing.JTable tablaCampana;
+    public static javax.swing.JTable tablaUsuarios;
     // End of variables declaration//GEN-END:variables
 }

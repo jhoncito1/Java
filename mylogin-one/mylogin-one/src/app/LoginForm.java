@@ -20,6 +20,8 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class LoginForm extends javax.swing.JFrame {
 
+    public static String dt ;
+
     int posx, posy;
 
     /**
@@ -99,7 +101,14 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+        
+        
+        
         if (username.getText().length() > 0 && password.getText().length() > 0) {
+            
+            dt = username.getText();
+            JOptionPane.showMessageDialog(null, dt);
+            
             try {
                 Connection con = Db.connect();
                 Statement s = con.createStatement();
@@ -112,6 +121,7 @@ public class LoginForm extends javax.swing.JFrame {
                 ResultSet r = s.executeQuery("select * from usuarios where loginUsuario=\"" + username.getText() + "\" and password=\"" + textoEncriptadoConSHA + "\" ");
 
                 System.out.println(r);
+                //JOptionPane.showMessageDialog(null, r);
 
                 boolean found = false;
                 int user_id = 0, user_rol = 0, user_camp = 0;
@@ -130,14 +140,20 @@ public class LoginForm extends javax.swing.JFrame {
                 }
                 if (found) {
                     JOptionPane.showMessageDialog(rootPane, "Bienvenido");
-                    if (user_rol == 2) {
-                        InicioCoordinador ini = new InicioCoordinador(nombreUser);
-                        this.dispose();
-                        ini.setVisible(true);
-                    } else {
+                    if (user_rol == 0) {
                         InicioAsesor ini = new InicioAsesor(nombreUser, user_camp);
                         this.dispose();
                         ini.setVisible(true);
+                    } else if (user_rol == 1) {
+                        InicioCoordinador ini = new InicioCoordinador(nombreUser);
+                        this.dispose();
+                        ini.setVisible(true);
+                    } else if (user_rol == 2) {
+                        InicioAdmin ini = new InicioAdmin(nombreUser, user_id);
+                        this.dispose();
+                        ini.setVisible(true);
+                    } else {
+
                     }
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Acceso Denegado!!");
@@ -205,6 +221,6 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField password;
-    private javax.swing.JTextField username;
+    public static javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

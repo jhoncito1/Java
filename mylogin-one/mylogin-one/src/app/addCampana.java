@@ -5,14 +5,18 @@
  */
 package app;
 
+import static app.chatInterno.tablaCampana;
 import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,8 +26,10 @@ public class addCampana extends javax.swing.JFrame {
 
     Db cc = new Db();
     Connection con = (Connection) cc.connect();
+    
 
     Calendar calendario = Calendar.getInstance();
+    public static  int idCampana;
 
     /**
      * Creates new form addCampana
@@ -31,6 +37,8 @@ public class addCampana extends javax.swing.JFrame {
     public addCampana() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        //mostrarCampana();
 
     }
 
@@ -44,30 +52,34 @@ public class addCampana extends javax.swing.JFrame {
     private void initComponents() {
 
         txtNombreCampana = new javax.swing.JTextField();
-        txtCreaCampana = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        btnInsertar = new javax.swing.JButton();
+        btnInsertarC = new javax.swing.JButton();
         cbxEstadoC = new javax.swing.JComboBox<>();
+        btnActualizarC = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Nombre Campaña");
 
-        jLabel2.setText("Usuario Creador");
-
         jLabel4.setText("Estado");
 
-        btnInsertar.setText("Insertar");
-        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+        btnInsertarC.setText("Insertar");
+        btnInsertarC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInsertarActionPerformed(evt);
+                btnInsertarCActionPerformed(evt);
             }
         });
 
         cbxEstadoC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
         cbxEstadoC.setSelectedIndex(0);
+
+        btnActualizarC.setText("Actualizar");
+        btnActualizarC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarCActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,53 +89,88 @@ public class addCampana extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
                     .addComponent(jLabel4))
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbxEstadoC, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnInsertar))
-                    .addComponent(txtNombreCampana, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                    .addComponent(txtCreaCampana, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnInsertarC, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnActualizarC))
+                        .addComponent(txtNombreCampana, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxEstadoC, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(101, 101, 101)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtNombreCampana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(txtCreaCampana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel2)
-                        .addGap(85, 85, 85)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(cbxEstadoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(btnInsertar)
-                .addGap(69, 69, 69))
+                .addGap(97, 97, 97)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtNombreCampana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cbxEstadoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnInsertarC)
+                    .addComponent(btnActualizarC))
+                .addGap(78, 78, 78))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
+    private void btnInsertarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarCActionPerformed
         nuevaCampana();
-    }//GEN-LAST:event_btnInsertarActionPerformed
+    }//GEN-LAST:event_btnInsertarCActionPerformed
 
+    private void btnActualizarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCActionPerformed
+        actualizarCampana();
+    }//GEN-LAST:event_btnActualizarCActionPerformed
+
+    public void mostrarCampana(){
+        String[] titulos = {"ID", "Nombre","Creador", "Fecha","estado"};
+        String [] registros = new String[7];
+        DefaultTableModel modelo = new DefaultTableModel(null, titulos);
+        String SQL = "SELECT * FROM campana";
+        
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                registros[0]=rs.getString("idcampana");
+                registros[1]=rs.getString("nombreCampana");
+                registros[2]=rs.getString("creadorCampana");
+                registros[3]=rs.getString("fechaCreacionCam");
+                //registros[4]=rs.getString("estadoCamp");
+                int estado = rs.getInt("estadoCamp");
+                if(estado == 0) {
+                    registros[4] = "Inactivo";
+                }else if (estado == 1) {
+                    registros[4] = "Activo";
+                }
+                modelo.addRow(registros);
+            }
+            tablaCampana.setModel(modelo);
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+        }
+    }
+    
+   
+    
     public void nuevaCampana() {
         try {
             String SQL = "insert into campana (nombreCampana, creadorCampana, fechaCreacionCam, estadoCamp) values (?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(SQL);
+            
             pst.setString(1, txtNombreCampana.getText());
-            pst.setString(2, txtCreaCampana.getText());
+            
+            LoginForm lg = new LoginForm();
+            pst.setString(2, lg.dt);
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
@@ -143,6 +190,36 @@ public class addCampana extends javax.swing.JFrame {
         }
     }
 
+    
+     public void actualizarCampana(){
+        
+        try {
+            String SQL = "update campana set nombreCampana=?, estadoCamp=? where idcampana=?";
+            PreparedStatement pst = con.prepareStatement(SQL);
+            
+            pst.setString(1, txtNombreCampana.getText());
+            
+//            int seleccionado = cbxEstadoC.getSelectedIndex();
+//            pst.setString(2, Integer.toString(seleccionado));
+            
+            int estado = cbxEstadoC.getSelectedIndex();
+            pst.setInt(2, estado);
+            
+            pst.setInt(3, this.idCampana);
+            
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null, "Registro actualizado");
+            this.dispose();
+            mostrarCampana();
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de actualizacion "+ e.getMessage());
+        }
+        
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -179,12 +256,11 @@ public class addCampana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnInsertar;
-    private javax.swing.JComboBox<String> cbxEstadoC;
+    public static javax.swing.JButton btnActualizarC;
+    public static javax.swing.JButton btnInsertarC;
+    public static javax.swing.JComboBox<String> cbxEstadoC;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField txtCreaCampana;
-    private javax.swing.JTextField txtNombreCampana;
+    public static javax.swing.JTextField txtNombreCampana;
     // End of variables declaration//GEN-END:variables
 }

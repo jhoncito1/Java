@@ -112,7 +112,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         jLbMinimizar = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jLiAsesor = new javax.swing.JList<>();
-        jTextField1 = new javax.swing.JTextField();
+        txtEscribeAsesor = new javax.swing.JTextField();
         lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -215,9 +215,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         jScrollPane2.setViewportView(jLiAsesor);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 160));
-
-        jTextField1.setText("jTextField1");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 230, -1));
+        getContentPane().add(txtEscribeAsesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 230, -1));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/fondo15.png"))); // NOI18N
         lblFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -391,8 +389,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     private javax.swing.JList<String> jLiAsesor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JTextArea txamessageC;
+    private javax.swing.JTextField txtEscribeAsesor;
     // End of variables declaration//GEN-END:variables
 }

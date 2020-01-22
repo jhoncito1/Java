@@ -27,7 +27,7 @@ public class Db {
         String pass = "";
 
         System.out.println("Conectando..");
-        JOptionPane.showMessageDialog(null, "conexion exitosa");
+        //JOptionPane.showMessageDialog(null, "conexion exitosa");
         try {
             connection = DriverManager.getConnection(url, user, pass);
 

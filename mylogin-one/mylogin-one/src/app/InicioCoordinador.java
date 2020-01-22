@@ -16,28 +16,30 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import org.apache.commons.codec.digest.DigestUtils;
+
 /**
  *
  * @author Christian.Moreno
  */
-public final class InicioCoordinador extends javax.swing.JFrame{
+public final class InicioCoordinador extends javax.swing.JFrame {
 
-    
-    int posx,posy;
+    int posx, posy;
     String nombre;
+
     public InicioCoordinador() {
         initComponents();
         txtmessage.setLineWrap(true);
-         try{
-             this.setBackground( new Color(255, 0, 0, 0) );
-        }catch(Exception e){
-            
+        try {
+            this.setBackground(new Color(255, 0, 0, 0));
+        } catch (Exception e) {
         }
-        setIconImage (new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
     }
+
     /**
      * Creates new form Inicio
+     *
      * @param nombre
      * @param camp
      */
@@ -45,50 +47,49 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         initComponents();
         txtmessage.setLineWrap(true);
         this.nombre = nombre;
-         try{
-             this.setBackground( new Color(255, 0, 0, 0) );
-        }catch(Exception e){
-            
+        try {
+            this.setBackground(new Color(255, 0, 0, 0));
+        } catch (Exception e) {
+
         }
-        setIconImage (new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
         setCamp();
-        
+
     }
-    
-    
-    void setCamp(){
+
+    void setCamp() {
         DefaultListModel<String> model = new DefaultListModel<>();
-        try{
+        try {
             Connection con = Db.connect();
-            Statement s =  con.createStatement();
+            Statement s = con.createStatement();
             ResultSet r = s.executeQuery("select * from campana WHERE idcampana IN (1,2,3,4,5);");
             model.addElement("TODOS");
-            while(r.next()){ 
+            while (r.next()) {
                 model.addElement(r.getString("nombreCampana"));
             }
             lista_camp.setModel(model);
             lista_camp.setSelectedIndex(0);
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
-    
-    int getIDCamp(String name){
-        try{
+
+    int getIDCamp(String name) {
+        try {
             Connection con = Db.connect();
-            Statement s =  con.createStatement();
-            ResultSet r = s.executeQuery("select * from campana WHERE nombreCampana='"+name+"'");
-            while(r.next()){ 
+            Statement s = con.createStatement();
+            ResultSet r = s.executeQuery("select * from campana WHERE nombreCampana='" + name + "'");
+            while (r.next()) {
                 return r.getInt("idcampana");
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return 0;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,6 +112,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         jScrollPane26 = new javax.swing.JScrollPane();
         jList16 = new javax.swing.JList<>();
         jLabel16 = new javax.swing.JLabel();
+        txtEscribeCoordinador = new javax.swing.JTextField();
         lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -131,19 +133,19 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Campañas");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 110, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 110, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Mensaje");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 50, 170, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 170, -1));
 
         lista_camp.setBackground(new java.awt.Color(5, 78, 142));
         lista_camp.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         lista_camp.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane3.setViewportView(lista_camp);
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 110, 180));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 190));
 
         jButton2.setBackground(new java.awt.Color(5, 78, 142));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -154,7 +156,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 80, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 80, -1));
 
         jButton1.setBackground(new java.awt.Color(5, 78, 142));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -165,7 +167,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 290, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, -1, -1));
 
         txtmessage.setColumns(10);
         txtmessage.setRows(5);
@@ -176,7 +178,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         });
         jScrollPane1.setViewportView(txtmessage);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 240, 180));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 240, 170));
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel2.setText("X");
@@ -191,11 +193,12 @@ public final class InicioCoordinador extends javax.swing.JFrame{
         jList16.setBackground(new java.awt.Color(5, 78, 142));
         jScrollPane26.setViewportView(jList16);
 
-        getContentPane().add(jScrollPane26, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 80, 120, 180));
+        getContentPane().add(jScrollPane26, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 70, 120, 190));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel16.setText("Usuarios");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, -1, -1));
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, -1, -1));
+        getContentPane().add(txtEscribeCoordinador, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, 240, -1));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Imagen1.png"))); // NOI18N
         lblFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -221,31 +224,31 @@ public final class InicioCoordinador extends javax.swing.JFrame{
     }//GEN-LAST:event_lblFondoMouseClicked
 
     private void lblFondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMousePressed
-        posx=evt.getX();       
-        posy=evt.getY();
+        posx = evt.getX();
+        posy = evt.getY();
     }//GEN-LAST:event_lblFondoMousePressed
 
     private void lblFondoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMouseDragged
-        int xp=evt.getXOnScreen() -posx;
-        int yp=evt.getYOnScreen() -posy;
+        int xp = evt.getXOnScreen() - posx;
+        int yp = evt.getYOnScreen() - posy;
         this.setLocation(xp, yp);
     }//GEN-LAST:event_lblFondoMouseDragged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.out.println("Conectado al socket");
-        
-        try{
+
+        try {
             Socket misocket = new Socket("localhost", 8080);
-             System.out.println("Conectado al socketddddd");
+            System.out.println("Conectado al socketddddd");
             System.out.println("Conectado al socket");
             paqueteEnvio datos = new paqueteEnvio();
-            if(lista_camp.getSelectedValue().equals("TODOS")){
+            if (lista_camp.getSelectedValue().equals("TODOS")) {
                 datos.setCamp("0");
-            }else{
+            } else {
                 datos.setCamp(String.valueOf(getIDCamp(lista_camp.getSelectedValue())));
             }
             datos.setMensaje(txtmessage.getText());
-            datos.setNombre(nombre);            
+            datos.setNombre(nombre);
             datos.setIp("0");
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
@@ -254,7 +257,8 @@ public final class InicioCoordinador extends javax.swing.JFrame{
             /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
             flujoSalida.writeUTF(txtmessage.getText());
             flujoSalida.close();*/
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
 //sendNotifi();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -271,7 +275,7 @@ public final class InicioCoordinador extends javax.swing.JFrame{
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void txtmessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmessageKeyTyped
-        if (txtmessage.getText().length()== 200){
+        if (txtmessage.getText().length() == 200) {
             evt.consume();
         }
 
@@ -327,14 +331,14 @@ public final class InicioCoordinador extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JList<String> lista_camp;
+    private javax.swing.JTextField txtEscribeCoordinador;
     private javax.swing.JTextArea txtmessage;
     // End of variables declaration//GEN-END:variables
 }
 
+class paqueteEnvio implements Serializable {
 
-
-class paqueteEnvio implements Serializable{
-    private String nombre, camp, mensaje,ip;
+    private String nombre, camp, mensaje, ip;
 
     public String getNombre() {
         return nombre;
@@ -351,8 +355,6 @@ class paqueteEnvio implements Serializable{
     public void setIp(String ip) {
         this.ip = ip;
     }
-    
-
 
     public String getCamp() {
         return camp;
@@ -369,5 +371,5 @@ class paqueteEnvio implements Serializable{
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-    
+
 }

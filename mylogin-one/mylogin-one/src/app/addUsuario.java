@@ -8,10 +8,13 @@ package app;
 import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.Action;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -22,14 +25,16 @@ public class addUsuario extends javax.swing.JFrame {
 
     
     Db cc = new Db();
-    Connection con = (Connection) cc.connect();
+    Connection con = (Connection) Db.connect();
+    public static  int idUsuario;
     /**
      * Creates new form addUsuario
      */
     public addUsuario() {
         initComponents();
         this.setLocationRelativeTo(null); 
-        getidCampana();
+        
+        mostrarCampana();
     }
 
     /**
@@ -51,20 +56,21 @@ public class addUsuario extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lbApellido = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblPasswor = new javax.swing.JLabel();
+        lblPassworC = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         cbxCampanaU = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnInsertarU = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
+        btnActualizarU = new javax.swing.JButton();
+        lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(500, 500));
         getContentPane().setLayout(null);
         getContentPane().add(txtNombreU);
-        txtNombreU.setBounds(161, 66, 298, 24);
+        txtNombreU.setBounds(160, 80, 298, 24);
 
         txtApellidoU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,45 +78,45 @@ public class addUsuario extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtApellidoU);
-        txtApellidoU.setBounds(161, 108, 298, 24);
+        txtApellidoU.setBounds(160, 120, 298, 24);
         getContentPane().add(txtUserName);
-        txtUserName.setBounds(161, 150, 298, 24);
+        txtUserName.setBounds(160, 160, 298, 24);
         getContentPane().add(jPassword);
-        jPassword.setBounds(161, 192, 298, 22);
+        jPassword.setBounds(160, 320, 298, 22);
         getContentPane().add(jPasswordConfirm);
-        jPasswordConfirm.setBounds(161, 232, 298, 22);
+        jPasswordConfirm.setBounds(160, 360, 298, 22);
 
         cbxNivelU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asesor", "Coordinador", "Administrador" }));
         getContentPane().add(cbxNivelU);
-        cbxNivelU.setBounds(206, 314, 110, 26);
+        cbxNivelU.setBounds(160, 240, 150, 26);
 
         cbxEstadoU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
         getContentPane().add(cbxEstadoU);
-        cbxEstadoU.setBounds(381, 314, 78, 26);
+        cbxEstadoU.setBounds(160, 280, 150, 26);
 
         jLabel1.setText("Nombre");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(18, 70, 45, 16);
+        jLabel1.setBounds(20, 80, 45, 16);
 
         lbApellido.setText("Apellido");
         getContentPane().add(lbApellido);
-        lbApellido.setBounds(18, 112, 45, 16);
+        lbApellido.setBounds(20, 120, 45, 16);
 
         jLabel3.setText("Usuario");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(18, 154, 44, 16);
+        jLabel3.setBounds(20, 160, 44, 16);
 
-        jLabel4.setText("Contraseña");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(18, 195, 66, 16);
+        lblPasswor.setText("Contraseña");
+        getContentPane().add(lblPasswor);
+        lblPasswor.setBounds(20, 320, 66, 16);
 
-        jLabel2.setText("Confirmar contraseña");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(18, 235, 125, 16);
+        lblPassworC.setText("Confirmar contraseña");
+        getContentPane().add(lblPassworC);
+        lblPassworC.setBounds(20, 360, 125, 16);
 
         jLabel5.setText("Campaña");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(18, 281, 54, 16);
+        jLabel5.setBounds(20, 200, 80, 16);
 
         cbxCampanaU.setMinimumSize(new java.awt.Dimension(450, 500));
         cbxCampanaU.addActionListener(new java.awt.event.ActionListener() {
@@ -119,15 +125,15 @@ public class addUsuario extends javax.swing.JFrame {
             }
         });
         getContentPane().add(cbxCampanaU);
-        cbxCampanaU.setBounds(161, 276, 298, 26);
+        cbxCampanaU.setBounds(160, 200, 300, 26);
 
         jLabel6.setText("Estado");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(333, 319, 39, 16);
+        jLabel6.setBounds(20, 280, 50, 20);
 
         jLabel7.setText("Nivel");
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(161, 319, 27, 16);
+        jLabel7.setBounds(20, 240, 50, 20);
 
         btnInsertarU.setText("Insertar");
         btnInsertarU.addActionListener(new java.awt.event.ActionListener() {
@@ -136,9 +142,18 @@ public class addUsuario extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnInsertarU);
-        btnInsertarU.setBounds(381, 358, 75, 32);
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(0, 10, 480, 420);
+        btnInsertarU.setBounds(270, 390, 80, 32);
+
+        btnActualizarU.setText("Actualizar");
+        btnActualizarU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarUActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnActualizarU);
+        btnActualizarU.setBounds(370, 390, 90, 32);
+        getContentPane().add(lblFondo);
+        lblFondo.setBounds(10, 20, 460, 420);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -156,22 +171,47 @@ public class addUsuario extends javax.swing.JFrame {
         nuevoUsuario();
     }//GEN-LAST:event_btnInsertarUActionPerformed
 
-    public int getidCampana (/*String nombreCampana*/){
+    private void btnActualizarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarUActionPerformed
+        actualizarUsuario();
+        //limpiarCajas();
+    }//GEN-LAST:event_btnActualizarUActionPerformed
+
+    
+    public void mostrarCampana(){
+        String registros = "";
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-        String SQL = "SELECT * FROM campana";// WHERE idcampana = '"+nombreCampana+"'";
-        //String id = "";
+        String SQL = "SELECT * FROM campana";
+        
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                registros=rs.getString("nombreCampana");
+                
+                modelo.addElement(registros);
+            }
+            cbxCampanaU.setModel(modelo);
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+        }
+        
+    }
+    
+    public int getidCampana(String nombreCampana){
+        String SQL = "SELECT * FROM campana where nombreCampana = '"+nombreCampana+"'";
         int id = 0;
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while (rs.next()) {
-                modelo.addElement(rs.getString("nombreCampana"));
-                //id=rs.getInt("idcampana");
+                
+                id=rs.getInt("idcampana");
+
             }
-            cbxCampanaU.setModel(modelo);
         } 
         catch (Exception e) {
-            JOptionPane.showMessageDialog(null,"Error de datos ---- "+ e.getMessage());
+            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
         }
         return id;
     }
@@ -194,14 +234,14 @@ public class addUsuario extends javax.swing.JFrame {
             }
 
             String nombreCampana = cbxCampanaU.getSelectedItem().toString();
-            int id = getidCampana(/*nombreCampana*/);
+            int id = getidCampana(nombreCampana);
             pst.setString(5, String.valueOf(id));
             
-            int estado = cbxNivelU.getSelectedIndex();
-            pst.setString(6, Integer.toString(estado));
-            
             int nivel = cbxNivelU.getSelectedIndex();
-            pst.setString(7, String.valueOf(nivel));
+            pst.setString(6, Integer.toString(nivel));
+            
+            int estado = cbxEstadoU.getSelectedIndex();
+            pst.setString(7, String.valueOf(estado));
             
             pst.execute();
             
@@ -213,8 +253,102 @@ public class addUsuario extends javax.swing.JFrame {
         }
     }
     
+    public void actualizarUsuario(){
+        
+        try {
+            String SQL = "update usuarios set nombreUsuario=?, apellidosUsuario=?, loginUsuario=?, campana=?, nivel=?, estado=? where idusuarios=?";
+            PreparedStatement pst = con.prepareStatement(SQL);
+            
+            pst.setString(1, txtNombreU.getText());
+            pst.setString(2, txtApellidoU.getText());
+            pst.setString(3, txtUserName.getText());
+            
+            String nombreCampana = cbxCampanaU.getSelectedItem().toString();
+            int id = getidCampana(nombreCampana);
+            pst.setString(4, String.valueOf(id));
+
+            int nivel = cbxNivelU.getSelectedIndex();
+            pst.setInt(5, nivel);
+            
+            int estado = cbxEstadoU.getSelectedIndex();
+            pst.setInt(6, estado);
+            
+            
+            pst.setInt(7, this.idUsuario);
+            
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Registro actualizado");
+            this.dispose();
+            mostrarUsuarios();
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de actualizacion "+ e.getMessage());
+        }
+        
+    }
     
     
+    public void mostrarUsuarios(){
+        String[] titulos = {"ID", "Nombre","Apellido", "Usuario", "Contraseña","Campaña","Nivel","estado"};
+        String [] registros = new String[8];
+        DefaultTableModel modelo = new DefaultTableModel(null, titulos);
+        String SQL = "select usuarios.idusuarios, usuarios.nombreUsuario, usuarios.apellidosUsuario, usuarios.loginUsuario, usuarios.password, campana.nombreCampana as campana, usuarios.nivel, usuarios.estado\n" +
+                     "from usuarios inner join campana on campana.idcampana = usuarios.campana";
+        
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                registros[0]=rs.getString("idusuarios");
+                registros[1]=rs.getString("nombreUsuario");
+                registros[2]=rs.getString("apellidosUsuario");
+                registros[3]=rs.getString("loginUsuario");
+                registros[4]=rs.getString("password");
+                registros[5]=rs.getString("campana");
+                int dato = rs.getInt("nivel");
+                
+                if(dato == 0) {
+                    registros[6] = "Asesor";
+                    System.out.println(dato);
+                }else if (dato == 1) {
+                    registros[6] = "Coordinador";
+                }
+                else if (dato == 2) {
+                    registros[6] = "Administrador";
+                }
+                
+                int estado = rs.getInt("estado");
+//                registros[7]=rs.getString("estado");
+                if(estado == 0) {
+                    registros[7] = "Inactivo";
+                    System.out.println(dato);
+                }else if (estado == 1) {
+                    registros[7] = "Activo";
+                }
+
+
+                modelo.addRow(registros);
+            }
+            chatInterno.tablaUsuarios.setModel(modelo);
+        } 
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,"Error de datos  fg "+ e.getMessage());
+        }
+    }
+    
+    public  void limpiarCajas(){
+        txtNombreU.setText("");
+        txtApellidoU.setText("");
+        txtUserName.setText("");
+        jPassword.setText("");
+        //FechaNacimientoCond.actionPerformed();
+        jPasswordConfirm.setText("");
+        cbxCampanaU.setAction((Action) cbxCampanaU);
+        cbxNivelU.setAction((Action) cbxNivelU);
+        cbxEstadoU.setAction((Action) cbxEstadoU);
+        
+    }
+     
     
     
     
@@ -254,23 +388,24 @@ public class addUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnInsertarU;
-    private javax.swing.JComboBox<String> cbxCampanaU;
-    private javax.swing.JComboBox<String> cbxEstadoU;
-    private javax.swing.JComboBox<String> cbxNivelU;
+    public static javax.swing.JButton btnActualizarU;
+    public static javax.swing.JButton btnInsertarU;
+    public static javax.swing.JComboBox<String> cbxCampanaU;
+    public static javax.swing.JComboBox<String> cbxEstadoU;
+    public static javax.swing.JComboBox<String> cbxNivelU;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPasswordField jPassword;
-    private javax.swing.JPasswordField jPasswordConfirm;
+    public static javax.swing.JLabel jLabel7;
+    public static javax.swing.JPasswordField jPassword;
+    public static javax.swing.JPasswordField jPasswordConfirm;
     private javax.swing.JLabel lbApellido;
-    private javax.swing.JTextField txtApellidoU;
-    private javax.swing.JTextField txtNombreU;
-    private javax.swing.JTextField txtUserName;
+    private javax.swing.JLabel lblFondo;
+    public static javax.swing.JLabel lblPasswor;
+    public static javax.swing.JLabel lblPassworC;
+    public static javax.swing.JTextField txtApellidoU;
+    public static javax.swing.JTextField txtNombreU;
+    public static javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }
