@@ -28,7 +28,7 @@ public final class InicioCoordinador extends javax.swing.JFrame {
 
     public InicioCoordinador() {
         initComponents();
-        txtmessage.setLineWrap(true);
+        txaMmessage.setLineWrap(true);
         try {
             this.setBackground(new Color(255, 0, 0, 0));
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public final class InicioCoordinador extends javax.swing.JFrame {
      */
     public InicioCoordinador(String nombre) {
         initComponents();
-        txtmessage.setLineWrap(true);
+        txaMmessage.setLineWrap(true);
         this.nombre = nombre;
         try {
             this.setBackground(new Color(255, 0, 0, 0));
@@ -55,6 +55,7 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
         setCamp();
+        setUserC();
 
     }
 
@@ -63,13 +64,13 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         try {
             Connection con = Db.connect();
             Statement s = con.createStatement();
-            ResultSet r = s.executeQuery("select * from campana WHERE idcampana IN (1,2,3,4,5);");
+            ResultSet r = s.executeQuery("select * from campana;");
             model.addElement("TODOS");
             while (r.next()) {
                 model.addElement(r.getString("nombreCampana"));
             }
-            lista_camp.setModel(model);
-            lista_camp.setSelectedIndex(0);
+            listaCampanaC.setModel(model);
+            listaCampanaC.setSelectedIndex(0);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -78,11 +79,46 @@ public final class InicioCoordinador extends javax.swing.JFrame {
 
     int getIDCamp(String name) {
         try {
+    
             Connection con = Db.connect();
             Statement s = con.createStatement();
             ResultSet r = s.executeQuery("select * from campana WHERE nombreCampana='" + name + "'");
             while (r.next()) {
                 return r.getInt("idcampana");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+    
+    
+    
+    void setUserC() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        try {
+            Connection con = Db.connect();
+            Statement s = con.createStatement();
+            ResultSet r = s.executeQuery("select * from usuarios ");
+            model.addElement("TODOS");
+            while (r.next()) {
+                model.addElement(r.getString("nombreUsuario"));
+            }
+            listaUsuarioC.setModel(model);
+            listaUsuarioC.setSelectedIndex(0);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    int getIdUserC(String name) {
+        try {
+            Connection con = Db.connect();
+            Statement s = con.createStatement();
+            ResultSet r = s.executeQuery("select * from usuarios WHERE nombreUsuario='" + name + "'");
+            while (r.next()) {
+                return r.getInt("idusuarios");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -103,14 +139,14 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        lista_camp = new javax.swing.JList<>();
+        listaCampanaC = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtmessage = new javax.swing.JTextArea();
+        txaMmessage = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane26 = new javax.swing.JScrollPane();
-        jList16 = new javax.swing.JList<>();
+        listaUsuarioC = new javax.swing.JList<>();
         jLabel16 = new javax.swing.JLabel();
         txtEscribeCoordinador = new javax.swing.JTextField();
         lblFondo = new javax.swing.JLabel();
@@ -133,19 +169,24 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Campañas");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 110, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 110, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Mensaje");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 170, -1));
 
-        lista_camp.setBackground(new java.awt.Color(5, 78, 142));
-        lista_camp.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        lista_camp.setForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane3.setViewportView(lista_camp);
+        listaCampanaC.setBackground(new java.awt.Color(5, 78, 142));
+        listaCampanaC.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        listaCampanaC.setForeground(new java.awt.Color(255, 255, 255));
+        listaCampanaC.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaCampanaCValueChanged(evt);
+            }
+        });
+        jScrollPane3.setViewportView(listaCampanaC);
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 190));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 120, 190));
 
         jButton2.setBackground(new java.awt.Color(5, 78, 142));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -169,14 +210,14 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, -1, -1));
 
-        txtmessage.setColumns(10);
-        txtmessage.setRows(5);
-        txtmessage.addKeyListener(new java.awt.event.KeyAdapter() {
+        txaMmessage.setColumns(10);
+        txaMmessage.setRows(5);
+        txaMmessage.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtmessageKeyTyped(evt);
+                txaMmessageKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(txtmessage);
+        jScrollPane1.setViewportView(txaMmessage);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 240, 170));
 
@@ -190,14 +231,20 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, 30, 30));
 
-        jList16.setBackground(new java.awt.Color(5, 78, 142));
-        jScrollPane26.setViewportView(jList16);
+        listaUsuarioC.setBackground(new java.awt.Color(5, 78, 142));
+        jScrollPane26.setViewportView(listaUsuarioC);
 
         getContentPane().add(jScrollPane26, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 70, 120, 190));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel16.setText("Usuarios");
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, -1, -1));
+
+        txtEscribeCoordinador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEscribeCoordinadorActionPerformed(evt);
+            }
+        });
         getContentPane().add(txtEscribeCoordinador, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, 240, -1));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Imagen1.png"))); // NOI18N
@@ -235,25 +282,25 @@ public final class InicioCoordinador extends javax.swing.JFrame {
     }//GEN-LAST:event_lblFondoMouseDragged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("Conectado al socket");
+        //System.out.println("Conectado al socket");
 
         try {
             Socket misocket = new Socket("localhost", 8080);
             System.out.println("Conectado al socketddddd");
             System.out.println("Conectado al socket");
             paqueteEnvio datos = new paqueteEnvio();
-            if (lista_camp.getSelectedValue().equals("TODOS")) {
+            if (listaCampanaC.getSelectedValue().equals("TODOS")) {
                 datos.setCamp("0");
             } else {
-                datos.setCamp(String.valueOf(getIDCamp(lista_camp.getSelectedValue())));
+                datos.setCamp(String.valueOf(getIDCamp(listaCampanaC.getSelectedValue())));
             }
-            datos.setMensaje(txtmessage.getText());
+            datos.setMensaje(txaMmessage.getText());
             datos.setNombre(nombre);
             datos.setIp("0");
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
             misocket.close();
-            txtmessage.setText("");
+            txaMmessage.setText("");
             /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
             flujoSalida.writeUTF(txtmessage.getText());
             flujoSalida.close();*/
@@ -263,7 +310,7 @@ public final class InicioCoordinador extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        txtmessage.setText("");
+        txaMmessage.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
@@ -274,12 +321,50 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void txtmessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmessageKeyTyped
-        if (txtmessage.getText().length() == 200) {
+    private void txaMmessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaMmessageKeyTyped
+        if (txaMmessage.getText().length() == 200) {
             evt.consume();
         }
 
-    }//GEN-LAST:event_txtmessageKeyTyped
+    }//GEN-LAST:event_txaMmessageKeyTyped
+
+    private void listaCampanaCValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaCampanaCValueChanged
+        int select = listaCampanaC.getSelectedIndex();
+        DefaultListModel<String> modell = new DefaultListModel<>();
+        if (select > 0) {
+            try {
+            com.mysql.jdbc.Connection con = (com.mysql.jdbc.Connection) Db.connect();
+            Statement s;
+            s = con.createStatement();
+            ResultSet r = s.executeQuery("SELECT nombreUsuario  FROM usuarios WHERE campana ='"+select+"' and estado = 1;");
+            while (r.next()) {
+                modell.addElement(r.getString("nombreUsuario"));
+            }
+            listaUsuarioC.setModel(modell);
+            listaUsuarioC.setSelectedIndex(0); 
+            } catch (Exception e) {
+            }
+        }
+         else {
+            try {
+            Connection con = (Connection) Db.connect();
+            Statement s;
+            s = con.createStatement();
+            ResultSet a = s.executeQuery("SELECT nombreUsuario FROM usuarios WHERE estado = 1;");
+            while (a.next()) {
+                modell.addElement(a.getString("nombreUsuario"));
+            }
+            listaUsuarioC.setModel(modell);
+            listaUsuarioC.setSelectedIndex(0); 
+            } catch (Exception e) {
+            }
+
+        }
+    }//GEN-LAST:event_listaCampanaCValueChanged
+
+    private void txtEscribeCoordinadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEscribeCoordinadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEscribeCoordinadorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -325,14 +410,14 @@ public final class InicioCoordinador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList<String> jList16;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane26;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblFondo;
-    private javax.swing.JList<String> lista_camp;
+    private javax.swing.JList<String> listaCampanaC;
+    private javax.swing.JList<String> listaUsuarioC;
+    private javax.swing.JTextArea txaMmessage;
     private javax.swing.JTextField txtEscribeCoordinador;
-    private javax.swing.JTextArea txtmessage;
     // End of variables declaration//GEN-END:variables
 }
 

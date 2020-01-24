@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import net.sf.jcarrierpigeon.Notification;
@@ -26,70 +27,86 @@ import net.sf.jcarrierpigeon.WindowPosition;
  *
  * @author RONNY.SOTILLET
  */
-public class InicioAsesor extends javax.swing.JFrame implements Runnable{
+public class InicioAsesor extends javax.swing.JFrame implements Runnable {
 
     /**
      * Creates new form InicioAsesor
      */
     String nombre;
-    int camp;
+    public static int camp;
     int posx, posy;
-    
-    
+
     public InicioAsesor() {
         initComponents();
-        txamessageC.setLineWrap(true);
+        txaMessageC.setLineWrap(true);
         //TextPrompt p new TexPrompt();
-         try{
-             this.setBackground( new Color(255, 0, 0, 0) );
-        }catch(Exception e){
-            
+        try {
+            this.setBackground(new Color(255, 0, 0, 0));
+        } catch (Exception e) {
+
         }
-        setIconImage (new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
         Thread mihilo = new Thread(this);
         mihilo.start();
     }
-    
+
     public InicioAsesor(String nombre, int camp) {
         initComponents();
-        this.nombre=nombre;
-        this.camp=camp;
-        
-         this.nombre = nombre;
-         try{
-             this.setBackground( new Color(255, 0, 0, 0) );
-        }catch(Exception e){
-            
+        this.nombre = nombre;
+        this.camp = camp;
+
+        this.nombre = nombre;
+        try {
+            this.setBackground(new Color(255, 0, 0, 0));
+        } catch (Exception e) {
+
         }
-        setIconImage (new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
         Thread mihilo = new Thread(this);
         mihilo.start();
+        setCoor();
     }
-    
-    
-      void sendNotifi(String msg){
+
+    void sendNotifi(String msg) {
         notification j = new notification(msg);
         NotificationQueue val = new NotificationQueue();
-        Notification obj = new Notification(j,WindowPosition.BOTTOMRIGHT,0,0,60000);
+        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 60000);
         val.add(obj);
     }
 
-      
-      int getIDCamp(String name){
-        try{
+    void setCoor() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        try {
             Connection con = Db.connect();
-            Statement s =  con.createStatement();
-            ResultSet r = s.executeQuery("select * from mastercampana WHERE snombreCampana='"+name+"'");
-            while(r.next()){ 
-                return r.getInt("iidcampana");
+            Statement s = con.createStatement();
+            ResultSet r = s.executeQuery("select * from usuarios WHERE nivel = 1 and campana = '" + camp + "' and estado = 1");
+            while (r.next()) {
+                model.addElement(r.getString("nombreUsuario"));
             }
-        }catch(SQLException e){
+            listaCordinadorAs.setModel(model);
+            listaCordinadorAs.setSelectedIndex(0);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    int getIDCamp(String name) {
+        try {
+            Connection con = Db.connect();
+            Statement s = con.createStatement();
+            ResultSet r = s.executeQuery("select * from campana WHERE nombreCampana='" + name + "'");
+            while (r.next()) {
+                return r.getInt("idcampana");
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return 0;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -107,11 +124,11 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         btnBorrar = new javax.swing.JButton();
         btnEnviar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txamessageC = new javax.swing.JTextArea();
+        txaMessageC = new javax.swing.JTextArea();
         jLbCerrar = new javax.swing.JLabel();
         jLbMinimizar = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jLiAsesor = new javax.swing.JList<>();
+        listaCordinadorAs = new javax.swing.JList<>();
         txtEscribeAsesor = new javax.swing.JTextField();
         lblFondo = new javax.swing.JLabel();
 
@@ -132,8 +149,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Asesor");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 70, 30));
+        jLabel3.setText("Coordinador");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 120, 30));
 
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -180,14 +197,14 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         });
         getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, 80, 30));
 
-        txamessageC.setColumns(10);
-        txamessageC.setRows(5);
-        txamessageC.addKeyListener(new java.awt.event.KeyAdapter() {
+        txaMessageC.setColumns(10);
+        txaMessageC.setRows(5);
+        txaMessageC.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txamessageCKeyTyped(evt);
+                txaMessageCKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(txamessageC);
+        jScrollPane1.setViewportView(txaMessageC);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 230, 160));
 
@@ -211,8 +228,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
         });
         getContentPane().add(jLbMinimizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 20, -1));
 
-        jLiAsesor.setBackground(new java.awt.Color(5, 78, 142));
-        jScrollPane2.setViewportView(jLiAsesor);
+        listaCordinadorAs.setBackground(new java.awt.Color(5, 78, 142));
+        jScrollPane2.setViewportView(listaCordinadorAs);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 160));
         getContentPane().add(txtEscribeAsesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 230, -1));
@@ -251,46 +268,47 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        txamessageC.setText("");
+        txaMessageC.setText("");
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         System.out.println("Conectado al socket");
 
-        try{
+        try {
             Socket misocket = new Socket("localhost", 8080);
             System.out.println("Conectado al socketddddd");
             System.out.println("Conectado al socket");
             paqueteEnvio datos = new paqueteEnvio();
-            if(jLiAsesor.getSelectedValue().equals("TODOS")){
+            if (listaCordinadorAs.getSelectedValue().equals("TODOS")) {
                 datos.setCamp("0");
-            }else{
-                datos.setCamp(String.valueOf(getIDCamp(jLiAsesor.getSelectedValue())));
+            } else {
+                datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
             }
-            datos.setMensaje(txamessageC.getText());
+            datos.setMensaje(txaMessageC.getText());
             datos.setNombre(nombre);
             datos.setIp("0");
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
             misocket.close();
-            txamessageC.setText("");
+            txaMessageC.setText("");
             /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
             flujoSalida.writeUTF(txtmessage.getText());
             flujoSalida.close();*/
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
         //sendNotifi();
     }//GEN-LAST:event_btnEnviarActionPerformed
 
-    private void txamessageCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txamessageCKeyTyped
-        if (txamessageC.getText().length()== 200){
+    private void txaMessageCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaMessageCKeyTyped
+        if (txaMessageC.getText().length() == 200) {
             evt.consume();
         }
 
-    }//GEN-LAST:event_txamessageCKeyTyped
+    }//GEN-LAST:event_txaMessageCKeyTyped
 
     private void lblFondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMousePressed
-        posx=evt.getX();
-        posy=evt.getY();
+        posx = evt.getX();
+        posy = evt.getY();
     }//GEN-LAST:event_lblFondoMousePressed
 
     private void lblFondoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMouseClicked
@@ -298,8 +316,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     }//GEN-LAST:event_lblFondoMouseClicked
 
     private void lblFondoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMouseDragged
-        int xp=evt.getXOnScreen() -posx;
-        int yp=evt.getYOnScreen() -posy;
+        int xp = evt.getXOnScreen() - posx;
+        int yp = evt.getYOnScreen() - posy;
         this.setLocation(xp, yp);
     }//GEN-LAST:event_lblFondoMouseDragged
 
@@ -349,12 +367,12 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     @Override
     public void run() {
         try {
-            Socket misocket = new Socket("192.168.250.229",9000);
+            Socket misocket = new Socket("192.168.250.229", 9000);
             paqueteEnvio datos = new paqueteEnvio();
             datos.setCamp(String.valueOf(camp));
-            datos.setNombre(nombre);    
+            datos.setNombre(nombre);
             InetAddress inet = InetAddress.getLocalHost();
-            String ip=inet.getHostAddress();
+            String ip = inet.getHostAddress();
             datos.setIp(ip);
             System.out.println(ip);
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
@@ -363,16 +381,16 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
             ServerSocket servidor_cliente = new ServerSocket(9090);
             Socket cliente;
             paqueteEnvio paqueteRecibido;
-            while(true){
+            while (true) {
                 cliente = servidor_cliente.accept();
                 ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
-                paqueteRecibido = (paqueteEnvio)flujoEntrada.readObject();
-                if(paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")){
+                paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
+                if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
                     sendNotifi(paqueteRecibido.getMensaje());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-             System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
@@ -386,11 +404,11 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable{
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLbCerrar;
     private javax.swing.JLabel jLbMinimizar;
-    private javax.swing.JList<String> jLiAsesor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblFondo;
-    private javax.swing.JTextArea txamessageC;
+    private javax.swing.JList<String> listaCordinadorAs;
+    private javax.swing.JTextArea txaMessageC;
     private javax.swing.JTextField txtEscribeAsesor;
     // End of variables declaration//GEN-END:variables
 }

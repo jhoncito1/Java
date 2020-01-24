@@ -45,6 +45,12 @@ public class chatInterno extends javax.swing.JFrame {
         
         color_transparent();
     }
+    
+    
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -301,11 +307,12 @@ public class chatInterno extends javax.swing.JFrame {
     private void btnActualizarCampanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCampanaActionPerformed
         addCampana nCampana = new addCampana();
         int fila = tablaCampana.getSelectedRow();
+        
+        addCampana.idCampana= Integer.parseInt(tablaCampana.getValueAt(fila, 0).toString());
+        addCampana.txtNombreCampana.setText(tablaCampana.getValueAt(fila, 1).toString());
+        addCampana.cbxEstadoC.setSelectedItem(tablaCampana.getValueAt(fila, 2).toString());
 
-        nCampana.txtNombreCampana.setText(tablaCampana.getValueAt(fila, 1).toString());
-        nCampana.cbxEstadoC.setSelectedItem(tablaCampana.getValueAt(fila, 4).toString());
-
-        nCampana.btnInsertarC.setEnabled(false);
+        addCampana.btnInsertarC.setEnabled(false);
         nCampana.setVisible(true);
     }//GEN-LAST:event_btnActualizarCampanaActionPerformed
 
