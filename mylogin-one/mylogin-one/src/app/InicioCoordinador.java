@@ -285,7 +285,7 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         //System.out.println("Conectado al socket");
 
         try {
-            Socket misocket = new Socket("localhost", 8080);
+            Socket misocket = new Socket("localhost", 9000);
             System.out.println("Conectado al socketddddd");
             System.out.println("Conectado al socket");
             paqueteEnvio datos = new paqueteEnvio();

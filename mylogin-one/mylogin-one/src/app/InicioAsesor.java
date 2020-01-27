@@ -275,25 +275,21 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         System.out.println("Conectado al socket");
 
         try {
-            Socket misocket = new Socket("localhost", 8080);
-            System.out.println("Conectado al socketddddd");
-            System.out.println("Conectado al socket");
+            Socket misocket = new Socket("localhost", 9000);
             paqueteEnvio datos = new paqueteEnvio();
             if (listaCordinadorAs.getSelectedValue().equals("TODOS")) {
                 datos.setCamp("0");
             } else {
+                
                 datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
             }
-            datos.setMensaje(txaMessageC.getText());
+            datos.setMensaje(txtEscribeAsesor.getText());
             datos.setNombre(nombre);
             datos.setIp("0");
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
             misocket.close();
-            txaMessageC.setText("");
-            /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
-            flujoSalida.writeUTF(txtmessage.getText());
-            flujoSalida.close();*/
+            txtEscribeAsesor.setText("");
         } catch (Exception e) {
         }
         //sendNotifi();
@@ -367,7 +363,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         try {
-            Socket misocket = new Socket("192.168.250.229", 9000);
+            Socket misocket = new Socket("192.168.250.211", 9000);
             paqueteEnvio datos = new paqueteEnvio();
             datos.setCamp(String.valueOf(camp));
             datos.setNombre(nombre);
@@ -386,7 +382,9 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                 ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
                 if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
+                    
                     sendNotifi(paqueteRecibido.getMensaje());
+                    txaMessageC.setText(paqueteRecibido.getMensaje()); 
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

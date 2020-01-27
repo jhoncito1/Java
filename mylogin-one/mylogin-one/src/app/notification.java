@@ -40,7 +40,8 @@ public class notification extends javax.swing.JFrame {
         String[] a = splitToNChar(message, 30);
         String op = String.join("<br>", a);
         
-        lblmessage.setText("<html>"+op+"</html>");
+        lblmessage.setText("<html>"+op+"</html>"); 
+        
     }
 
         private static String[] splitToNChar(String text, int size) {

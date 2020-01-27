@@ -17,6 +17,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import net.sf.jcarrierpigeon.Notification;
+import net.sf.jcarrierpigeon.NotificationQueue;
+import net.sf.jcarrierpigeon.WindowPosition;
 
 /**
  *
@@ -28,12 +31,12 @@ public class InicioAdmin extends javax.swing.JFrame {
     Connection con = (Connection) cc.connect();
     int posx, posy;
     String nombre;
-    
-    public static int idUser; 
+
+    public static int idUser;
 
     public InicioAdmin() {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
         color_transparent();
 
@@ -44,7 +47,6 @@ public class InicioAdmin extends javax.swing.JFrame {
         }
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
 
-        
     }
 
     public InicioAdmin(String nombre, int id) {
@@ -62,6 +64,13 @@ public class InicioAdmin extends javax.swing.JFrame {
         setCampA();
         setUserA();
 
+    }
+
+    void sendNotifi(String msg) {
+        notification j = new notification(msg);
+        NotificationQueue val = new NotificationQueue();
+        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 60000);
+        val.add(obj);
     }
 
     /**
@@ -98,13 +107,11 @@ public class InicioAdmin extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
             //System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error de datos" + e.getMessage());
         }
         return 0;
     }
-    
-    
-    
+
     void setUserA() {
         DefaultListModel<String> modell = new DefaultListModel<>();
         try {
@@ -113,7 +120,7 @@ public class InicioAdmin extends javax.swing.JFrame {
             s = con.createStatement();
             ResultSet r = s.executeQuery("select * from usuarios");
             //ResultSet r = s.executeQuery("select * from usuarios");
-            //modell.addElement("TODOS");
+            modell.addElement("TODOS");
             while (r.next()) {
                 modell.addElement(r.getString("nombreUsuario"));
             }
@@ -136,11 +143,10 @@ public class InicioAdmin extends javax.swing.JFrame {
             }
             System.out.println(r);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"Error de datos"+ e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error de datos" + e.getMessage());
         }
         return 0;
     }
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -288,7 +294,7 @@ public class InicioAdmin extends javax.swing.JFrame {
         btneditarCampana.setContentAreaFilled(false);
         btneditarCampana.setBorderPainted(false);
     }
-    
+
     private void lblFondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMousePressed
         posx = evt.getX();
         posy = evt.getY();
@@ -315,14 +321,19 @@ public class InicioAdmin extends javax.swing.JFrame {
 
     private void btnEnviarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarAActionPerformed
         try {
-            Socket misocket = new Socket("localhost", 8080);
+            Socket misocket = new Socket("localhost", 9000);
             System.out.println("Conectado al socketddddd");
             System.out.println("Conectado al socket");
             paqueteEnvio datos = new paqueteEnvio();
             if (listaCampanaA.getSelectedValue().equals("TODOS")) {
                 datos.setCamp("0");
             } else {
-                datos.setCamp(String.valueOf(getIDCampA(listaCampanaA.getSelectedValue())));
+                if (listaUsuarioA.getSelectedValue().equals(idUser)) {
+                    datos.setCamp(String.valueOf(getIDCampA(listaUsuarioA.getSelectedValue())));
+                } else {
+                  datos.setCamp(String.valueOf(getIDCampA(listaCampanaA.getSelectedValue())));  
+                }
+                
             }
             datos.setMensaje(txtEscribeAdmin.getText());
             datos.setNombre(nombre);
@@ -331,9 +342,6 @@ public class InicioAdmin extends javax.swing.JFrame {
             paqueteDatos.writeObject(datos);
             misocket.close();
             txtEscribeAdmin.setText("");
-            /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
-            flujoSalida.writeUTF(txtmessage.getText());
-            flujoSalida.close();*/
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btnEnviarAActionPerformed
@@ -344,9 +352,9 @@ public class InicioAdmin extends javax.swing.JFrame {
 
     private void listaCampanaAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaCampanaAMouseClicked
         //int select = listaCampanaA.getSelectedIndex();
-        
+
         if (listaCampanaA.getSelectedValue().equals("TODOS")) {
-            
+
         }
     }//GEN-LAST:event_listaCampanaAMouseClicked
 
@@ -356,36 +364,33 @@ public class InicioAdmin extends javax.swing.JFrame {
         if (select > 0) {
             //String sql = "SELECT nombreUsuario FROM usuarios WHERE campana ='"+select+"';";
             try {
-            Connection con = (Connection) Db.connect();
-            Statement s;
-            s = con.createStatement();
-            ResultSet r = s.executeQuery("SELECT nombreUsuario FROM usuarios WHERE campana ='"+select+"'and estado = 1;");
-            while (r.next()) {
-                modell.addElement(r.getString("nombreUsuario"));
-            }
-            listaUsuarioA.setModel(modell);
-            listaUsuarioA.setSelectedIndex(0); 
+                Connection con = (Connection) Db.connect();
+                Statement s;
+                s = con.createStatement();
+                ResultSet r = s.executeQuery("SELECT nombreUsuario FROM usuarios WHERE campana ='" + select + "'and estado = 1;");
+                while (r.next()) {
+                    modell.addElement(r.getString("nombreUsuario"));
+                }
+                listaUsuarioA.setModel(modell);
+                listaUsuarioA.setSelectedIndex(0);
             } catch (Exception e) {
             }
-        }
-        else {
+        } else {
             try {
-            Connection con = (Connection) Db.connect();
-            Statement s;
-            s = con.createStatement();
-            ResultSet a = s.executeQuery("SELECT nombreUsuario FROM usuarios WHERE estado = 1;");
-            while (a.next()) {
-                modell.addElement(a.getString("nombreUsuario"));
-            }
-            listaUsuarioA.setModel(modell);
-            listaUsuarioA.setSelectedIndex(0); 
+                Connection con = (Connection) Db.connect();
+                Statement s;
+                s = con.createStatement();
+                ResultSet a = s.executeQuery("SELECT nombreUsuario FROM usuarios WHERE estado = 1;");
+                while (a.next()) {
+                    modell.addElement(a.getString("nombreUsuario"));
+                }
+                listaUsuarioA.setModel(modell);
+                listaUsuarioA.setSelectedIndex(0);
             } catch (Exception e) {
             }
 
         }
     }//GEN-LAST:event_listaCampanaAValueChanged
-
-    
 
     /**
      * @param args the command line arguments
