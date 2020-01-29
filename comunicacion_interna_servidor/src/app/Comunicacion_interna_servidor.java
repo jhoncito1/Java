@@ -9,7 +9,7 @@ public class Comunicacion_interna_servidor {
      */
     public static void main(String[] args) {
         conector c = new conector();
-        c.iniciar();
+        c.run();
     }
     
 }
