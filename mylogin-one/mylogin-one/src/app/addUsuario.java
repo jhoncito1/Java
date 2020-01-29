@@ -23,7 +23,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class addUsuario extends javax.swing.JFrame {
 
-    
+    int posx, posy;
     Db cc = new Db();
     Connection con = (Connection) Db.connect();
     public static  int idUsuario;
@@ -64,10 +64,12 @@ public class addUsuario extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btnInsertarU = new javax.swing.JButton();
         btnActualizarU = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(500, 500));
+        setMinimumSize(new java.awt.Dimension(480, 500));
+        setUndecorated(true);
         getContentPane().setLayout(null);
         getContentPane().add(txtNombreU);
         txtNombreU.setBounds(160, 80, 298, 24);
@@ -152,6 +154,36 @@ public class addUsuario extends javax.swing.JFrame {
         });
         getContentPane().add(btnActualizarU);
         btnActualizarU.setBounds(370, 390, 90, 32);
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel2.setText("X");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jLabel2MouseDragged(evt);
+            }
+        });
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel2MousePressed(evt);
+            }
+        });
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(460, 0, 20, 30);
+
+        lblFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                lblFondoMouseDragged(evt);
+            }
+        });
+        lblFondo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblFondoMousePressed(evt);
+            }
+        });
         getContentPane().add(lblFondo);
         lblFondo.setBounds(10, 20, 460, 420);
 
@@ -175,6 +207,29 @@ public class addUsuario extends javax.swing.JFrame {
         actualizarUsuario();
         //limpiarCajas();
     }//GEN-LAST:event_btnActualizarUActionPerformed
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+        
+    }//GEN-LAST:event_jLabel2MousePressed
+
+    private void jLabel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseDragged
+        
+    }//GEN-LAST:event_jLabel2MouseDragged
+
+    private void lblFondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMousePressed
+        posx = evt.getX();
+        posy = evt.getY();
+    }//GEN-LAST:event_lblFondoMousePressed
+
+    private void lblFondoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMouseDragged
+        int xp = evt.getXOnScreen() - posx;
+        int yp = evt.getYOnScreen() - posy;
+        this.setLocation(xp, yp);
+    }//GEN-LAST:event_lblFondoMouseDragged
 
     
     public void mostrarCampana(){
@@ -394,6 +449,7 @@ public class addUsuario extends javax.swing.JFrame {
     public static javax.swing.JComboBox<String> cbxEstadoU;
     public static javax.swing.JComboBox<String> cbxNivelU;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

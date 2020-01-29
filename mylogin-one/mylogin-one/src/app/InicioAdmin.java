@@ -5,9 +5,14 @@
  */
 package app;
 
+import static app.InicioAsesor.camp;
 import com.mysql.jdbc.Connection;
 import java.awt.Color;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -321,25 +326,22 @@ public class InicioAdmin extends javax.swing.JFrame {
 
     private void btnEnviarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarAActionPerformed
         try {
-            Socket misocket = new Socket("localhost", 9000);
-            System.out.println("Conectado al socketddddd");
-            System.out.println("Conectado al socket");
+            Socket misocket = new Socket("192.168.250.211", 9000);
             paqueteEnvio datos = new paqueteEnvio();
             if (listaCampanaA.getSelectedValue().equals("TODOS")) {
                 datos.setCamp("0");
-            } else {
-                if (listaUsuarioA.getSelectedValue().equals(idUser)) {
-                    datos.setCamp(String.valueOf(getIDCampA(listaUsuarioA.getSelectedValue())));
-                } else {
-                  datos.setCamp(String.valueOf(getIDCampA(listaCampanaA.getSelectedValue())));  
-                }
+            } else if (listaCampanaA.getSelectedValue().equals("TODOS"))
+            {
+                datos.setCamp(String.valueOf(getIDCampA(listaCampanaA.getSelectedValue())));
                 
+
             }
             datos.setMensaje(txtEscribeAdmin.getText());
             datos.setNombre(nombre);
             datos.setIp("0");
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
+            txtEscribeAdmin.setText("");
             misocket.close();
             txtEscribeAdmin.setText("");
         } catch (Exception e) {
@@ -426,6 +428,37 @@ public class InicioAdmin extends javax.swing.JFrame {
                 new InicioAdmin().setVisible(true);
             }
         });
+    }
+
+    public void run() {
+        try {
+            Socket misocket = new Socket("192.168.250.211", 9000);
+            paqueteEnvio datos = new paqueteEnvio();
+            datos.setCamp(String.valueOf(camp));
+            datos.setNombre(nombre);
+            InetAddress inet = InetAddress.getLocalHost();
+            String ip = inet.getHostAddress();
+            datos.setIp(ip);
+            System.out.println(ip);
+            ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+            paqueteDatos.writeObject(datos);
+            misocket.close();
+            ServerSocket servidor_cliente = new ServerSocket(9090);
+            Socket cliente;
+            paqueteEnvio paqueteRecibido;
+            while (true) {
+                cliente = servidor_cliente.accept();
+                ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
+                paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
+                if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
+                    txaConversacionAdmin.setText(paqueteRecibido.getMensaje());
+                    sendNotifi(paqueteRecibido.getMensaje());
+
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

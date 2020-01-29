@@ -24,6 +24,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class addCampana extends javax.swing.JFrame {
 
+    
+    int posx, posy;
     Db cc = new Db();
     Connection con = (Connection) cc.connect();
     
@@ -56,13 +58,24 @@ public class addCampana extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnInsertarC = new javax.swing.JButton();
         cbxEstadoC = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
         btnActualizarC = new javax.swing.JButton();
+        fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(420, 450));
+        setUndecorated(true);
+        getContentPane().setLayout(null);
+        getContentPane().add(txtNombreCampana);
+        txtNombreCampana.setBounds(160, 97, 236, 24);
 
         jLabel1.setText("Nombre Campaña");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(40, 101, 102, 16);
 
         jLabel4.setText("Estado");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(40, 159, 39, 16);
 
         btnInsertarC.setText("Insertar");
         btnInsertarC.addActionListener(new java.awt.event.ActionListener() {
@@ -70,9 +83,32 @@ public class addCampana extends javax.swing.JFrame {
                 btnInsertarCActionPerformed(evt);
             }
         });
+        getContentPane().add(btnInsertarC);
+        btnInsertarC.setBounds(205, 304, 86, 32);
 
         cbxEstadoC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactivo", "Activo" }));
         cbxEstadoC.setSelectedIndex(0);
+        getContentPane().add(cbxEstadoC);
+        cbxEstadoC.setBounds(160, 154, 111, 26);
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel2.setText("X");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jLabel2MouseDragged(evt);
+            }
+        });
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel2MousePressed(evt);
+            }
+        });
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(396, 0, 12, 24);
 
         btnActualizarC.setText("Actualizar");
         btnActualizarC.addActionListener(new java.awt.event.ActionListener() {
@@ -80,44 +116,24 @@ public class addCampana extends javax.swing.JFrame {
                 btnActualizarCActionPerformed(evt);
             }
         });
+        getContentPane().add(btnActualizarC);
+        btnActualizarC.setBounds(309, 304, 87, 32);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnInsertarC, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnActualizarC))
-                        .addComponent(txtNombreCampana, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cbxEstadoC, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(97, 97, 97)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtNombreCampana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(cbxEstadoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnInsertarC)
-                    .addComponent(btnActualizarC))
-                .addGap(78, 78, 78))
-        );
+        fondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                fondoMouseDragged(evt);
+            }
+        });
+        fondo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fondoMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                fondoMousePressed(evt);
+            }
+        });
+        getContentPane().add(fondo);
+        fondo.setBounds(0, -4, 420, 420);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -129,6 +145,33 @@ public class addCampana extends javax.swing.JFrame {
     private void btnActualizarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCActionPerformed
         actualizarCampana();
     }//GEN-LAST:event_btnActualizarCActionPerformed
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+        
+    }//GEN-LAST:event_jLabel2MousePressed
+
+    private void jLabel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseDragged
+        
+    }//GEN-LAST:event_jLabel2MouseDragged
+
+    private void fondoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fondoMouseDragged
+        int xp = evt.getXOnScreen() - posx;
+        int yp = evt.getYOnScreen() - posy;
+        this.setLocation(xp, yp);
+    }//GEN-LAST:event_fondoMouseDragged
+
+    private void fondoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fondoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fondoMouseClicked
+
+    private void fondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fondoMousePressed
+        posx = evt.getX();
+        posy = evt.getY();
+    }//GEN-LAST:event_fondoMousePressed
 
     public void mostrarCampana(){
         String[] titulos = {"ID", "Nombre","Creador", "Fecha","estado"};
@@ -259,7 +302,9 @@ public class addCampana extends javax.swing.JFrame {
     public static javax.swing.JButton btnActualizarC;
     public static javax.swing.JButton btnInsertarC;
     public static javax.swing.JComboBox<String> cbxEstadoC;
+    private javax.swing.JLabel fondo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     public static javax.swing.JTextField txtNombreCampana;
     // End of variables declaration//GEN-END:variables

@@ -38,7 +38,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
 
     public InicioAsesor() {
         initComponents();
-        txaMessageC.setLineWrap(true);
+        txaConversacionAsesor.setLineWrap(true);
         //TextPrompt p new TexPrompt();
         try {
             this.setBackground(new Color(255, 0, 0, 0));
@@ -124,7 +124,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         btnBorrar = new javax.swing.JButton();
         btnEnviar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txaMessageC = new javax.swing.JTextArea();
+        txaConversacionAsesor = new javax.swing.JTextArea();
         jLbCerrar = new javax.swing.JLabel();
         jLbMinimizar = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -197,14 +197,14 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         });
         getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, 80, 30));
 
-        txaMessageC.setColumns(10);
-        txaMessageC.setRows(5);
-        txaMessageC.addKeyListener(new java.awt.event.KeyAdapter() {
+        txaConversacionAsesor.setColumns(10);
+        txaConversacionAsesor.setRows(5);
+        txaConversacionAsesor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txaMessageCKeyTyped(evt);
+                txaConversacionAsesorKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(txaMessageC);
+        jScrollPane1.setViewportView(txaConversacionAsesor);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 230, 160));
 
@@ -268,14 +268,14 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        txaMessageC.setText("");
+        txaConversacionAsesor.setText("");
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         System.out.println("Conectado al socket");
 
         try {
-            Socket misocket = new Socket("localhost", 9000);
+            Socket misocket = new Socket("192.168.250.211", 9000);
             paqueteEnvio datos = new paqueteEnvio();
             if (listaCordinadorAs.getSelectedValue().equals("TODOS")) {
                 datos.setCamp("0");
@@ -284,23 +284,25 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                 datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
             }
             datos.setMensaje(txtEscribeAsesor.getText());
+            txaConversacionAsesor.setText(datos.getMensaje());
             datos.setNombre(nombre);
             datos.setIp("0");
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
             misocket.close();
             txtEscribeAsesor.setText("");
+            
         } catch (Exception e) {
         }
         //sendNotifi();
     }//GEN-LAST:event_btnEnviarActionPerformed
 
-    private void txaMessageCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaMessageCKeyTyped
-        if (txaMessageC.getText().length() == 200) {
+    private void txaConversacionAsesorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaConversacionAsesorKeyTyped
+        if (txaConversacionAsesor.getText().length() == 200) {
             evt.consume();
         }
 
-    }//GEN-LAST:event_txaMessageCKeyTyped
+    }//GEN-LAST:event_txaConversacionAsesorKeyTyped
 
     private void lblFondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFondoMousePressed
         posx = evt.getX();
@@ -382,9 +384,9 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                 ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
                 if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
-                    
+                    txaConversacionAsesor.setText(paqueteRecibido.getMensaje()); 
                     sendNotifi(paqueteRecibido.getMensaje());
-                    txaMessageC.setText(paqueteRecibido.getMensaje()); 
+                    
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -406,7 +408,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JList<String> listaCordinadorAs;
-    private javax.swing.JTextArea txaMessageC;
+    private javax.swing.JTextArea txaConversacionAsesor;
     private javax.swing.JTextField txtEscribeAsesor;
     // End of variables declaration//GEN-END:variables
 }

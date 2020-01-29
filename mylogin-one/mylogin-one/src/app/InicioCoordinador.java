@@ -7,6 +7,7 @@ package app;
 
 import java.awt.Color;
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -21,14 +22,14 @@ import org.apache.commons.codec.digest.DigestUtils;
  *
  * @author Christian.Moreno
  */
-public final class InicioCoordinador extends javax.swing.JFrame {
+public final class InicioCoordinador extends javax.swing.JFrame implements Runnable{
 
     int posx, posy;
     String nombre;
 
     public InicioCoordinador() {
         initComponents();
-        txaMmessage.setLineWrap(true);
+        txaConversacionCoor.setLineWrap(true);
         try {
             this.setBackground(new Color(255, 0, 0, 0));
         } catch (Exception e) {
@@ -45,7 +46,7 @@ public final class InicioCoordinador extends javax.swing.JFrame {
      */
     public InicioCoordinador(String nombre) {
         initComponents();
-        txaMmessage.setLineWrap(true);
+        txaConversacionCoor.setLineWrap(true);
         this.nombre = nombre;
         try {
             this.setBackground(new Color(255, 0, 0, 0));
@@ -141,9 +142,9 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         listaCampanaC = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnEnviaCordinador = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txaMmessage = new javax.swing.JTextArea();
+        txaConversacionCoor = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane26 = new javax.swing.JScrollPane();
         listaUsuarioC = new javax.swing.JList<>();
@@ -199,25 +200,25 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 80, -1));
 
-        jButton1.setBackground(new java.awt.Color(5, 78, 142));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Enviar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnEnviaCordinador.setBackground(new java.awt.Color(5, 78, 142));
+        btnEnviaCordinador.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEnviaCordinador.setForeground(new java.awt.Color(255, 255, 255));
+        btnEnviaCordinador.setText("Enviar");
+        btnEnviaCordinador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnEnviaCordinadorActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, -1, -1));
+        getContentPane().add(btnEnviaCordinador, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, -1, -1));
 
-        txaMmessage.setColumns(10);
-        txaMmessage.setRows(5);
-        txaMmessage.addKeyListener(new java.awt.event.KeyAdapter() {
+        txaConversacionCoor.setColumns(10);
+        txaConversacionCoor.setRows(5);
+        txaConversacionCoor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txaMmessageKeyTyped(evt);
+                txaConversacionCoorKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(txaMmessage);
+        jScrollPane1.setViewportView(txaConversacionCoor);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 240, 170));
 
@@ -281,11 +282,11 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         this.setLocation(xp, yp);
     }//GEN-LAST:event_lblFondoMouseDragged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnEnviaCordinadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviaCordinadorActionPerformed
         //System.out.println("Conectado al socket");
 
         try {
-            Socket misocket = new Socket("localhost", 9000);
+            Socket misocket = new Socket("192.168.250.211", 9000);
             System.out.println("Conectado al socketddddd");
             System.out.println("Conectado al socket");
             paqueteEnvio datos = new paqueteEnvio();
@@ -294,23 +295,25 @@ public final class InicioCoordinador extends javax.swing.JFrame {
             } else {
                 datos.setCamp(String.valueOf(getIDCamp(listaCampanaC.getSelectedValue())));
             }
-            datos.setMensaje(txaMmessage.getText());
+            datos.setMensaje(txtEscribeCoordinador.getText());
+            //datos.setMensaje(txaMmessage.getText());
             datos.setNombre(nombre);
             datos.setIp("0");
+            
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
             misocket.close();
-            txaMmessage.setText("");
+            txaConversacionCoor.setText("");
             /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
             flujoSalida.writeUTF(txtmessage.getText());
             flujoSalida.close();*/
         } catch (Exception e) {
         }
 //sendNotifi();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnEnviaCordinadorActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        txaMmessage.setText("");
+        txaConversacionCoor.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
@@ -321,12 +324,12 @@ public final class InicioCoordinador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void txaMmessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaMmessageKeyTyped
-        if (txaMmessage.getText().length() == 200) {
+    private void txaConversacionCoorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaConversacionCoorKeyTyped
+        if (txaConversacionCoor.getText().length() == 200) {
             evt.consume();
         }
 
-    }//GEN-LAST:event_txaMmessageKeyTyped
+    }//GEN-LAST:event_txaConversacionCoorKeyTyped
 
     private void listaCampanaCValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaCampanaCValueChanged
         int select = listaCampanaC.getSelectedIndex();
@@ -401,9 +404,26 @@ public final class InicioCoordinador extends javax.swing.JFrame {
             }
         });
     }
+    @Override
+    public void run() {
+         
+        try {
+            //throw new UnsupportedOperationException("Not supported yet.");//To change body of generated methods, choose Tools | Templates.
+            ServerSocket servCliente = new ServerSocket( 9000);
+            Socket cliente;
+            paqueteEnvio paqueteRecibido;
+            while (true) {                
+                cliente = servCliente.accept();
+                ObjectInputStream flujoEntada = new ObjectInputStream(cliente.getInputStream());
+                paqueteRecibido = (paqueteEnvio) flujoEntada.readObject();
+                txaConversacionCoor.append("\n" + paqueteRecibido.getMensaje());
+            }
+        } catch (Exception e) {
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnEnviaCordinador;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
@@ -416,45 +436,8 @@ public final class InicioCoordinador extends javax.swing.JFrame {
     private javax.swing.JLabel lblFondo;
     private javax.swing.JList<String> listaCampanaC;
     private javax.swing.JList<String> listaUsuarioC;
-    private javax.swing.JTextArea txaMmessage;
+    private javax.swing.JTextArea txaConversacionCoor;
     private javax.swing.JTextField txtEscribeCoordinador;
     // End of variables declaration//GEN-END:variables
-}
-
-class paqueteEnvio implements Serializable {
-
-    private String nombre, camp, mensaje, ip;
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getCamp() {
-        return camp;
-    }
-
-    public void setCamp(String campaña) {
-        this.camp = campaña;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
-
+  
 }
