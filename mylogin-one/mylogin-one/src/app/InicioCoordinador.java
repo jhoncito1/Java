@@ -7,6 +7,7 @@ package app;
 
 import java.awt.Color;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
@@ -25,6 +26,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 public final class InicioCoordinador extends javax.swing.JFrame implements Runnable{
 
     int posx, posy;
+    public static int camp;
     String nombre;
 
     public InicioCoordinador() {
@@ -36,6 +38,9 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
         }
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
+        
+        Thread mihilo = new Thread(this);
+        mihilo.start();
     }
 
     /**
@@ -57,6 +62,8 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
         setLocationRelativeTo(null);
         setCamp();
         setUserC();
+        Thread mihilo = new Thread(this);
+        mihilo.start();
 
     }
 
@@ -283,7 +290,7 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
     }//GEN-LAST:event_lblFondoMouseDragged
 
     private void btnEnviaCordinadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviaCordinadorActionPerformed
-        //System.out.println("Conectado al socket");
+        System.out.println("Conectado al socket");
 
         try {
             Socket misocket = new Socket("192.168.250.211", 9000);
@@ -296,6 +303,7 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
                 datos.setCamp(String.valueOf(getIDCamp(listaCampanaC.getSelectedValue())));
             }
             datos.setMensaje(txtEscribeCoordinador.getText());
+            txaConversacionCoor.setText(datos.getMensaje());
             //datos.setMensaje(txaMmessage.getText());
             datos.setNombre(nombre);
             datos.setIp("0");
@@ -303,7 +311,7 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
             ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
             paqueteDatos.writeObject(datos);
             misocket.close();
-            txaConversacionCoor.setText("");
+            txtEscribeCoordinador.setText("");
             /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
             flujoSalida.writeUTF(txtmessage.getText());
             flujoSalida.close();*/
@@ -399,6 +407,7 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new InicioCoordinador().setVisible(true);
             }
@@ -406,20 +415,48 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
     }
     @Override
     public void run() {
-         
-        try {
-            //throw new UnsupportedOperationException("Not supported yet.");//To change body of generated methods, choose Tools | Templates.
-            ServerSocket servCliente = new ServerSocket( 9000);
+         try {
+             try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+                 paqueteEnvio datos = new paqueteEnvio();
+                 datos.setCamp(String.valueOf(camp));
+                 datos.setNombre(nombre);
+                 InetAddress inet = InetAddress.getLocalHost();
+                 String ip = inet.getHostAddress();
+                 datos.setIp(ip);
+                 System.out.println(ip);
+                 ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                 paqueteDatos.writeObject(datos);
+             }
+            ServerSocket servidor_cliente = new ServerSocket(9090);
             Socket cliente;
             paqueteEnvio paqueteRecibido;
-            while (true) {                
-                cliente = servCliente.accept();
-                ObjectInputStream flujoEntada = new ObjectInputStream(cliente.getInputStream());
-                paqueteRecibido = (paqueteEnvio) flujoEntada.readObject();
-                txaConversacionCoor.append("\n" + paqueteRecibido.getMensaje());
+            while (true) {
+                cliente = servidor_cliente.accept();
+                ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
+                paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
+                if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
+                    txaConversacionCoor.setText(paqueteRecibido.getMensaje());
+                    //sendNotifi(paqueteRecibido.getMensaje());
+
+                }
             }
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
         }
+//        try {
+//            //throw new UnsupportedOperationException("Not supported yet.");//To change body of generated methods, choose Tools | Templates.
+//            ServerSocket servCliente = new ServerSocket( 9000);
+//            Socket cliente;
+//            paqueteEnvio paqueteRecibido;
+//            while (true) {                
+//                cliente = servCliente.accept();
+//                ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
+//                paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
+//                txaConversacionCoor.append("\n" + paqueteRecibido.getMensaje());
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

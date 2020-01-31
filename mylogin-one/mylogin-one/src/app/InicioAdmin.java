@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package app;
 
 import static app.InicioAsesor.camp;
@@ -30,27 +25,27 @@ import net.sf.jcarrierpigeon.WindowPosition;
  *
  * @author JHON.CHAVEZ
  */
-public class InicioAdmin extends javax.swing.JFrame {
+public class InicioAdmin extends javax.swing.JFrame implements Runnable {
 
     Db cc = new Db();
     Connection con = (Connection) cc.connect();
     int posx, posy;
     String nombre;
-
     public static int idUser;
-
+ 
     public InicioAdmin() {
         initComponents();
-
-        this.setLocationRelativeTo(null);
-        color_transparent();
-
         txaConversacionAdmin.setLineWrap(true);
         try {
             this.setBackground(new Color(255, 0, 0, 0));
         } catch (Exception e) {
         }
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
+        this.setLocationRelativeTo(null);
+        color_transparent();
+        
+        Thread hiloAdmin = new Thread(this);
+        hiloAdmin.start();
 
     }
 
@@ -68,15 +63,19 @@ public class InicioAdmin extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setCampA();
         setUserA();
+        color_transparent();
+        Thread hiloAdmin = new Thread(this);
+        hiloAdmin.start();
+        color_transparent();
 
     }
 
-    void sendNotifi(String msg) {
-        notification j = new notification(msg);
-        NotificationQueue val = new NotificationQueue();
-        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 60000);
-        val.add(obj);
-    }
+//    void sendNotifi(String msg) {
+//        notification j = new notification(msg);
+//        NotificationQueue val = new NotificationQueue();
+//        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 10000);
+//        val.add(obj);
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -326,25 +325,25 @@ public class InicioAdmin extends javax.swing.JFrame {
 
     private void btnEnviarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarAActionPerformed
         try {
-            Socket misocket = new Socket("192.168.250.211", 9000);
-            paqueteEnvio datos = new paqueteEnvio();
-            if (listaCampanaA.getSelectedValue().equals("TODOS")) {
-                datos.setCamp("0");
-            } else if (listaCampanaA.getSelectedValue().equals("TODOS"))
-            {
-                datos.setCamp(String.valueOf(getIDCampA(listaCampanaA.getSelectedValue())));
-                
-
+            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+                paqueteEnvio datos = new paqueteEnvio();
+                if (listaCampanaA.getSelectedValue().equals("TODOS")) {
+                    datos.setCamp("0");
+                } else if (listaCampanaA.getSelectedValue().equals("TODOS"))
+                {
+                    datos.setCamp(String.valueOf(getIDCampA(listaCampanaA.getSelectedValue())));
+                    
+                    
+                }
+                datos.setMensaje(txtEscribeAdmin.getText());
+                datos.setNombre(nombre);
+                datos.setIp("0");
+                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                paqueteDatos.writeObject(datos);
+                txtEscribeAdmin.setText("");
             }
-            datos.setMensaje(txtEscribeAdmin.getText());
-            datos.setNombre(nombre);
-            datos.setIp("0");
-            ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-            paqueteDatos.writeObject(datos);
             txtEscribeAdmin.setText("");
-            misocket.close();
-            txtEscribeAdmin.setText("");
-        } catch (Exception e) {
+        } catch (IOException e) {
         }
     }//GEN-LAST:event_btnEnviarAActionPerformed
 
@@ -375,7 +374,7 @@ public class InicioAdmin extends javax.swing.JFrame {
                 }
                 listaUsuarioA.setModel(modell);
                 listaUsuarioA.setSelectedIndex(0);
-            } catch (Exception e) {
+            } catch (SQLException e) {
             }
         } else {
             try {
@@ -388,7 +387,7 @@ public class InicioAdmin extends javax.swing.JFrame {
                 }
                 listaUsuarioA.setModel(modell);
                 listaUsuarioA.setSelectedIndex(0);
-            } catch (Exception e) {
+            } catch (SQLException e) {
             }
 
         }
@@ -424,25 +423,27 @@ public class InicioAdmin extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new InicioAdmin().setVisible(true);
             }
         });
     }
 
+    @Override
     public void run() {
         try {
-            Socket misocket = new Socket("192.168.250.211", 9000);
-            paqueteEnvio datos = new paqueteEnvio();
-            datos.setCamp(String.valueOf(camp));
-            datos.setNombre(nombre);
-            InetAddress inet = InetAddress.getLocalHost();
-            String ip = inet.getHostAddress();
-            datos.setIp(ip);
-            System.out.println(ip);
-            ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-            paqueteDatos.writeObject(datos);
-            misocket.close();
+            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+                paqueteEnvio datos = new paqueteEnvio();
+                datos.setCamp(String.valueOf(camp));
+                datos.setNombre(nombre);
+                InetAddress inet = InetAddress.getLocalHost();
+                String ip = inet.getHostAddress();
+                datos.setIp(ip);
+                System.out.println("<<"+ip+">>");
+                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                paqueteDatos.writeObject(datos);
+            }
             ServerSocket servidor_cliente = new ServerSocket(9090);
             Socket cliente;
             paqueteEnvio paqueteRecibido;
@@ -452,7 +453,7 @@ public class InicioAdmin extends javax.swing.JFrame {
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
                 if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
                     txaConversacionAdmin.setText(paqueteRecibido.getMensaje());
-                    sendNotifi(paqueteRecibido.getMensaje());
+                    //sendNotifi(paqueteRecibido.getMensaje());
 
                 }
             }

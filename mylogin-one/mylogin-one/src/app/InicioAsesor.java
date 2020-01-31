@@ -32,9 +32,10 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     /**
      * Creates new form InicioAsesor
      */
+    int posx, posy;
     String nombre;
     public static int camp;
-    int posx, posy;
+    
 
     public InicioAsesor() {
         initComponents();
@@ -47,16 +48,15 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         }
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
-        Thread mihilo = new Thread(this);
-        mihilo.start();
+        Thread hiloAsesor = new Thread(this);
+        hiloAsesor.start();
     }
 
     public InicioAsesor(String nombre, int camp) {
         initComponents();
+        txaConversacionAsesor.setLineWrap(true);
         this.nombre = nombre;
-        this.camp = camp;
-
-        this.nombre = nombre;
+        InicioAsesor.camp = camp;
         try {
             this.setBackground(new Color(255, 0, 0, 0));
         } catch (Exception e) {
@@ -64,17 +64,17 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         }
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
-        Thread mihilo = new Thread(this);
-        mihilo.start();
+        Thread hiloAsesor = new Thread(this);
+        hiloAsesor.start();
         setCoor();
     }
 
-    void sendNotifi(String msg) {
-        notification j = new notification(msg);
-        NotificationQueue val = new NotificationQueue();
-        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 60000);
-        val.add(obj);
-    }
+//    void sendNotifi(String msg) {
+//        notification j = new notification(msg);
+//        NotificationQueue val = new NotificationQueue();
+//        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 60000);
+//        val.add(obj);
+//    }
 
     void setCoor() {
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -275,23 +275,24 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         System.out.println("Conectado al socket");
 
         try {
-            Socket misocket = new Socket("192.168.250.211", 9000);
-            paqueteEnvio datos = new paqueteEnvio();
-            if (listaCordinadorAs.getSelectedValue().equals("TODOS")) {
-                datos.setCamp("0");
-            } else {
-                
-                datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
+            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+                paqueteEnvio datos = new paqueteEnvio();
+                if (listaCordinadorAs.getSelectedValue().equals("TODOS")) {
+                    datos.setCamp("0");
+                } else {
+                    
+                    datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
+                }
+                datos.setMensaje(txtEscribeAsesor.getText());
+                //txaConversacionAsesor.setText(datos.getMensaje());
+                datos.setNombre(nombre);
+                datos.setIp("0");
+                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                paqueteDatos.writeObject(datos);
+                txtEscribeAsesor.setText("");
             }
-            datos.setMensaje(txtEscribeAsesor.getText());
-            txaConversacionAsesor.setText(datos.getMensaje());
-            datos.setNombre(nombre);
-            datos.setIp("0");
-            ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-            paqueteDatos.writeObject(datos);
-            misocket.close();
             txtEscribeAsesor.setText("");
-            
+
         } catch (Exception e) {
         }
         //sendNotifi();
@@ -356,6 +357,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new InicioAsesor().setVisible(true);
             }
@@ -365,17 +367,17 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         try {
-            Socket misocket = new Socket("192.168.250.211", 9000);
-            paqueteEnvio datos = new paqueteEnvio();
-            datos.setCamp(String.valueOf(camp));
-            datos.setNombre(nombre);
-            InetAddress inet = InetAddress.getLocalHost();
-            String ip = inet.getHostAddress();
-            datos.setIp(ip);
-            System.out.println(ip);
-            ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-            paqueteDatos.writeObject(datos);
-            misocket.close();
+            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+                paqueteEnvio datos = new paqueteEnvio();
+                datos.setCamp(String.valueOf(camp));
+                datos.setNombre(nombre);
+                InetAddress inet = InetAddress.getLocalHost();
+                String ip = inet.getHostAddress();
+                datos.setIp(ip);
+                System.out.println(ip);
+                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                paqueteDatos.writeObject(datos);
+            }
             ServerSocket servidor_cliente = new ServerSocket(9090);
             Socket cliente;
             paqueteEnvio paqueteRecibido;
@@ -384,10 +386,11 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                 ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
                 if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
-                    txaConversacionAsesor.setText(paqueteRecibido.getMensaje()); 
-                    sendNotifi(paqueteRecibido.getMensaje());
-                    
+                    txaConversacionAsesor.setText(paqueteRecibido.getMensaje());
+                    //sendNotifi(paqueteRecibido.getMensaje());
+
                 }
+                //txaConversacionAsesor.setText(paqueteRecibido.getMensaje());
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
