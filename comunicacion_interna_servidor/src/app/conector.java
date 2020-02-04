@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author RONNY.SOTILLET
  */
 //public class conector {
-public class conector extends Thread{
+public class conector extends Thread {
 
     ServerSocket server;
     Socket socket;
@@ -25,6 +25,7 @@ public class conector extends Thread{
         
         try {
             server = new ServerSocket(puerto);
+            System.out.println("*.:servidor iniciado:.* \n");
             String nombre, camp, mensaje, ip;
             paqueteEnvio paquete_recibido;
             while (true) {
