@@ -13,12 +13,17 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import net.sf.jcarrierpigeon.Notification;
 import net.sf.jcarrierpigeon.NotificationQueue;
 import net.sf.jcarrierpigeon.WindowPosition;
@@ -29,13 +34,12 @@ import net.sf.jcarrierpigeon.WindowPosition;
  */
 public class InicioAsesor extends javax.swing.JFrame implements Runnable {
 
-    /**
-     * Creates new form InicioAsesor
-     */
+    Db cc = new Db();
+    Connection con = (Connection) cc.connect();
+    
     int posx, posy;
     String nombre;
     public static int camp;
-    
 
     public InicioAsesor() {
         initComponents();
@@ -69,12 +73,12 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         setCoor();
     }
 
-//    void sendNotifi(String msg) {
-//        notification j = new notification(msg);
-//        NotificationQueue val = new NotificationQueue();
-//        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 60000);
-//        val.add(obj);
-//    }
+    void sendNotifi(String msg) {
+        notification j = new notification(msg);
+        NotificationQueue val = new NotificationQueue();
+        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 10000);
+        val.add(obj);
+    }
 
     void setCoor() {
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -232,6 +236,12 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         jScrollPane2.setViewportView(listaCordinadorAs);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 160));
+
+        txtEscribeAsesor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtEscribeAsesorKeyPressed(evt);
+            }
+        });
         getContentPane().add(txtEscribeAsesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 230, -1));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/fondo15.png"))); // NOI18N
@@ -272,30 +282,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        System.out.println("Conectado al socket");
-
-        try {
-            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
-                paqueteEnvio datos = new paqueteEnvio();
-                if (listaCordinadorAs.getSelectedValue().equals("TODOS")) {
-                    datos.setCamp("0");
-                } else {
-                    
-                    datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
-                }
-                datos.setMensaje(txtEscribeAsesor.getText());
-                //txaConversacionAsesor.setText(datos.getMensaje());
-                datos.setNombre(nombre);
-                datos.setIp("0");
-                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-                paqueteDatos.writeObject(datos);
-                txtEscribeAsesor.setText("");
-            }
-            txtEscribeAsesor.setText("");
-
-        } catch (Exception e) {
-        }
-        //sendNotifi();
+        guardarMensajes();
+        enviarMensajes();
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void txaConversacionAsesorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaConversacionAsesorKeyTyped
@@ -327,6 +315,64 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     private void jLbMinimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLbMinimizarMouseClicked
         setExtendedState(JFrame.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_jLbMinimizarMouseClicked
+
+    private void txtEscribeAsesorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEscribeAsesorKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            guardarMensajes();
+            enviarMensajes();
+        }
+    }//GEN-LAST:event_txtEscribeAsesorKeyPressed
+
+    public void enviarMensajes() {
+        //System.out.println("Conectado al socket");
+
+        try {
+            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+                paqueteEnvio datos = new paqueteEnvio();
+                if (listaCordinadorAs.getSelectedValue().equals("TODOS")) {
+                    datos.setCamp("0");
+                } else {
+
+                    datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
+                }
+                datos.setMensaje(txtEscribeAsesor.getText());
+                //txaConversacionAsesor.setText(datos.getMensaje());
+                datos.setNombre(nombre);
+                datos.setIp("0");
+                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                paqueteDatos.writeObject(datos);
+                txtEscribeAsesor.setText("");
+                misocket.close();
+            }
+            txtEscribeAsesor.setText("");
+
+        } catch (IOException e) {
+        }
+        //sendNotifi();
+    }
+
+    public void guardarMensajes() {
+        try {
+
+            String SQL = "insert into mensajes (mensajes, usuarioEnvia, fechaMensaje) values (?,?,?)";
+           PreparedStatement pst = con.prepareStatement(SQL);
+            
+
+            pst.setString(1, txtEscribeAsesor.getText());
+
+            LoginForm lg = new LoginForm();
+            pst.setString(2, LoginForm.dt);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            pst.setString(3, (dateFormat.format(date)));
+
+            pst.execute();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de Registro de mensajes " + e.getMessage());
+        }
+    }
+    
 
     /**
      * @param args the command line arguments
@@ -387,7 +433,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
                 if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
                     txaConversacionAsesor.setText(paqueteRecibido.getMensaje());
-                    //sendNotifi(paqueteRecibido.getMensaje());
+                    sendNotifi(paqueteRecibido.getMensaje());
 
                 }
                 //txaConversacionAsesor.setText(paqueteRecibido.getMensaje());

@@ -72,9 +72,9 @@
     -->
     
      <target name="-post-jar">
-    <property name="store.jar.name" value="Chat Interno3"/>
+    <property name="store.jar.name" value="Chat Interno1"/>
  
-    <property name="store.dir" value="Chat Interno3"/>
+    <property name="store.dir" value="Chat Interno1"/>
     <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"/>
  
     <echo message="Packaging ${application.title} into a single JAR at ${store.jar}"/>

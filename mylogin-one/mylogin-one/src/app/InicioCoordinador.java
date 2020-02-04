@@ -11,19 +11,27 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
  * @author Christian.Moreno
  */
-public final class InicioCoordinador extends javax.swing.JFrame implements Runnable{
+public final class InicioCoordinador extends javax.swing.JFrame implements Runnable {
+
+    Db cc = new Db();
+    Connection con = (com.mysql.jdbc.Connection) cc.connect();
 
     int posx, posy;
     public static int camp;
@@ -38,7 +46,7 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
         }
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         setLocationRelativeTo(null);
-        
+
         Thread mihilo = new Thread(this);
         mihilo.start();
     }
@@ -87,7 +95,7 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
 
     int getIDCamp(String name) {
         try {
-    
+
             Connection con = Db.connect();
             Statement s = con.createStatement();
             ResultSet r = s.executeQuery("select * from campana WHERE nombreCampana='" + name + "'");
@@ -99,9 +107,7 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
         }
         return 0;
     }
-    
-    
-    
+
     void setUserC() {
         DefaultListModel<String> model = new DefaultListModel<>();
         try {
@@ -253,6 +259,11 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
                 txtEscribeCoordinadorActionPerformed(evt);
             }
         });
+        txtEscribeCoordinador.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtEscribeCoordinadorKeyPressed(evt);
+            }
+        });
         getContentPane().add(txtEscribeCoordinador, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, 240, -1));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Imagen1.png"))); // NOI18N
@@ -290,34 +301,8 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
     }//GEN-LAST:event_lblFondoMouseDragged
 
     private void btnEnviaCordinadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviaCordinadorActionPerformed
-        System.out.println("Conectado al socket");
-
-        try {
-            Socket misocket = new Socket("192.168.250.211", 9000);
-            System.out.println("Conectado al socketddddd");
-            System.out.println("Conectado al socket");
-            paqueteEnvio datos = new paqueteEnvio();
-            if (listaCampanaC.getSelectedValue().equals("TODOS")) {
-                datos.setCamp("0");
-            } else {
-                datos.setCamp(String.valueOf(getIDCamp(listaCampanaC.getSelectedValue())));
-            }
-            datos.setMensaje(txtEscribeCoordinador.getText());
-            txaConversacionCoor.setText(datos.getMensaje());
-            //datos.setMensaje(txaMmessage.getText());
-            datos.setNombre(nombre);
-            datos.setIp("0");
-            
-            ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-            paqueteDatos.writeObject(datos);
-            misocket.close();
-            txtEscribeCoordinador.setText("");
-            /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
-            flujoSalida.writeUTF(txtmessage.getText());
-            flujoSalida.close();*/
-        } catch (Exception e) {
-        }
-//sendNotifi();
+        guardarMensajes();
+        enviarMensajes();
     }//GEN-LAST:event_btnEnviaCordinadorActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -344,29 +329,28 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
         DefaultListModel<String> modell = new DefaultListModel<>();
         if (select > 0) {
             try {
-            com.mysql.jdbc.Connection con = (com.mysql.jdbc.Connection) Db.connect();
-            Statement s;
-            s = con.createStatement();
-            ResultSet r = s.executeQuery("SELECT nombreUsuario  FROM usuarios WHERE campana ='"+select+"' and estado = 1;");
-            while (r.next()) {
-                modell.addElement(r.getString("nombreUsuario"));
-            }
-            listaUsuarioC.setModel(modell);
-            listaUsuarioC.setSelectedIndex(0); 
+                com.mysql.jdbc.Connection con = (com.mysql.jdbc.Connection) Db.connect();
+                Statement s;
+                s = con.createStatement();
+                ResultSet r = s.executeQuery("SELECT nombreUsuario  FROM usuarios WHERE campana ='" + select + "' and estado = 1;");
+                while (r.next()) {
+                    modell.addElement(r.getString("nombreUsuario"));
+                }
+                listaUsuarioC.setModel(modell);
+                listaUsuarioC.setSelectedIndex(0);
             } catch (Exception e) {
             }
-        }
-         else {
+        } else {
             try {
-            Connection con = (Connection) Db.connect();
-            Statement s;
-            s = con.createStatement();
-            ResultSet a = s.executeQuery("SELECT nombreUsuario FROM usuarios WHERE estado = 1;");
-            while (a.next()) {
-                modell.addElement(a.getString("nombreUsuario"));
-            }
-            listaUsuarioC.setModel(modell);
-            listaUsuarioC.setSelectedIndex(0); 
+                Connection con = (Connection) Db.connect();
+                Statement s;
+                s = con.createStatement();
+                ResultSet a = s.executeQuery("SELECT nombreUsuario FROM usuarios WHERE estado = 1;");
+                while (a.next()) {
+                    modell.addElement(a.getString("nombreUsuario"));
+                }
+                listaUsuarioC.setModel(modell);
+                listaUsuarioC.setSelectedIndex(0);
             } catch (Exception e) {
             }
 
@@ -376,6 +360,68 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
     private void txtEscribeCoordinadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEscribeCoordinadorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEscribeCoordinadorActionPerformed
+
+    private void txtEscribeCoordinadorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEscribeCoordinadorKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            guardarMensajes();
+            enviarMensajes();
+
+        }
+    }//GEN-LAST:event_txtEscribeCoordinadorKeyPressed
+
+    public void enviarMensajes() {
+        //System.out.println("Conectado al socket");
+
+        try {
+            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+                //System.out.println("Conectado al socketddddd");
+                //System.out.println("Conectado al socket");
+                paqueteEnvio datos = new paqueteEnvio();
+                if (listaCampanaC.getSelectedValue().equals("TODOS")) {
+                    datos.setCamp("0");
+                } else {
+                    datos.setCamp(String.valueOf(getIDCamp(listaCampanaC.getSelectedValue())));
+                }
+                datos.setMensaje(txtEscribeCoordinador.getText());
+                txaConversacionCoor.setText(datos.getMensaje());
+                //datos.setMensaje(txaMmessage.getText());
+                datos.setNombre(nombre);
+                datos.setIp("0");
+
+                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                paqueteDatos.writeObject(datos);
+                txtEscribeCoordinador.setText("");
+                misocket.close();
+            }
+            txtEscribeCoordinador.setText("");
+            /*DataOutputStream flujoSalida= new DataOutputStream(misocket.getOutputStream());
+            flujoSalida.writeUTF(txtmessage.getText());
+            flujoSalida.close();*/
+        } catch (Exception e) {
+        }
+//sendNotifi();
+    }
+
+    public void guardarMensajes() {
+        try {
+
+            String SQL = "insert into mensajes (mensajes, usuarioEnvia, fechaMensaje) values (?,?,?)";
+            PreparedStatement pst = con.prepareStatement(SQL);
+
+            pst.setString(1, txtEscribeCoordinador.getText());
+
+            LoginForm lg = new LoginForm();
+            pst.setString(2, LoginForm.dt);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            pst.setString(3, (dateFormat.format(date)));
+
+            pst.execute();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de Registro de mensajes " + e.getMessage());
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -413,20 +459,21 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
             }
         });
     }
+
     @Override
     public void run() {
-         try {
-             try (Socket misocket = new Socket("192.168.250.211", 9000)) {
-                 paqueteEnvio datos = new paqueteEnvio();
-                 datos.setCamp(String.valueOf(camp));
-                 datos.setNombre(nombre);
-                 InetAddress inet = InetAddress.getLocalHost();
-                 String ip = inet.getHostAddress();
-                 datos.setIp(ip);
-                 System.out.println(ip);
-                 ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-                 paqueteDatos.writeObject(datos);
-             }
+        try {
+            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+                paqueteEnvio datos = new paqueteEnvio();
+                datos.setCamp(String.valueOf(camp));
+                datos.setNombre(nombre);
+                InetAddress inet = InetAddress.getLocalHost();
+                String ip = inet.getHostAddress();
+                datos.setIp(ip);
+                System.out.println(ip);
+                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                paqueteDatos.writeObject(datos);
+            }
             ServerSocket servidor_cliente = new ServerSocket(9090);
             Socket cliente;
             paqueteEnvio paqueteRecibido;
@@ -476,5 +523,5 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
     private javax.swing.JTextArea txaConversacionCoor;
     private javax.swing.JTextField txtEscribeCoordinador;
     // End of variables declaration//GEN-END:variables
-  
+
 }

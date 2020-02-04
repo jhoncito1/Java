@@ -66,6 +66,12 @@ public class addCampana extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(420, 450));
         setUndecorated(true);
         getContentPane().setLayout(null);
+
+        txtNombreCampana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreCampanaActionPerformed(evt);
+            }
+        });
         getContentPane().add(txtNombreCampana);
         txtNombreCampana.setBounds(160, 97, 236, 24);
 
@@ -144,6 +150,7 @@ public class addCampana extends javax.swing.JFrame {
 
     private void btnActualizarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCActionPerformed
         actualizarCampana();
+        
     }//GEN-LAST:event_btnActualizarCActionPerformed
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -172,6 +179,10 @@ public class addCampana extends javax.swing.JFrame {
         posx = evt.getX();
         posy = evt.getY();
     }//GEN-LAST:event_fondoMousePressed
+
+    private void txtNombreCampanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreCampanaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreCampanaActionPerformed
 
     public void mostrarCampana(){
         String[] titulos = {"ID", "Nombre","Creador", "Fecha","estado"};
@@ -225,7 +236,7 @@ public class addCampana extends javax.swing.JFrame {
             pst.execute();
 
             JOptionPane.showMessageDialog(null, "Registro exitoso");
-//            mostrarAuto();
+            mostrarCampana();
             this.dispose();
 
         } catch (Exception e) {

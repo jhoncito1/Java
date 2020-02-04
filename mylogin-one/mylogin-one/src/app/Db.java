@@ -19,12 +19,12 @@ public class Db {
     public static Connection connection;
 
     public static Connection connect() {
-//    String url = "jdbc:mysql://192.168.250.22/gestionnovus";
-//    String user = "prueba";
-//    String pass = "Novus2019*";
-        String url = "jdbc:mysql://localhost/chatinterno";
-        String user = "root";
-        String pass = "";
+    String url = "jdbc:mysql://192.168.250.22/chatinterno";
+    String user = "prueba";
+    String pass = "Novus2019*";
+//        String url = "jdbc:mysql://localhost/chatinterno";
+//        String user = "root";
+//        String pass = "";
 
         //System.out.println("Conectando..");
         //JOptionPane.showMessageDialog(null, "conexion exitosa");

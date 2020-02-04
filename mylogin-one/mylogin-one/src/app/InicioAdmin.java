@@ -3,15 +3,20 @@ package app;
 import static app.InicioAsesor.camp;
 import com.mysql.jdbc.Connection;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.DefaultListModel;
 
 import javax.swing.ImageIcon;
@@ -28,11 +33,12 @@ import net.sf.jcarrierpigeon.WindowPosition;
 public class InicioAdmin extends javax.swing.JFrame implements Runnable {
 
     Db cc = new Db();
-    Connection con = (Connection) cc.connect();
+    Connection con = (com.mysql.jdbc.Connection) cc.connect();
+
     int posx, posy;
     String nombre;
     public static int idUser;
- 
+
     public InicioAdmin() {
         initComponents();
         txaConversacionAdmin.setLineWrap(true);
@@ -43,7 +49,7 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
         this.setLocationRelativeTo(null);
         color_transparent();
-        
+
         Thread hiloAdmin = new Thread(this);
         hiloAdmin.start();
 
@@ -70,13 +76,12 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
 
     }
 
-//    void sendNotifi(String msg) {
-//        notification j = new notification(msg);
-//        NotificationQueue val = new NotificationQueue();
-//        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 10000);
-//        val.add(obj);
-//    }
-
+    void sendNotifi(String msg) {
+        notification j = new notification(msg);
+        NotificationQueue val = new NotificationQueue();
+        Notification obj = new Notification(j, WindowPosition.BOTTOMRIGHT, 0, 0, 10000);
+        val.add(obj);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -272,6 +277,17 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
         });
         getContentPane().add(btneditarCampana);
         btneditarCampana.setBounds(80, 280, 50, 50);
+
+        txtEscribeAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtEscribeAdminMouseClicked(evt);
+            }
+        });
+        txtEscribeAdmin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtEscribeAdminKeyPressed(evt);
+            }
+        });
         getContentPane().add(txtEscribeAdmin);
         txtEscribeAdmin.setBounds(180, 250, 240, 24);
 
@@ -324,28 +340,55 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btneditarCampanaActionPerformed
 
     private void btnEnviarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarAActionPerformed
+        guardarMensajes();
+        enviarMensajes();
+    }//GEN-LAST:event_btnEnviarAActionPerformed
+
+    public void enviarMensajes() {
         try {
             try (Socket misocket = new Socket("192.168.250.211", 9000)) {
                 paqueteEnvio datos = new paqueteEnvio();
                 if (listaCampanaA.getSelectedValue().equals("TODOS")) {
                     datos.setCamp("0");
-                } else if (listaCampanaA.getSelectedValue().equals("TODOS"))
-                {
+                } else if (listaCampanaA.getSelectedValue().equals("TODOS")) {
                     datos.setCamp(String.valueOf(getIDCampA(listaCampanaA.getSelectedValue())));
-                    
-                    
+
                 }
                 datos.setMensaje(txtEscribeAdmin.getText());
                 datos.setNombre(nombre);
                 datos.setIp("0");
                 ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
                 paqueteDatos.writeObject(datos);
-                txtEscribeAdmin.setText("");
+
+                //txtEscribeAdmin.setText("");
+                misocket.close();
+
             }
             txtEscribeAdmin.setText("");
         } catch (IOException e) {
         }
-    }//GEN-LAST:event_btnEnviarAActionPerformed
+    }
+
+    public void guardarMensajes() {
+        try {
+
+            String SQL = "insert into mensajes (mensajes, usuarioEnvia, fechaMensaje) values (?,?,?)";
+            PreparedStatement pst = con.prepareStatement(SQL);
+
+            pst.setString(1, txtEscribeAdmin.getText());
+
+            LoginForm lg = new LoginForm();
+            pst.setString(2, LoginForm.dt);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            pst.setString(3, (dateFormat.format(date)));
+
+            pst.execute();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de Registro de mensajes " + e.getMessage());
+        }
+    }
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
         // TODO add your handling code here:
@@ -392,6 +435,17 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
 
         }
     }//GEN-LAST:event_listaCampanaAValueChanged
+
+    private void txtEscribeAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtEscribeAdminMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEscribeAdminMouseClicked
+
+    private void txtEscribeAdminKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEscribeAdminKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            guardarMensajes();
+            enviarMensajes();
+        }
+    }//GEN-LAST:event_txtEscribeAdminKeyPressed
 
     /**
      * @param args the command line arguments
@@ -440,7 +494,7 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
                 InetAddress inet = InetAddress.getLocalHost();
                 String ip = inet.getHostAddress();
                 datos.setIp(ip);
-                System.out.println("<<"+ip+">>");
+                System.out.println("<<" + ip + ">>");
                 ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
                 paqueteDatos.writeObject(datos);
             }
@@ -453,7 +507,7 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
                 if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
                     txaConversacionAdmin.setText(paqueteRecibido.getMensaje());
-                    //sendNotifi(paqueteRecibido.getMensaje());
+                    sendNotifi(paqueteRecibido.getMensaje());
 
                 }
             }

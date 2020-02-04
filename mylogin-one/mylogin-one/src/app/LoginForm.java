@@ -49,9 +49,9 @@ public class LoginForm extends javax.swing.JFrame {
     private void initComponents() {
 
         lblCerrar = new javax.swing.JLabel();
-        username = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        password = new javax.swing.JPasswordField();
+        txtusername = new javax.swing.JTextField();
+        btnEnviar = new javax.swing.JButton();
+        txtpassword = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -70,18 +70,30 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(lblCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 30, 40));
-        getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 150, -1));
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Entrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        txtusername.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtusernameKeyPressed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 370, 110, -1));
-        getContentPane().add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 300, 150, -1));
+        getContentPane().add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 150, -1));
+
+        btnEnviar.setBackground(new java.awt.Color(0, 0, 0));
+        btnEnviar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEnviar.setText("Entrar");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 370, 110, -1));
+
+        txtpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtpasswordKeyPressed(evt);
+            }
+        });
+        getContentPane().add(txtpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 300, 150, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/imgb3.png"))); // NOI18N
         jLabel4.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -99,24 +111,55 @@ public class LoginForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
 
+        iniciarSesion();
+    }//GEN-LAST:event_btnEnviarActionPerformed
 
-        if (username.getText().length() > 0 && password.getText().length() > 0) {
+    private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
+        posx = evt.getX();
+        posy = evt.getY();
+    }//GEN-LAST:event_jLabel4MousePressed
+
+    private void jLabel4MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseDragged
+        int xp = evt.getXOnScreen() - posx;
+        int yp = evt.getYOnScreen() - posy;
+        this.setLocation(xp, yp);
+    }//GEN-LAST:event_jLabel4MouseDragged
+
+    private void lblCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_lblCerrarMouseClicked
+
+    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            iniciarSesion();
+        }
+    }//GEN-LAST:event_txtpasswordKeyPressed
+
+    private void txtusernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtusernameKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            txtpassword.requestFocus();
+        }
+    }//GEN-LAST:event_txtusernameKeyPressed
+
+    public void iniciarSesion (){
+     if (txtusername.getText().length() > 0 && txtpassword.getText().length() > 0) {
             
-            dt = username.getText();
+            dt = txtusername.getText();
             //JOptionPane.showMessageDialog(null, dt);
             
             try {
                 Connection con = Db.connect();
                 Statement s = con.createStatement();
 
-                String contraseña = password.getText();
+                String contraseña = txtpassword.getText();
                 String textoEncriptadoConSHA = DigestUtils.sha1Hex(contraseña);
 
                 //System.out.println("Esta es la contraseña: " + textoEncriptadoConSHA);
                 //ResultSet r = s.executeQuery("select * from usuarios where sloginUser=\"" + username.getText() + "\" and spassUser=\"" + textoEncriptadoConSHA + "\" ");
-                ResultSet r = s.executeQuery("select * from usuarios where loginUsuario=\"" + username.getText() + "\" and password=\"" + textoEncriptadoConSHA + "\" ");
+                ResultSet r = s.executeQuery("select * from usuarios where loginUsuario=\"" + txtusername.getText() + "\" and password=\"" + textoEncriptadoConSHA + "\" ");
 
                 //System.out.println(r);
                 //JOptionPane.showMessageDialog(null, r);
@@ -153,6 +196,7 @@ public class LoginForm extends javax.swing.JFrame {
                     } else {
 
                     }
+                    //System.out.println(dt + dt + dt + dt);
                 } else {
                     JOptionPane.showMessageDialog(rootPane, dt+" \nAcceso Denegado!!");
                 }
@@ -162,23 +206,8 @@ public class LoginForm extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(rootPane, "No debes dejar campos vacios !!");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
-        posx = evt.getX();
-        posy = evt.getY();
-    }//GEN-LAST:event_jLabel4MousePressed
-
-    private void jLabel4MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseDragged
-        int xp = evt.getXOnScreen() - posx;
-        int yp = evt.getYOnScreen() - posy;
-        this.setLocation(xp, yp);
-    }//GEN-LAST:event_jLabel4MouseDragged
-
-    private void lblCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_lblCerrarMouseClicked
-
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -212,10 +241,10 @@ public class LoginForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnEnviar;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblCerrar;
-    private javax.swing.JPasswordField password;
-    public static javax.swing.JTextField username;
+    private javax.swing.JPasswordField txtpassword;
+    public static javax.swing.JTextField txtusername;
     // End of variables declaration//GEN-END:variables
 }
