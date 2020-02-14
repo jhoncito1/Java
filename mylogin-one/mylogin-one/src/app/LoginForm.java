@@ -20,13 +20,10 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class LoginForm extends javax.swing.JFrame {
 
-    public static String dt ;
-
+    public static String dt;
+    public static int u_id;
+    
     int posx, posy;
-
-    /**
-     * Creates new form LoginForm
-     */
     public LoginForm() {
         initComponents();
 
@@ -148,6 +145,7 @@ public class LoginForm extends javax.swing.JFrame {
      if (txtusername.getText().length() > 0 && txtpassword.getText().length() > 0) {
             
             dt = txtusername.getText();
+            
             //JOptionPane.showMessageDialog(null, dt);
             
             try {
@@ -162,10 +160,10 @@ public class LoginForm extends javax.swing.JFrame {
                 ResultSet r = s.executeQuery("select * from usuarios where loginUsuario=\"" + txtusername.getText() + "\" and password=\"" + textoEncriptadoConSHA + "\" ");
 
                 //System.out.println(r);
-                //JOptionPane.showMessageDialog(null, r);
-
+                //JOptionPane.showMessageDialog(null, " "+r+" ");
+                
                 boolean found = false;
-                int user_id = 0, user_rol = 0, user_camp = 0;
+                int user_id = 0, nivel = 0, u_camp = 0;
                 String nombreUser = "";
                 while (r.next()) {
                     found = true;
@@ -176,20 +174,25 @@ public class LoginForm extends javax.swing.JFrame {
 
                     user_id = r.getInt("idusuarios");
                     nombreUser = r.getString("nombreUsuario");
-                    user_camp = r.getInt("campana");
-                    user_rol = r.getInt("nivel");
+                    u_camp = r.getInt("campana");
+                    nivel = r.getInt("nivel");
                 }
+                
+//                System.out.println(user_id);
+//                JOptionPane.showMessageDialog(null, user_id);
+
+                u_id = user_id;
                 if (found) {
                     JOptionPane.showMessageDialog(rootPane, dt+" \nBienvenido");
-                    if (user_rol == 0) {
-                        InicioAsesor ini = new InicioAsesor(nombreUser, user_camp);
+                    if (nivel == 0) {
+                        InicioAsesor ini = new InicioAsesor(nombreUser, u_camp);
                         this.dispose();
                         ini.setVisible(true);
-                    } else if (user_rol == 1) {
+                    } else if (nivel == 1) {
                         InicioCoordinador ini = new InicioCoordinador(nombreUser);
                         this.dispose();
                         ini.setVisible(true);
-                    } else if (user_rol == 2) {
+                    } else if (nivel == 2) {
                         InicioAdmin ini = new InicioAdmin(nombreUser, user_id);
                         this.dispose();
                         ini.setVisible(true);

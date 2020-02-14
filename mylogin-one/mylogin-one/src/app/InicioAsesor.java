@@ -5,7 +5,9 @@
  */
 package app;
 
+import com.mysql.jdbc.Buffer;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -44,6 +46,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     public InicioAsesor() {
         initComponents();
         txaConversacionAsesor.setLineWrap(true);
+        
         //TextPrompt p new TexPrompt();
         try {
             this.setBackground(new Color(255, 0, 0, 0));
@@ -54,13 +57,16 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         setLocationRelativeTo(null);
         Thread hiloAsesor = new Thread(this);
         hiloAsesor.start();
+        
+        mostrarMensajes();
     }
 
     public InicioAsesor(String nombre, int camp) {
         initComponents();
-        txaConversacionAsesor.setLineWrap(true);
+        //txaConversacionAsesor.setLineWrap(true);
         this.nombre = nombre;
         InicioAsesor.camp = camp;
+        JOptionPane.showMessageDialog(null, camp);
         try {
             this.setBackground(new Color(255, 0, 0, 0));
         } catch (Exception e) {
@@ -71,6 +77,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         Thread hiloAsesor = new Thread(this);
         hiloAsesor.start();
         setCoor();
+        
+        mostrarMensajes();
     }
 
     void sendNotifi(String msg) {
@@ -120,7 +128,6 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
@@ -135,21 +142,13 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         listaCordinadorAs = new javax.swing.JList<>();
         txtEscribeAsesor = new javax.swing.JTextField();
         lblFondo = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txpConversacionAsesor = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("_");
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel5MouseClicked(evt);
-            }
-        });
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 30, 30));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -201,8 +200,10 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         });
         getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, 80, 30));
 
+        txaConversacionAsesor.setEditable(false);
         txaConversacionAsesor.setColumns(10);
         txaConversacionAsesor.setRows(5);
+        txaConversacionAsesor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txaConversacionAsesor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txaConversacionAsesorKeyTyped(evt);
@@ -233,6 +234,11 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         getContentPane().add(jLbMinimizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 20, -1));
 
         listaCordinadorAs.setBackground(new java.awt.Color(5, 78, 142));
+        listaCordinadorAs.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaCordinadorAsValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(listaCordinadorAs);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 160));
@@ -260,6 +266,14 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         });
         getContentPane().add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 430, 340));
 
+        txpConversacionAsesor.setEditable(false);
+        txpConversacionAsesor.setBackground(new java.awt.Color(51, 255, 204));
+        txpConversacionAsesor.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txpConversacionAsesor.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        jScrollPane3.setViewportView(txpConversacionAsesor);
+
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, 230, 140));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -272,10 +286,6 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         this.dispose();
         ini.setVisible(true);
     }//GEN-LAST:event_btnSalirActionPerformed
-
-    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        setExtendedState(JFrame.CROSSHAIR_CURSOR);
-    }//GEN-LAST:event_jLabel5MouseClicked
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         txaConversacionAsesor.setText("");
@@ -323,9 +333,33 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         }
     }//GEN-LAST:event_txtEscribeAsesorKeyPressed
 
-    public void enviarMensajes() {
-        //System.out.println("Conectado al socket");
+    private void listaCordinadorAsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaCordinadorAsValueChanged
+        int select = listaCordinadorAs.getSelectedIndex();
+        DefaultListModel<String> modell = new DefaultListModel<>();
+        if (select > 0) {
+            try {
+                com.mysql.jdbc.Connection con = (com.mysql.jdbc.Connection) Db.connect();
+                Statement s;
+                s = con.createStatement();
+                ResultSet r = s.executeQuery("SELECT * FROM usuarios WHERE campana ='" + select + "'and estado = 1;");
+                while (r.next()) {
+                    modell.addElement(r.getString("nombreUsuario"));
+                }
+                listaCordinadorAs.setModel(modell);
+            } catch (SQLException e) {
+            }
+        } 
+        else{
+            System.out.println("Error");
+        }
+    }//GEN-LAST:event_listaCordinadorAsValueChanged
 
+    public void mensajeria(String msg){
+        msg = txtEscribeAsesor.getText();
+        this.txaConversacionAsesor.append(" "+msg+"\n");
+    }
+    
+    public void enviarMensajes() {
         try {
             try (Socket misocket = new Socket("192.168.250.211", 9000)) {
                 paqueteEnvio datos = new paqueteEnvio();
@@ -336,12 +370,17 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                     datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
                 }
                 datos.setMensaje(txtEscribeAsesor.getText());
-                //txaConversacionAsesor.setText(datos.getMensaje());
                 datos.setNombre(nombre);
                 datos.setIp("0");
                 ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
                 paqueteDatos.writeObject(datos);
-                txtEscribeAsesor.setText("");
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                Date dat = new Date();
+                String date = dateFormat.format(dat);
+                
+                txpConversacionAsesor.setText(datos.getNombre()+": \n "+datos.getMensaje()+"\n"+date+"\n\n");
+                txaConversacionAsesor.append(datos.getNombre()+": \n "+datos.getMensaje()+"\n"+date+"\n\n");
+                
                 misocket.close();
             }
             txtEscribeAsesor.setText("");
@@ -355,12 +394,10 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         try {
 
             String SQL = "insert into mensajes (mensajes, usuarioEnvia, fechaMensaje) values (?,?,?)";
-           PreparedStatement pst = con.prepareStatement(SQL);
+            PreparedStatement pst = con.prepareStatement(SQL);
             
 
             pst.setString(1, txtEscribeAsesor.getText());
-
-            LoginForm lg = new LoginForm();
             pst.setString(2, LoginForm.dt);
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
@@ -373,6 +410,29 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         }
     }
     
+    
+    public void mostrarMensajes(){
+        LoginForm lg = new LoginForm();
+        //String SQL = "SELECT mensajes FROM chatinterno.mensajes where usuarioEnvia = '"+lg.dt+"'";
+        String SQL = "SELECT usuarioEnvia, mensajes, fechaMensaje FROM chatinterno.mensajes where (usuarioEnvia = '" + lg.dt + "' and usuarioRecibe = 'juan.toja')or(usuarioEnvia = 'juan.toja' and usuarioRecibe = '" + lg.dt + "')";
+
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                String nombre = rs.getString(1);
+                String msn = rs.getString(2);
+                String date = rs.getString(3);
+                //txpConversacionAsesor.getStyledDocument().insertString(txpConversacionAsesor.getStyledDocument().getLength(), txpConversacionAsesor.getText(),simp);
+                txpConversacionAsesor.setText(nombre + ":\n" + msn + "\n"+ date+"\n\n");
+                txaConversacionAsesor.append(nombre + ":\n" + msn + "\n"+ date+"\n\n");
+            }
+          //pst.execute();
+        } 
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,"Error en carga de mensajes "+ e.getMessage());
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -412,6 +472,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
 
     @Override
     public void run() {
+        //mostrarMensajes();
         try {
             try (Socket misocket = new Socket("192.168.250.211", 9000)) {
                 paqueteEnvio datos = new paqueteEnvio();
@@ -431,10 +492,10 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                 cliente = servidor_cliente.accept();
                 ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
-                if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
-                    txaConversacionAsesor.setText(paqueteRecibido.getMensaje());
-                    sendNotifi(paqueteRecibido.getMensaje());
-
+                if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {                   
+                    txaConversacionAsesor.append(paqueteRecibido.getMensaje()+"\n\n");
+                    txpConversacionAsesor.setText(paqueteRecibido.getMensaje()+"\n\n");
+                    //sendNotifi(paqueteRecibido.getMensaje());
                 }
                 //txaConversacionAsesor.setText(paqueteRecibido.getMensaje());
             }
@@ -449,15 +510,17 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLbCerrar;
     private javax.swing.JLabel jLbMinimizar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JList<String> listaCordinadorAs;
     private javax.swing.JTextArea txaConversacionAsesor;
+    private javax.swing.JTextPane txpConversacionAsesor;
     private javax.swing.JTextField txtEscribeAsesor;
     // End of variables declaration//GEN-END:variables
 }
+
