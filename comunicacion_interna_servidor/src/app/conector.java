@@ -1,9 +1,8 @@
-
 package app;
-
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * -
@@ -18,7 +17,13 @@ public class conector extends Thread {
     DataInputStream flujo_entrada;
     int puerto = 9000;
     ArrayList<clientes> Clientes = new ArrayList<>();
+    
 
+    public conector() {
+        Thread mihilo = new Thread();
+        mihilo.start();
+    }
+    
     //public void iniciar() 
     @Override
     public void run() {
@@ -31,9 +36,13 @@ public class conector extends Thread {
             while (true) {
                 socket = new Socket();
                 socket = server.accept();
+ //-------------------------------------------------------------------------------------               
+                InetAddress localizacion = socket.getInetAddress();
+                String ipremota = localizacion.getHostAddress();
+                System.out.println("conectado con " + ipremota);
+ //--------------------------------------------------------------------------------------  
                 ObjectInputStream paqueteDatos = new ObjectInputStream(socket.getInputStream());
-                paquete_recibido = (paqueteEnvio) paqueteDatos.readObject();
-
+                paquete_recibido = (paqueteEnvio) paqueteDatos.readObject();              
                 nombre = paquete_recibido.getNombre();
                 camp = paquete_recibido.getCamp();
                 mensaje = paquete_recibido.getMensaje();
@@ -51,6 +60,7 @@ public class conector extends Thread {
                                     Socket enviaDestinatario = new Socket(Clientes.get(x).getIps().get(i), 9090);
                                     ObjectOutputStream paqueteReenvio = new ObjectOutputStream(enviaDestinatario.getOutputStream());
                                     paqueteReenvio.writeObject(paquete_recibido);
+                                    paqueteReenvio.close();
                                     enviaDestinatario.close();
                                 }
                             }
@@ -90,72 +100,8 @@ public class conector extends Thread {
                 socket.close();*/
             }
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Servidor cerrado..... "+e.getMessage());
         }
-    }
-
-}
-
-class clientes {
-
-    private ArrayList<String> ips = new ArrayList<>();
-    private int Camp;
-
-    public ArrayList<String> getIps() {
-        return ips;
-    }
-
-    public void setIps(ArrayList<String> ips) {
-        this.ips = ips;
-    }
-
-    public void setIp(String ip) {
-        this.ips.add(ip);
-    }
-
-    public int getCamp() {
-        return Camp;
-    }
-
-    public void setCamp(int Camp) {
-        this.Camp = Camp;
-    }
-}
-
-class paqueteEnvio implements Serializable {
-
-    private String nombre, camp, mensaje, ip;
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getCamp() {
-        return camp;
-    }
-
-    public void setCamp(String camp) {
-        this.camp = camp;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
     }
 
 }
