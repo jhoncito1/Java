@@ -2,14 +2,11 @@ package app;
 
 import static app.InicioAsesor.camp;
 import com.mysql.jdbc.Connection;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DateTimeDV;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.PreparedStatement;
@@ -34,17 +31,16 @@ import net.sf.jcarrierpigeon.WindowPosition;
  */
 public class InicioAdmin extends javax.swing.JFrame implements Runnable {
 
-    String idu;
     Db cc = new Db();
     Connection con = (com.mysql.jdbc.Connection) cc.connect();
 
+    public  String idAs ;
     int posx, posy;
     String nombre;
     public static int idUser;
 
     public InicioAdmin() {
         initComponents();
-        txaConversacionAdmin.setLineWrap(true);
         try {
             this.setBackground(new Color(255, 0, 0, 0));
         } catch (Exception e) {
@@ -53,9 +49,6 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
         this.setLocationRelativeTo(null);
         color_transparent();
 
-        Thread hiloAdmin = new Thread(this);
-        hiloAdmin.start();
-        mostrarMensajes();
     }
 
     public InicioAdmin(String nombre, int id) {
@@ -68,10 +61,11 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
         } catch (Exception e) {
         }
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
-        setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
+
+        color_transparent();
         setCampA();
         setUserA();
-        color_transparent();
         Thread hiloAdmin = new Thread(this);
         hiloAdmin.start();
         color_transparent();
@@ -352,6 +346,7 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
     private void btnEnviarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarAActionPerformed
         guardarMensajes();
         enviarMensajes();
+        //JOptionPane.showMessageDialog(null, LoginForm.dt + "  " + idAs + "  " + idUser + "  " + nombre);
     }//GEN-LAST:event_btnEnviarAActionPerformed
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
@@ -379,7 +374,6 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
                 modell.addElement("TODOS");
                 while (r.next()) {
                     modell.addElement(r.getString("nombreUsuario"));
-                    //modell.addElement(r.getString("id")+":"+r.getString("nombreUsuario"));
                 }
                 listaUsuarioA.setModel(modell);
             } catch (SQLException e) {
@@ -413,64 +407,31 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_txtEscribeAdminKeyPressed
 
     private void listaUsuarioAValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaUsuarioAValueChanged
+        
+        int select = listaUsuarioA.getSelectedIndex();
+        String nombre = listaUsuarioA.getSelectedValue();
+        if (select > 0) {
+            try {
+                Connection con = (Connection) Db.connect();
+                Statement s;
+                s = con.createStatement();
+                ResultSet r = s.executeQuery("SELECT idusuarios FROM usuarios WHERE nombreUsuario = '" + nombre + "' and estado = 1");
+                while (r.next()) {
+                    idAs = r.getString("idusuarios");
+                    mostrarMensajes();
+                }
+            } catch (SQLException e) {
+            }
+        }
 
-//        int select = listaUsuarioA.getSelectedIndex();
-//        if (select > 0) {
-//            try {
-//                Connection con = (Connection) Db.connect();
-//                Statement s;
-//                s = con.createStatement();
-//                ResultSet r = s.executeQuery("SELECT * FROM usuarios WHERE nombreUsuario ='" + select + "'and estado = 1;");
-//                //JOptionPane.showMessageDialog(null, "si es mayor y es " + select);
-//                r.next();
-//                modelm.addElement(r.getString("nombreUsuario"));
-//                
-//                
-//                String fg = r.getString("nombreUsuario");
-//                
-//                
-//            } catch (SQLException e) {
-//            }
-//        }
-//
-//        if (select > 0) {
-//            try {
-//                Connection con = (Connection) Db.connect();
-//                Statement s;
-//                s = con.createStatement();
-//                ResultSet r = s.executeQuery("SELECT * FROM usuarios WHERE nombreUsuario ='" + select + "'and estado = 1;");
-//                //JOptionPane.showMessageDialog(null, "si es mayor y es " + select);
-//                r.next();
-//                modelm.addElement(r.getString("nombreUsuario"));
-//                
-//                
-//                String fg = r.getString("nombreUsuario");
-//                
-//                
-//            } catch (SQLException e) {
-//            }
-//        } 
-//         else {
-//            try {
-//                Connection con = (Connection) Db.connect();
-//                Statement s;
-//                s = con.createStatement();
-//                ResultSet a = s.executeQuery("SELECT * FROM usuarios WHERE loginUsuario ='juan.toja' and estado = 1;");
-//                a.next();
-//                //JOptionPane.showMessageDialog(null, " es 0 la elleccion" + a);
-//            } catch (SQLException e) {
-//            }
-//
-//        }
     }//GEN-LAST:event_listaUsuarioAValueChanged
 
     private void listaUsuarioAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaUsuarioAMouseClicked
-        //if (listaCampanaA.getSelectedValue().equals("TODOS")) {
-        //int sel = listaUsuarioA.getSelectedIndex();
-        //}
-        
-        String sel = listaUsuarioA.getSelectedValue().split(":")[0];
-        System.out.println(sel );
+        if (listaCampanaA.getSelectedValue().equals("TODOS")) {
+
+        }
+//        String sel = listaUsuarioA.getSelectedValue().split(":")[0];
+//        System.out.println(sel);
     }//GEN-LAST:event_listaUsuarioAMouseClicked
 
     public void enviarMensajes() {
@@ -500,7 +461,6 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
                 String date = dateFormat.format(dat);
 
                 txaConversacionAdmin.append(datos.getNombre() + ": \n " + datos.getMensaje() + "\n" + date + "\n\n");
-                //txaConversacionAdmin.setBackground(Color.blue);
                 misocket.close();
             }
             txtEscribeAdmin.setText("");
@@ -512,25 +472,24 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
     public void guardarMensajes() {
         try {
 
-            String SQL = "insert into mensajes (mensajes, usuarioEnvia, fechaMensaje) values (?,?,?)";
+            String SQL = "insert into mensajes (mensajes, usuarioEnvia ,usuarioRecibe, fechaMensaje) values (?,?,?,?);";
             PreparedStatement pst = con.prepareStatement(SQL);
-
             pst.setString(1, txtEscribeAdmin.getText());
-            pst.setString(2, LoginForm.dt);
+            pst.setInt(2, idUser);
+            pst.setString(3, idAs);
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
-            pst.setString(3, (dateFormat.format(date)));
-
+            pst.setString(4, (dateFormat.format(date)));
             pst.execute();
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error de Registro de mensajes " + e.getMessage());
         }
     }
 
     public void mostrarMensajes() {
-        LoginForm lg = new LoginForm();
-        String SQL = "SELECT usuarioEnvia, mensajes, fechaMensaje FROM chatinterno.mensajes where (usuarioEnvia = '" + lg.dt + "' and usuarioRecibe = 'jorge.ortiz')or(usuarioEnvia = 'jorge.ortiz' and usuarioRecibe = '" + lg.dt + "')";
+        String SQL = "SELECT usuarioEnvia, mensajes, fechaMensaje FROM chatinterno.mensajes where (usuarioEnvia = '" + LoginForm.dt
+                + "' and usuarioRecibe = '" + idAs + "')or(usuarioEnvia = '" + idAs + "' and usuarioRecibe = '" + LoginForm.dt + "')";
+        
 
         try {
             Statement st = con.createStatement();
@@ -562,17 +521,17 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         try {
-            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
-                paqueteEnvio datos = new paqueteEnvio();
-                datos.setCamp(String.valueOf(camp));
-                datos.setNombre(nombre);
-                InetAddress inet = InetAddress.getLocalHost();
-                String ip = inet.getHostAddress();
-                datos.setIp(ip);
-                System.out.println("<<" + ip + ">>");
-                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-                paqueteDatos.writeObject(datos);
-            }
+//            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+//                paqueteEnvio datos = new paqueteEnvio();
+//                datos.setCamp(String.valueOf(camp));
+//                datos.setNombre(nombre);
+//                InetAddress inet = InetAddress.getLocalHost();
+//                String ip = inet.getHostAddress();
+//                datos.setIp(ip);
+//                System.out.println("<<" + ip + ">>");
+//                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+//                paqueteDatos.writeObject(datos);
+//            }
             ServerSocket servidor_cliente = new ServerSocket(9090);
             Socket cliente;
             paqueteEnvio paqueteRecibido;
@@ -581,7 +540,7 @@ public class InicioAdmin extends javax.swing.JFrame implements Runnable {
                 ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
                 if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
-                    txaConversacionAdmin.append(paqueteRecibido.getMensaje() + "\n\n");
+                    txaConversacionAdmin.append(paqueteRecibido.getNombre() + "\n" + paqueteRecibido.getMensaje() + "\n\n");
                     //sendNotifi(paqueteRecibido.getMensaje());
                 }
             }

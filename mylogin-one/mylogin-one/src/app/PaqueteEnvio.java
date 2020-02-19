@@ -1,14 +1,23 @@
 package app;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 class paqueteEnvio implements Serializable {
     
-    
 
     private String nombre, camp, mensaje, ip;
     private int id;
+//    private Date fecha;
+//
+//    public Date getFecha() {
+//        return fecha;
+//    }
+//
+//    public void setFecha(Date fecha) {
+//        this.fecha = fecha;
+//    }
 
     public int getId() {
         return id;
@@ -50,5 +59,4 @@ class paqueteEnvio implements Serializable {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-
 }

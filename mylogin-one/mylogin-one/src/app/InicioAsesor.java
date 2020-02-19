@@ -5,13 +5,11 @@
  */
 package app;
 
-import com.mysql.jdbc.Buffer;
 import java.awt.Color;
-import java.io.BufferedReader;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
@@ -41,24 +39,19 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     
     int posx, posy;
     String nombre;
+    public static int idUser;
     public static int camp;
 
     public InicioAsesor() {
         initComponents();
-        txaConversacionAsesor.setLineWrap(true);
         
-        //TextPrompt p new TexPrompt();
         try {
             this.setBackground(new Color(255, 0, 0, 0));
         } catch (Exception e) {
 
         }
         setIconImage(new ImageIcon(getClass().getResource("/assets/ojo-01-02.png")).getImage());
-        setLocationRelativeTo(null);
-        Thread hiloAsesor = new Thread(this);
-        hiloAsesor.start();
         
-        mostrarMensajes();
     }
 
     public InicioAsesor(String nombre, int camp) {
@@ -66,7 +59,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         //txaConversacionAsesor.setLineWrap(true);
         this.nombre = nombre;
         InicioAsesor.camp = camp;
-        JOptionPane.showMessageDialog(null, camp);
+        txaConversacionAsesor.setLineWrap(true);
         try {
             this.setBackground(new Color(255, 0, 0, 0));
         } catch (Exception e) {
@@ -148,6 +141,11 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -327,7 +325,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jLbMinimizarMouseClicked
 
     private void txtEscribeAsesorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEscribeAsesorKeyPressed
-        if (evt.getKeyCode() == evt.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             guardarMensajes();
             enviarMensajes();
         }
@@ -350,14 +348,26 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
             }
         } 
         else{
-            System.out.println("Error");
-        }
+        } 
     }//GEN-LAST:event_listaCordinadorAsValueChanged
 
-    public void mensajeria(String msg){
-        msg = txtEscribeAsesor.getText();
-        this.txaConversacionAsesor.append(" "+msg+"\n");
-    }
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+//        try {
+//            Socket misocket = new Socket("192.168.250.211",9000);
+//            paqueteEnvio datos = new paqueteEnvio();
+//            datos.setNombre(nombre);
+//            datos.setMensaje("online");
+//            ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+//            paqueteDatos.writeObject(datos);
+//            misocket.close();
+//        } catch (Exception e) {
+//        }
+    }//GEN-LAST:event_formWindowOpened
+
+//    public void mensajeria(String msg){
+//        msg = txtEscribeAsesor.getText();
+//        this.txaConversacionAsesor.append(" "+msg+"\n");
+//    }
     
     public void enviarMensajes() {
         try {
@@ -369,16 +379,17 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
 
                     datos.setCamp(String.valueOf(getIDCamp(listaCordinadorAs.getSelectedValue())));
                 }
-                datos.setMensaje(txtEscribeAsesor.getText());
                 datos.setNombre(nombre);
-                datos.setIp("0");
-                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-                paqueteDatos.writeObject(datos);
+                datos.setMensaje(txtEscribeAsesor.getText());
+                datos.setIp("1");
                 DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
                 Date dat = new Date();
                 String date = dateFormat.format(dat);
+                //datos.setFecha(date);
+                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+                paqueteDatos.writeObject(datos);
                 
-                txpConversacionAsesor.setText(datos.getNombre()+": \n "+datos.getMensaje()+"\n"+date+"\n\n");
+                //txpConversacionAsesor.setText(datos.getNombre()+": \n "+datos.getMensaje()+"\n"+date+"\n\n");
                 txaConversacionAsesor.append(datos.getNombre()+": \n "+datos.getMensaje()+"\n"+date+"\n\n");
                 
                 misocket.close();
@@ -414,7 +425,8 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     public void mostrarMensajes(){
         LoginForm lg = new LoginForm();
         //String SQL = "SELECT mensajes FROM chatinterno.mensajes where usuarioEnvia = '"+lg.dt+"'";
-        String SQL = "SELECT usuarioEnvia, mensajes, fechaMensaje FROM chatinterno.mensajes where (usuarioEnvia = '" + lg.dt + "' and usuarioRecibe = 'juan.toja')or(usuarioEnvia = 'juan.toja' and usuarioRecibe = '" + lg.dt + "')";
+        String SQL = "SELECT usuarioEnvia, mensajes, fechaMensaje FROM chatinterno.mensajes where (usuarioEnvia = '" + LoginForm.u_id 
+                + "' and usuarioRecibe = 'juan.toja')or(usuarioEnvia = 'juan.toja' and usuarioRecibe = '" + LoginForm.u_id + "')";
 
         try {
             Statement st = con.createStatement();
@@ -424,7 +436,7 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                 String msn = rs.getString(2);
                 String date = rs.getString(3);
                 //txpConversacionAsesor.getStyledDocument().insertString(txpConversacionAsesor.getStyledDocument().getLength(), txpConversacionAsesor.getText(),simp);
-                txpConversacionAsesor.setText(nombre + ":\n" + msn + "\n"+ date+"\n\n");
+                //txpConversacionAsesor.setText(nombre + ":\n" + msn + "\n"+ date+"\n\n");
                 txaConversacionAsesor.append(nombre + ":\n" + msn + "\n"+ date+"\n\n");
             }
           //pst.execute();
@@ -474,17 +486,24 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     public void run() {
         //mostrarMensajes();
         try {
-            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
-                paqueteEnvio datos = new paqueteEnvio();
-                datos.setCamp(String.valueOf(camp));
-                datos.setNombre(nombre);
-                InetAddress inet = InetAddress.getLocalHost();
-                String ip = inet.getHostAddress();
-                datos.setIp(ip);
-                System.out.println(ip);
-                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
-                paqueteDatos.writeObject(datos);
-            }
+//            try (Socket misocket = new Socket("192.168.250.211", 9000)) {
+//                paqueteEnvio datos = new paqueteEnvio();
+//                datos.setCamp(String.valueOf(camp));
+//                datos.setNombre(nombre);
+//                
+//                
+//                
+//                InetAddress inet = InetAddress.getLocalHost();
+//                String ip = inet.getHostAddress();
+//                datos.setIp(ip);
+//                System.out.println(ip);
+//                
+//                
+//                
+//                
+//                ObjectOutputStream paqueteDatos = new ObjectOutputStream(misocket.getOutputStream());
+//                paqueteDatos.writeObject(datos);
+//            }
             ServerSocket servidor_cliente = new ServerSocket(9090);
             Socket cliente;
             paqueteEnvio paqueteRecibido;
@@ -492,15 +511,19 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
                 cliente = servidor_cliente.accept();
                 ObjectInputStream flujoEntrada = new ObjectInputStream(cliente.getInputStream());
                 paqueteRecibido = (paqueteEnvio) flujoEntrada.readObject();
-                if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {                   
-                    txaConversacionAsesor.append(paqueteRecibido.getMensaje()+"\n\n");
-                    txpConversacionAsesor.setText(paqueteRecibido.getMensaje()+"\n\n");
+                if (paqueteRecibido.getCamp().equals(String.valueOf(camp)) || paqueteRecibido.getCamp().equals("0")) {
+                    txaConversacionAsesor.append(paqueteRecibido.getNombre()+"\n"+ paqueteRecibido.getMensaje()+"\n\n");
+//                    String text_actual = txaConversacionAsesor.getText();
+//                    String text_nuevo = txtEscribeAsesor.getText();
+//                    txpConversacionAsesor.setText(text_actual + text_nuevo);
                     //sendNotifi(paqueteRecibido.getMensaje());
                 }
                 //txaConversacionAsesor.setText(paqueteRecibido.getMensaje());
             }
         } catch (IOException | ClassNotFoundException e) {
+            
             System.out.println(e.getMessage());
+            
         }
     }
 
@@ -523,4 +546,3 @@ public class InicioAsesor extends javax.swing.JFrame implements Runnable {
     private javax.swing.JTextField txtEscribeAsesor;
     // End of variables declaration//GEN-END:variables
 }
-

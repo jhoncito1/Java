@@ -382,6 +382,9 @@ public final class InicioCoordinador extends javax.swing.JFrame implements Runna
                 } else {
                     datos.setCamp(String.valueOf(getIDCamp(listaCampanaC.getSelectedValue())));
                 }
+                
+                //String pqt = {"campana": getCamp("")};
+                
                 datos.setMensaje(txtEscribeCoordinador.getText());
                 txaConversacionCoor.setText(datos.getMensaje());
                 //datos.setMensaje(txaMmessage.getText());
